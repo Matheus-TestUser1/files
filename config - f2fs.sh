@@ -2,9 +2,7 @@
 sudo apt update
 sudo apt install -y build-essential flex bison libelf-dev libssl-dev bc
 
-# Clonar o repositório do kernel do WSL2
-git clone https://github.com/microsoft/WSL2-Linux-Kernel.git
-cd WSL2-Linux-Kernel
+
 
 # Copiar a configuração padrão do WSL2
 cp Microsoft/config-wsl .config
