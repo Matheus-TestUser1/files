@@ -1,0 +1,16 @@
+add device 1: /dev/input/event6
+  name:     "grip_notifier"
+add device 2: /dev/input/event5
+  name:     "grip_sensor"
+add device 3: /dev/input/event0
+  name:     "meta_event"
+add device 4: /dev/input/event4
+  name:     "sec_touchproximity"
+add device 5: /dev/input/event2
+  name:     "sec-pmic-key"
+add device 6: /dev/input/event7
+  name:     "AUD3004X Headset Input"
+add device 7: /dev/input/event1
+  name:     "gpio_keys"
+add device 8: /dev/input/event3
+  name:     "sec_touchscreen"

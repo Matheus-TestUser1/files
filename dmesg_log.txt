@@ -1,0 +1,1121 @@
+[   19.363235] vbus_handle_notification: action=1, vbus_status=1
+[   19.363240] vbus_handle_notification: vbus disappear
+[   19.363380] usb_notifier: vbus_handle_notification cmd=1, vbus_type=LOW
+[   19.363387] usb_notify: send_otg_notify event=vbus_power(35) enable=0
+[   19.363394] usb_notify: extra_notifier_callback event=vbus_power(35)
+[   19.363400] usb_notify: extra_notify_state+ event=vbus_power(35), enable=off
+[   19.363407] usb_notify: extra_notify_state- event=vbus_power(35), cable=none
+[   19.363413] vbus_notifier_notify: notify done(0x0)
+[   19.363418] TCPC-TCPC:ps_change=1\x0d
+[   19.363424] TCPC-TYPEC:** UnattachWait.PE\x0d
+[   19.363433] TCPC-TYPEC:Attached-> NULL\x0d
+[   19.363440] TCPC-TCPC:usb_port_detached\x0d
+[   19.363459] pdic_policy: pdic_policy_send_msg msg=(CC OFF) +
+[   19.363464] TCPC-PE-EVT:Detached\x0d
+[   19.363470] usb_notify: send_otg_notify event=power_role_source(27) enable=0
+[   19.363475] usb_notify: extra_notifier_callback event=power_role_source(27)
+[   19.363480] TCPC-PE:PD-> IDLE1\x0d
+[   19.363485] usb_notify: extra_notify_state+ event=power_role_source(27), enable=off
+[   19.363491] host_notify: ndev name=usb_otg: state=sink
+[   19.363496] usb_notify: send_external_notify: cmd=power_role_notify(7), data=0
+[   19.363503] pdic_policy: pdic_policy_handle_usb_ext_noti action=7 enable=0 +
+[   19.363508] pdic_policy: pdic_policy_handle_usb_ext_noti action=7 enable=0 -
+[   19.363514] usb_notify: send_external_notify: notify done(0x0)
+[   19.363519] usb_notify: extra_notify_state- event=power_role_source(27), cable=none
+[   19.363619] usb_notify: send_otg_notify event=pd_contract(28) enable=0
+[   19.363625] usb_notify: extra_notifier_callback event=pd_contract(28)
+[   19.363630] usb_notify: extra_notify_state+ event=pd_contract(28), enable=off
+[   19.363636] usb_notify: extra_notify_state- event=pd_contract(28), cable=none
+[   19.363642] usb_notify: send_otg_notify event=pd_contract(28) enable=0
+[   19.363647] usb_notify: extra_notifier_callback event=pd_contract(28)
+[   19.363652] usb_notify: extra_notify_state+ event=pd_contract(28), enable=off
+[   19.363657] usb_notify: extra_notify_state- event=pd_contract(28), cable=none
+[   19.363663] typec_set_pwr_opmode pwr_opmode=0 opmode=0
+[   19.363669] pdic_policy: usb: pdic_policy_event_work
+[   19.363699] pdic_policy: usb: pdic_policy_event_work
+[   19.363706] pdic_policy: usb:pdic_policy_event_notifier, dest=BATTERY, id=ID_POWER_STATUS, attach=0, event=0
+[   19.363714] pdic_notifier_notify: src:3 dest:2 id:04 attach:00 cable_type:00 rprd:0
+[   19.363718] TCPC-PE-EVT:pe_idle\x0d
+[   19.363725] pdic_policy: usb: pdic_policy_event_work
+[   19.363731] TCM: manager_handle_pdic_notification: src:PDIC dest:BATTERY id:ID_POWER_STATUS sub1:00 sub2:00 sub3:00
+[   19.363735] TCPC-PE:PD-> IDLE2\x0d
+[   19.363740] TCM: manager_event_work src:PDIC dest:BATTERY
+[   19.363787] TCM: manager_event_notify: src:PDIC dest:BATTERY id:ID_POWER_STATUS sub1:00 sub2:00 sub3:00
+[   19.363796] himax_tp spi1.1: [sec_input] [HXTP] tsp_ccic_notification : otg_flag 0
+[   19.363800] pdic_policy: usb: pdic_policy_event_work
+[   19.363806] pdic_notifier_notify: notify done(0x0)
+[   19.363815] [AFC] gpio_afc_tcm_handle_notification rplvl=0
+[   19.363823] pdic_policy: pdic_policy_send_msg msg=(CC OFF) -
+[   19.363828] pdic_policy: usb:pdic_policy_event_notifier, dest=MUIC, id=ID_ATTACH, attach=0, event=0
+[   19.363837] pdic_notifier_notify: src:3 dest:4 id:01 attach:00 cable_type:00 rprd:0
+[   19.363844] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: action:4 src:3, dest:2, id:4, sub1:0, sub2:0, sub3:0
+[   19.363853] sec_dfp_accessory_detach_handler acc_type=0
+[   19.363858] sec-battery samsung_mobile_device:battery: usb_typec_handle_id_power_status: pd_event(0)
+[   19.363864] sec-battery samsung_mobile_device:battery: usb_typec_handle_id_power_status: skip pd operation - attach(0)
+[   19.363869] TCM: manager_handle_pdic_notification: src:PDIC dest:MUIC id:ID_ATTACH sub1:00 sub2:00 sub3:00
+[   19.363874] TCM: manager_handle_pdic_notification: PDIC_NOTIFY_DETACH (pd=0)
+[   19.363879] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: CMD[NONE], CABLE_TYPE[1]
+[   19.363884] TCM: manager_event_work src:MANAGER dest:BATTERY
+[   19.363888] TCM: manager_event_notify: notify done(0x0)
+[   19.363918] TCM: manager_event_work src:PDIC dest:MUIC
+[   19.363927] TCM: manager_event_notify: src:MANAGER dest:BATTERY id:ID_USB sub1:00 sub2:00 sub3:02
+[   19.363935] himax_tp spi1.1: [sec_input] [HXTP] tsp_ccic_notification : otg_flag 0
+[   19.363942] pdic_notifier_notify: notify done(0x0)
+[   19.363950] TCM: manager_muic_event_notify: id:ID_ATTACH sub1:00 sub2:00 sub3:00
+[   19.363957] [AFC] gpio_afc_tcm_handle_notification rplvl=0
+[   19.363965] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: action:3 src:6, dest:2, id:3, sub1:0, sub2:0, sub3:2
+[   19.363977] pdic_policy: usb:pdic_policy_event_notifier, dest=USB, id=ID_USB, attach=Detached, drp=USB_DETACH
+[   19.363987] [MUIC] vt_muic: vt_muic_manager_nb_func: src:3 dest:4 id:1 sub[0 0 0]
+[   19.363997] pdic_notifier_notify: src:3 dest:1 id:03 sub1:0 sub2:00 sub3:00
+[   19.364003] [GRIP_MAIN] a96t396_pdic_handle_notification: src 3 id 1 attach 0
+[   19.364012] sec-battery samsung_mobile_device:battery: usb_typec_handle_id_usb: PDIC_NOTIFY_ID_USB: 0
+[   19.364017] TCM: manager_muic_event_notify: done(0x0)
+[   19.364023] TCM: manager_handle_pdic_notification: src:PDIC dest:USB id:ID_USB sub1:00 sub2:00 sub3:00
+[   19.364038] TCM: manager_usb_event_send(USB_DETACH): Duplicate event
+[   19.364049] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: CMD[NONE], CABLE_TYPE[1]
+[   19.364058] pdic_notifier_notify: notify done(0x0)
+[   19.364069] TCM: manager_event_notify: notify done(0x0)
+[   19.364079] pdic_policy: usb:pdic_policy_event_notifier, dest=PDIC, id=ID_PIN_STATUS, attach=0, event=0
+[   19.364088] pdic_notifier_notify: src:3 dest:3 id:0f sub1:0 sub2:00 sub3:00
+[   19.364099] TCM: manager_handle_pdic_notification: src:PDIC dest:PDIC id:ID_PIN_STATUS sub1:00 sub2:00 sub3:00
+[   19.364109] TCM: manager_event_work src:PDIC dest:PDIC
+[   19.364117] pdic_notifier_notify: notify done(0x0)
+[   19.364123] TCM: manager_event_notify: src:PDIC dest:PDIC id:ID_PIN_STATUS sub1:00 sub2:00 sub3:00
+[   19.364134] himax_tp spi1.1: [sec_input] [HXTP] tsp_ccic_notification : otg_flag 0
+[   19.364146] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: action:15 src:3, dest:3, id:15, sub1:0, sub2:0, sub3:0
+[   19.364152] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: skip handler dest(3)
+[   19.364156] TCM: manager_event_notify: notify done(0x0)
+[   19.364497] [GRIP_MAIN] pdic_detach_reset_work_func: pdic_detach
+[   19.365299] TCPC-TYPEC:** Unattached.SNK\x0d
+[   19.366289] pdic_policy: pdic_policy_send_msg msg=(VBUSOFF) +
+[   19.366298] usb_notify: is_blocked type=1, disable_state=0
+[   19.366304] usb_notify: is_usb_host 1
+[   19.366310] pdic_policy: vbus_turn_on_ctrl : enable=0, must_block_host=0 unsupport_host=0
+[   19.366316] pdic_policy: vbus_turn_on_ctrl on=0
+[   19.366335] sy6970_otg_set_property: OTG OFF
+[   19.366345] sec_otg_set_property: Fail to syv660-otg set psp (-1)
+[   19.366366] pdic_policy: vbus_turn_on_ctrl: fail to set power_suppy ONLINE property(-1)
+[   19.366377] pdic_policy: pdic_policy_send_msg msg=(VBUSOFF) -
+[   19.367115] max1726x_get_scaled_capacity : capacity_max (1000) scaled capacity(77.7), raw_soc(77.7)
+[   19.367123] max1726x_check_vempty_recover_time: check vempty time(2, 17)
+[   19.367133] sec_bat_get_battery_info:Vnow(4033mV),Vavg(4097mV),Inow(-242mA),Iavg(180mA),Isysavg(0mA),Imax(100mA),Ichg(100mA),SOC(77%),Tbat(313),Tusb(313),Tchg(-200),Twpc(0),Tblkt(0),Tlrp(0),
+[   19.368093] TCPC-TYPEC:[CC_Alert] 5/0\x0d
+[   19.368378] TCPC-TYPEC:** AttachWait.SNK\x0d
+[   19.368548] sec-battery samsung_mobile_device:battery: sec_bat_cisd_check: [CISD] CAP_NOM 4475mAh
+[   19.368556] sec_bat_cisd_check: Fail to max1726x-fuelgauge get POWER_SUPPLY_PROP_ENERGY_NOW (-22)
+[   19.368566] sec-battery samsung_mobile_device:battery: sec_bat_cisd_check: [CISD] RC0 0x0
+[   19.368576] sec_bat_thermal_check: co_c3: 0, c3_c2: 50, c2_c1: 150, c1_no: 150, no_wa: 420, wa_ov: 500, tz(NORMAL)
+[   19.368588] sec_bat_set_current_event: current event before(0x40800000), after(0x40800000)
+[   19.368594] sec_bat_set_current_event: current event before(0x40800000), after(0x40800000)
+[   19.371510] sy6970_test_read: [0x00]0x40,[0x01]0x06,[0x02]0x4d,[0x03]0x08,[0x04]0x01,[0x05]0x62,[0x06]0x82,[0x07]0x87,[0x08]0x03,[0x09]0x50,[0x0a]0x82,[0x0b]0x02,[0x0c]0x00,[0x0d]0x93,[0x0e]0x5b,[0x0f]0x5c,[0x10]0x58,[0x11]0x00,[0x12]0x04,[0x13]0x00,[0x14]0x0c,
+[   19.375702] vbus_notifier_handle: (1)->(1)
+[   19.375709] TCPC-TCPC:ps_change=0\x0d
+[   19.380248] TCPC-TYPEC:[CC_Alert] 0/0\x0d
+[   19.390277] TCPC-TYPEC:[CC_Change] 0/0\x0d
+[   19.390285] TCPC-TYPEC:** Unattached.SRC\x0d
+[   19.407083] max1726x: [FG] 8080h,ffa0h,7f80h,ff01h,0000h,0e06h,4db8h,61c1h,1f4ch,c9aeh,fcf8h,022fh,0002h,50c3h,4e39h,0e1eh,120bh,ffffh,4400h,5d00h,05dbh,00a0h,1fabh,0247h,11e1h,cce6h,2813h,da9dh,1eefh,0304h,0820h,0e1ch,0000h,4031h,2300h,117bh,1400h,2305h,1fabh,88d0h,4476h,cea4h,023ch,3830h,ee56h,1da4h,0400h,0000h,7137h,4d4fh,1200h,0000h,2492h,1216h,f448h,4000h,08a0h,1202h,7d54h,0244h,00b4h,1008h,b32dh,0000h,0000h,b605h,0f00h,8080h,ccd7h,2086h,2e83h,0170h,28ceh,2241h,0dddh,0000h,fc8fh,03b1h,8969h,1218h,0100h,fd9ch,0003h,0222h,3ecbh,0005h,000ah,09f0h,0000h,0025h,870ch,0518h,01a7h,0204h,00a7h,0000h,0000h,479eh,0000h,1002h,b80ah,0ac0h,0000h,0000h,9600h,0860h,215bh,0404h,1d24h,fd03h,00e6h,0000h,1ed5h,0000h,0002h,6400h,0080h,0000h,a6f0h,fffeh,4b9fh,000ch,4849h,0000h,53b8h,0280h,a6f0h,0820h,0000h,4c00h,0000h,0000h,0000h,000ah,0000h,ff9ch,1a0ch,554eh,fd51h,ca52h,0038h,3900h,c9aeh,4f53h,
+[   19.407097] sec_bat_monitor_work: Status(Discharging), mode(None), Health(Good), Cable(NONE, NONE, 0, 0), rp(1), HV(NONE), flash(0) mst(0)
+[   19.407104] sec_bat_monitor_work: lcd(1), slate(0), store(0), siop_level(0), sleep_mode(0), Cycle(-1)
+[   19.407124] sec-battery samsung_mobile_device:battery: sec_bat_set_polling: Polling time 30/30 sec.
+[   19.444256] vbus_notifier_handle: (1)->(2)
+[   19.444269] vbus_notifier_notify: CMD=2, DATA=2
+[   19.444277] TCM: manager_handle_vbus_notification: cmd=2, vbus_type=HIGH, WATER DET=0 ATTACH=DETACH
+[   19.444297] TCM: manager_check_vbus_by_otg otg power? 0 (otg?0, vbusTimeCheck?0)
+[   19.444308] himax_tp spi1.1: [sec_input] [HXTP] tsp_vbus_notification cmd=2, vbus_type=2
+[   19.444318] himax_tp spi1.1: [sec_input] [HXTP] tsp_vbus_notification : attach
+[   19.444607] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   19.445028] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   19.445410] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   19.445793] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   19.446194] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   19.446383] himax_tp spi1.1: [sec_input] [HXTP] himax_cable_detect_func: Cable status change: 0x01
+[   19.446393] vbus_handle_notification: action=2, vbus_status=2
+[   19.446399] usb_notifier: vbus_handle_notification cmd=2, vbus_type=HIGH
+[   19.446406] usb_notify: send_otg_notify event=vbus_power(35) enable=1
+[   19.446413] usb_notify: extra_notifier_callback event=vbus_power(35)
+[   19.446419] usb_notify: extra_notify_state+ event=vbus_power(35), enable=on
+[   19.446426] usb_notify: extra_notify_state- event=vbus_power(35), cable=none
+[   19.446432] vbus_notifier_notify: notify done(0x0)
+[   19.446437] TCPC-TCPC:ps_change=2\x0d
+[   19.450528] TCPC-TYPEC:** Unattached.SNK\x0d
+[   19.452052] TCPC-TYPEC:[CC_Alert] 5/0\x0d
+[   19.452159] TCPC-TYPEC:** AttachWait.SNK\x0d
+[   19.497447] vbus_notifier_handle: (2)->(1)
+[   19.497455] vbus_notifier_notify: CMD=1, DATA=1
+[   19.497462] TCM: manager_handle_vbus_notification: cmd=1, vbus_type=LOW, WATER DET=0 ATTACH=DETACH
+[   19.497472] himax_tp spi1.1: [sec_input] [HXTP] tsp_vbus_notification cmd=1, vbus_type=1
+[   19.497481] himax_tp spi1.1: [sec_input] [HXTP] tsp_vbus_notification : detach
+[   19.497688] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status OUT!
+[   19.498077] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status OUT!
+[   19.498527] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status OUT!
+[   19.498923] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status OUT!
+[   19.499336] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status OUT!
+[   19.499573] himax_tp spi1.1: [sec_input] [HXTP] himax_cable_detect_func: Cable status change: 0x00
+[   19.499584] vbus_handle_notification: action=1, vbus_status=1
+[   19.499589] vbus_handle_notification: vbus disappear
+[   19.499739] usb_notifier: vbus_handle_notification cmd=1, vbus_type=LOW
+[   19.499747] usb_notify: send_otg_notify event=vbus_power(35) enable=0
+[   19.499754] usb_notify: extra_notifier_callback event=vbus_power(35)
+[   19.499799] usb_notify: extra_notify_state+ event=vbus_power(35), enable=off
+[   19.499806] usb_notify: extra_notify_state- event=vbus_power(35), cable=none
+[   19.499816] vbus_notifier_notify: notify done(0x0)
+[   19.499828] TCPC-TCPC:ps_change=1\x0d
+[   19.511884] vbus_notifier_handle: (1)->(1)
+[   19.511891] TCPC-TCPC:ps_change=0\x0d
+[   19.516188] TCPC-TYPEC:[CC_Alert] 0/0\x0d
+[   19.526221] TCPC-TYPEC:[CC_Change] 0/0\x0d
+[   19.526229] TCPC-TYPEC:** Unattached.SRC\x0d
+[   19.586428] TCPC-TYPEC:** Unattached.SNK\x0d
+[   19.588302] TCPC-TYPEC:[CC_Alert] 5/0\x0d
+[   19.588410] TCPC-TYPEC:** AttachWait.SNK\x0d
+[   19.602760] TCPC-TYPEC:[CC_Alert] 0/0\x0d
+[   19.612788] TCPC-TYPEC:[CC_Change] 0/0\x0d
+[   19.612796] TCPC-TYPEC:** Unattached.SRC\x0d
+[   19.673043] TCPC-TYPEC:** Unattached.SNK\x0d
+[   19.674524] TCPC-TYPEC:[CC_Alert] 5/0\x0d
+[   19.674635] TCPC-TYPEC:** AttachWait.SNK\x0d
+[   19.689264] TCPC-TYPEC:[CC_Alert] 0/0\x0d
+[   19.699296] TCPC-TYPEC:[CC_Change] 0/0\x0d
+[   19.699303] TCPC-TYPEC:** Unattached.SRC\x0d
+[   19.759499] TCPC-TYPEC:** Unattached.SNK\x0d
+[   19.761421] TCPC-TYPEC:[CC_Alert] 5/0\x0d
+[   19.761525] TCPC-TYPEC:** AttachWait.SNK\x0d
+[   19.776908] TCPC-TYPEC:[CC_Alert] 0/0\x0d
+[   19.786935] TCPC-TYPEC:[CC_Change] 0/0\x0d
+[   19.786943] TCPC-TYPEC:** Unattached.SRC\x0d
+[   19.847135] TCPC-TYPEC:** Unattached.SNK\x0d
+[   19.849073] TCPC-TYPEC:[CC_Alert] 5/0\x0d
+[   19.849183] TCPC-TYPEC:** AttachWait.SNK\x0d
+[   19.862801] TCPC-TYPEC:[CC_Alert] 0/0\x0d
+[   19.872828] TCPC-TYPEC:[CC_Change] 0/0\x0d
+[   19.872835] TCPC-TYPEC:** Unattached.SRC\x0d
+[   19.932971] TCPC-TYPEC:** Unattached.SNK\x0d
+[   19.934624] TCPC-TYPEC:[CC_Alert] 5/0\x0d
+[   19.934727] TCPC-TYPEC:** AttachWait.SNK\x0d
+[   19.949025] TCPC-TYPEC:[CC_Alert] 0/0\x0d
+[   19.959056] TCPC-TYPEC:[CC_Change] 0/0\x0d
+[   19.959063] TCPC-TYPEC:** Unattached.SRC\x0d
+[   20.019312] TCPC-TYPEC:** Unattached.SNK\x0d
+[   20.021173] TCPC-TYPEC:[CC_Alert] 5/0\x0d
+[   20.021276] TCPC-TYPEC:** AttachWait.SNK\x0d
+[   20.035642] TCPC-TYPEC:[CC_Alert] 0/0\x0d
+[   20.045672] TCPC-TYPEC:[CC_Change] 0/0\x0d
+[   20.045679] TCPC-TYPEC:** Unattached.SRC\x0d
+[   20.105920] TCPC-TYPEC:** Unattached.SNK\x0d
+[   20.107782] TCPC-TYPEC:[CC_Alert] 5/0\x0d
+[   20.107886] TCPC-TYPEC:** AttachWait.SNK\x0d
+[   20.121933] TCPC-TYPEC:[CC_Alert] 0/0\x0d
+[   20.131963] TCPC-TYPEC:[CC_Change] 0/0\x0d
+[   20.131972] TCPC-TYPEC:** Unattached.SRC\x0d
+[   20.192163] TCPC-TYPEC:** Unattached.SNK\x0d
+[   20.193984] TCPC-TYPEC:[CC_Alert] 5/0\x0d
+[   20.194086] TCPC-TYPEC:** AttachWait.SNK\x0d
+[   20.208418] TCPC-TYPEC:[CC_Alert] 0/0\x0d
+[   20.218449] TCPC-TYPEC:[CC_Change] 0/0\x0d
+[   20.218456] TCPC-TYPEC:** Unattached.SRC\x0d
+[   20.240919] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   20.242213] healthd: BatteryCycleCountPath not found
+[   20.242229] healthd: batteryCapacityLevelPath not found
+[   20.278717] TCPC-TYPEC:** Unattached.SNK\x0d
+[   20.280527] TCPC-TYPEC:[CC_Alert] 5/0\x0d
+[   20.280631] TCPC-TYPEC:** AttachWait.SNK\x0d
+[   20.294474] TCPC-TYPEC:[CC_Alert] 0/0\x0d
+[   20.304504] TCPC-TYPEC:[CC_Change] 0/0\x0d
+[   20.304512] TCPC-TYPEC:** Unattached.SRC\x0d
+[   20.364649] TCPC-TYPEC:** Unattached.SNK\x0d
+[   20.366593] TCPC-TYPEC:[CC_Alert] 5/0\x0d
+[   20.366695] TCPC-TYPEC:** AttachWait.SNK\x0d
+[   20.395915] vbus_notifier_handle: (1)->(1)
+[   20.395923] TCPC-TCPC:ps_change=0\x0d
+[   20.431966] vbus_notifier_handle: (1)->(1)
+[   20.431973] TCPC-TCPC:ps_change=0\x0d
+[   20.452609] vbus_notifier_handle: (1)->(1)
+[   20.452615] TCPC-TCPC:ps_change=0\x0d
+[   20.469328] vbus_notifier_handle: (1)->(2)
+[   20.469336] vbus_notifier_notify: CMD=2, DATA=2
+[   20.469343] TCM: manager_handle_vbus_notification: cmd=2, vbus_type=HIGH, WATER DET=0 ATTACH=DETACH
+[   20.469363] TCM: manager_check_vbus_by_otg otg power? 0 (otg?0, vbusTimeCheck?0)
+[   20.469374] himax_tp spi1.1: [sec_input] [HXTP] tsp_vbus_notification cmd=2, vbus_type=2
+[   20.469384] himax_tp spi1.1: [sec_input] [HXTP] tsp_vbus_notification : attach
+[   20.469657] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   20.470088] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   20.470477] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   20.470867] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   20.471251] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   20.471441] himax_tp spi1.1: [sec_input] [HXTP] himax_cable_detect_func: Cable status change: 0x01
+[   20.471450] vbus_handle_notification: action=2, vbus_status=2
+[   20.471457] usb_notifier: vbus_handle_notification cmd=2, vbus_type=HIGH
+[   20.471464] usb_notify: send_otg_notify event=vbus_power(35) enable=1
+[   20.471470] usb_notify: extra_notifier_callback event=vbus_power(35)
+[   20.471476] usb_notify: extra_notify_state+ event=vbus_power(35), enable=on
+[   20.471483] usb_notify: extra_notify_state- event=vbus_power(35), cable=none
+[   20.471489] vbus_notifier_notify: notify done(0x0)
+[   20.471494] TCPC-TCPC:ps_change=2\x0d
+[   20.486727] TCPC-TYPEC:[CC_Change] 5/0\x0d
+[   20.486735] TCPC-TYPEC:** Attached.SNK\x0d
+[   20.488006] pdic_policy: pdic_policy_send_msg msg=(SNK) +
+[   20.488014] usb_notify: send_otg_notify event=power_role_source(27) enable=0
+[   20.488020] usb_notify: extra_notifier_callback event=power_role_source(27)
+[   20.488027] usb_notify: extra_notify_state+ event=power_role_source(27), enable=off
+[   20.488033] host_notify: ndev name=usb_otg: state=sink
+[   20.488039] usb_notify: send_external_notify: cmd=power_role_notify(7), data=0
+[   20.488045] pdic_policy: pdic_policy_handle_usb_ext_noti action=7 enable=0 +
+[   20.488050] pdic_policy: pdic_policy_handle_usb_ext_noti action=7 enable=0 -
+[   20.488056] usb_notify: send_external_notify: notify done(0x0)
+[   20.488062] usb_notify: extra_notify_state- event=power_role_source(27), cable=none
+[   20.488068] pdic_policy: pdic_policy_send_msg msg=(SNK) -
+[   20.488073] pdic_policy: pdic_policy_send_msg msg=(UFP) +
+[   20.488079] pdic_policy: process_policy_data_role msg=UFP p_data=detach p_power=sink +
+[   20.488176] usb_notify: send_otg_notify event=pd_contract(28) enable=0
+[   20.488181] usb_notify: extra_notifier_callback event=pd_contract(28)
+[   20.488187] usb_notify: extra_notify_state+ event=pd_contract(28), enable=off
+[   20.488192] usb_notify: extra_notify_state- event=pd_contract(28), cable=none
+[   20.488198] typec_set_pwr_opmode pwr_opmode=0 opmode=0
+[   20.488203] pdic_policy: process_typec_data_role registerd partner. usb_pd=0
+[   20.488209] pdic_policy: usb: pdic_policy_event_work
+[   20.488240] pdic_policy: usb: pdic_policy_event_work
+[   20.488248] pdic_policy: usb:pdic_policy_event_notifier, dest=MUIC, id=ID_ATTACH, attach=1, event=0
+[   20.488256] pdic_notifier_notify: src:3 dest:4 id:01 attach:01 cable_type:00 rprd:0
+[   20.488264] TCM: manager_handle_pdic_notification: src:PDIC dest:MUIC id:ID_ATTACH sub1:01 sub2:00 sub3:00
+[   20.488269] pdic_policy: process_policy_data_role msg=UFP p_data=UFP p_power=sink -
+[   20.488274] pdic_policy: pdic_policy_send_msg msg=(UFP) -
+[   20.488278] TCM: manager_handle_pdic_notification: PDIC_NOTIFY_ATTACH
+[   20.488283] pdic_policy: pdic_policy_send_msg msg=(RP56K) +
+[   20.488287] TCM: manager_event_work src:PDIC dest:MUIC
+[   20.488293] pdic_policy: process_policy_rpcurrent RP56K (no contract)
+[   20.488297] pdic_policy: usb: pdic_policy_event_work
+[   20.488315] pdic_policy: usb: pdic_policy_event_work
+[   20.488320] pdic_notifier_notify: notify done(0x0)
+[   20.488326] TCM: manager_muic_event_notify: id:ID_ATTACH sub1:01 sub2:00 sub3:00
+[   20.488333] pdic_policy: usb:pdic_policy_event_notifier, dest=USB, id=ID_USB, attach=Attached, drp=USB_ATTACH_UFP
+[   20.488339] [MUIC] vt_muic: vt_muic_manager_nb_func: src:3 dest:4 id:1 sub[1 0 0]
+[   20.488345] pdic_notifier_notify: src:3 dest:1 id:03 sub1:1 sub2:02 sub3:00
+[   20.488350] TCM: manager_handle_pdic_notification: src:PDIC dest:USB id:ID_USB sub1:01 sub2:02 sub3:00
+[   20.488356] [GRIP_MAIN] a96t396_pdic_handle_notification: src 3 id 1 attach 1
+[   20.488362] TCM: manager_usb_event_send(USB_ATTACH_UFP): Skip event (muic_none)
+[   20.488367] pdic_notifier_notify: notify done(0x0)
+[   20.488371] pdic_policy: pdic_policy_send_msg msg=(RP56K) -
+[   20.488376] pdic_policy: pdic_policy_send_msg msg=(CC1) +
+[   20.488380] pdic_policy: usb:pdic_policy_event_notifier, dest=MUIC, id=ID_TA, attach=1, event=0
+[   20.488385] TCM: manager_muic_event_notify: done(0x0)
+[   20.488391] pdic_notifier_notify: src:3 dest:4 id:08 sub1:1 sub2:00 sub3:00
+[   20.488395] pdic_policy: usb: pdic_policy_event_work
+[   20.488401] TCM: manager_handle_pdic_notification: src:PDIC dest:MUIC id:ID_TA sub1:01 sub2:00 sub3:00
+[   20.488405] TCM: manager_event_work src:PDIC dest:MUIC
+[   20.488430] pdic_policy: pdic_policy_send_msg msg=(CC1) -
+[   20.488434] pdic_notifier_notify: notify done(0x0)
+[   20.488440] TCM: manager_muic_event_notify: id:ID_TA sub1:01 sub2:00 sub3:00
+[   20.488446] pdic_policy: usb:pdic_policy_event_notifier, dest=BATTERY, id=ID_POWER_STATUS, attach=0, event=0
+[   20.488451] [MUIC] vt_muic: vt_muic_manager_nb_func: src:3 dest:4 id:8 sub[1 0 0]
+[   20.488456] TCPC-TYPEC:Attached-> SINK\x0d
+[   20.488460] TCM: manager_muic_event_notify: done(0x0)
+[   20.488466] pdic_notifier_notify: src:3 dest:2 id:04 attach:00 cable_type:00 rprd:0
+[   20.488472] TCM: manager_handle_pdic_notification: src:PDIC dest:BATTERY id:ID_POWER_STATUS sub1:00 sub2:00 sub3:00
+[   20.488476] TCPC-TCPC:usb_port_attached\x0d
+[   20.488481] TCM: manager_event_work src:PDIC dest:BATTERY
+[   20.488503] pdic_notifier_notify: notify done(0x0)
+[   20.488509] TCM: manager_event_notify: src:PDIC dest:BATTERY id:ID_POWER_STATUS sub1:00 sub2:00 sub3:00
+[   20.488517] pdic_policy: usb:pdic_policy_event_notifier, dest=PDIC, id=ID_PIN_STATUS, attach=1, event=0
+[   20.488522] himax_tp spi1.1: [sec_input] [HXTP] tsp_ccic_notification : otg_flag 0
+[   20.488528] pdic_notifier_notify: src:3 dest:3 id:0f sub1:1 sub2:00 sub3:00
+[   20.488532] [AFC] gpio_afc_tcm_handle_notification rplvl=1
+[   20.488538] TCM: manager_handle_pdic_notification: src:PDIC dest:PDIC id:ID_PIN_STATUS sub1:01 sub2:00 sub3:00
+[   20.488544] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: action:4 src:3, dest:2, id:4, sub1:0, sub2:0, sub3:0
+[   20.488549] TCM: manager_event_work src:PDIC dest:PDIC
+[   20.488554] sec-battery samsung_mobile_device:battery: usb_typec_handle_id_power_status: pd_event(1)
+[   20.488560] sec-battery samsung_mobile_device:battery: usb_typec_handle_id_power_status: battery->rp_currentlvl(1)
+[   20.488567] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: CMD[NONE], CABLE_TYPE[1]
+[   20.488572] TCM: manager_event_notify: notify done(0x0)
+[   20.488576] pdic_notifier_notify: notify done(0x0)
+[   20.488583] TCM: manager_event_notify: src:PDIC dest:PDIC id:ID_PIN_STATUS sub1:01 sub2:00 sub3:00
+[   20.488590] himax_tp spi1.1: [sec_input] [HXTP] tsp_ccic_notification : otg_flag 0
+[   20.488597] sec_dfp_notify_pe_startup
+[   20.488603] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: action:15 src:3, dest:3, id:15, sub1:1, sub2:0, sub3:0
+[   20.488609] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: skip handler dest(3)
+[   20.488613] TCPC-PE-EVT:Attached\x0d
+[   20.488618] TCM: manager_event_notify: notify done(0x0)
+[   20.488622] TCPC-PE:PD-> SNK_START\x0d
+[   20.488943] TCPC-PE-EVT:reset_prl_done\x0d
+[   20.488950] TCPC-PE:PD-> SNK_DISC\x0d
+[   20.488957] TCPC-PE-EVT:vbus_high\x0d
+[   20.488961] TCPC-PE:PD-> SNK_WAIT_CAP\x0d
+[   20.488994] [GRIP_MAIN] pdic_attach_reset_work_func: pdic_attach
+[   20.666351] vbus_notifier_handle: (2)->(1)
+[   20.666359] vbus_notifier_notify: CMD=1, DATA=1
+[   20.666367] TCM: manager_handle_vbus_notification: cmd=1, vbus_type=LOW, WATER DET=0 ATTACH=ATTACH
+[   20.666378] himax_tp spi1.1: [sec_input] [HXTP] tsp_vbus_notification cmd=1, vbus_type=1
+[   20.666389] himax_tp spi1.1: [sec_input] [HXTP] tsp_vbus_notification : detach
+[   20.666679] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status OUT!
+[   20.667099] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status OUT!
+[   20.667495] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status OUT!
+[   20.667847] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status OUT!
+[   20.668246] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status OUT!
+[   20.668447] himax_tp spi1.1: [sec_input] [HXTP] himax_cable_detect_func: Cable status change: 0x00
+[   20.668457] vbus_handle_notification: action=1, vbus_status=1
+[   20.668462] vbus_handle_notification: vbus disappear
+[   20.668604] usb_notifier: vbus_handle_notification cmd=1, vbus_type=LOW
+[   20.668611] usb_notify: send_otg_notify event=vbus_power(35) enable=0
+[   20.668618] usb_notify: extra_notifier_callback event=vbus_power(35)
+[   20.668624] usb_notify: extra_notify_state+ event=vbus_power(35), enable=off
+[   20.668631] usb_notify: extra_notify_state- event=vbus_power(35), cable=none
+[   20.668637] vbus_notifier_notify: notify done(0x0)
+[   20.668643] TCPC-TCPC:ps_change=1\x0d
+[   20.668649] TCPC-TYPEC:** UnattachWait.PE\x0d
+[   20.668658] TCPC-TYPEC:Attached-> NULL\x0d
+[   20.668664] TCPC-TCPC:usb_port_detached\x0d
+[   20.668681] pdic_policy: pdic_policy_send_msg msg=(CC OFF) +
+[   20.668687] TCPC-PE-EVT:Detached\x0d
+[   20.668694] usb_notify: send_otg_notify event=power_role_source(27) enable=0
+[   20.668699] usb_notify: extra_notifier_callback event=power_role_source(27)
+[   20.668703] TCPC-PE:PD-> IDLE1\x0d
+[   20.668709] usb_notify: extra_notify_state+ event=power_role_source(27), enable=off
+[   20.668714] host_notify: ndev name=usb_otg: state=sink
+[   20.668720] usb_notify: send_external_notify: cmd=power_role_notify(7), data=0
+[   20.668726] pdic_policy: pdic_policy_handle_usb_ext_noti action=7 enable=0 +
+[   20.668732] pdic_policy: pdic_policy_handle_usb_ext_noti action=7 enable=0 -
+[   20.668737] usb_notify: send_external_notify: notify done(0x0)
+[   20.668742] usb_notify: extra_notify_state- event=power_role_source(27), cable=none
+[   20.668843] usb_notify: send_otg_notify event=pd_contract(28) enable=0
+[   20.668849] usb_notify: extra_notifier_callback event=pd_contract(28)
+[   20.668854] usb_notify: extra_notify_state+ event=pd_contract(28), enable=off
+[   20.668859] usb_notify: extra_notify_state- event=pd_contract(28), cable=none
+[   20.668864] usb_notify: send_otg_notify event=pd_contract(28) enable=0
+[   20.668869] usb_notify: extra_notifier_callback event=pd_contract(28)
+[   20.668874] usb_notify: extra_notify_state+ event=pd_contract(28), enable=off
+[   20.668879] usb_notify: extra_notify_state- event=pd_contract(28), cable=none
+[   20.668884] typec_set_pwr_opmode pwr_opmode=0 opmode=0
+[   20.668891] pdic_policy: usb: pdic_policy_event_work
+[   20.668923] pdic_policy: usb: pdic_policy_event_work
+[   20.668929] pdic_policy: usb:pdic_policy_event_notifier, dest=BATTERY, id=ID_POWER_STATUS, attach=0, event=0
+[   20.668936] pdic_notifier_notify: src:3 dest:2 id:04 attach:00 cable_type:00 rprd:0
+[   20.668943] TCM: manager_handle_pdic_notification: src:PDIC dest:BATTERY id:ID_POWER_STATUS sub1:00 sub2:00 sub3:00
+[   20.668948] TCPC-PE-EVT:pe_idle\x0d
+[   20.668954] pdic_policy: usb: pdic_policy_event_work
+[   20.668959] TCPC-PE:PD-> IDLE2\x0d
+[   20.668963] pdic_policy: usb: pdic_policy_event_work
+[   20.668969] pdic_policy: pdic_policy_send_msg msg=(CC OFF) -
+[   20.668974] TCM: manager_event_work src:PDIC dest:BATTERY
+[   20.668979] sec_dfp_accessory_detach_handler acc_type=0
+[   20.668999] pdic_notifier_notify: notify done(0x0)
+[   20.669005] TCM: manager_event_notify: src:PDIC dest:BATTERY id:ID_POWER_STATUS sub1:00 sub2:00 sub3:00
+[   20.669014] pdic_policy: usb:pdic_policy_event_notifier, dest=MUIC, id=ID_ATTACH, attach=0, event=0
+[   20.669019] himax_tp spi1.1: [sec_input] [HXTP] tsp_ccic_notification : otg_flag 0
+[   20.669024] pdic_notifier_notify: src:3 dest:4 id:01 attach:00 cable_type:00 rprd:0
+[   20.669029] [AFC] gpio_afc_tcm_handle_notification rplvl=0
+[   20.669034] TCM: manager_handle_pdic_notification: src:PDIC dest:MUIC id:ID_ATTACH sub1:00 sub2:00 sub3:00
+[   20.669040] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: action:4 src:3, dest:2, id:4, sub1:0, sub2:0, sub3:0
+[   20.669046] TCM: manager_handle_pdic_notification: PDIC_NOTIFY_DETACH (pd=0)
+[   20.669051] sec-battery samsung_mobile_device:battery: usb_typec_handle_id_power_status: pd_event(0)
+[   20.669055] TCM: manager_event_work src:MANAGER dest:BATTERY
+[   20.669060] sec-battery samsung_mobile_device:battery: usb_typec_handle_id_power_status: skip pd operation - attach(0)
+[   20.669066] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: CMD[NONE], CABLE_TYPE[1]
+[   20.669072] TCM: manager_event_notify: notify done(0x0)
+[   20.669085] TCM: manager_event_work src:PDIC dest:MUIC
+[   20.669091] TCM: manager_event_notify: src:MANAGER dest:BATTERY id:ID_USB sub1:00 sub2:00 sub3:02
+[   20.669097] himax_tp spi1.1: [sec_input] [HXTP] tsp_ccic_notification : otg_flag 0
+[   20.669104] [AFC] gpio_afc_tcm_handle_notification rplvl=0
+[   20.669111] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: action:3 src:6, dest:2, id:3, sub1:0, sub2:0, sub3:2
+[   20.669116] pdic_notifier_notify: notify done(0x0)
+[   20.669122] TCM: manager_muic_event_notify: id:ID_ATTACH sub1:00 sub2:00 sub3:00
+[   20.669128] pdic_policy: usb:pdic_policy_event_notifier, dest=USB, id=ID_USB, attach=Detached, drp=USB_DETACH
+[   20.669133] sec-battery samsung_mobile_device:battery: usb_typec_handle_id_usb: PDIC_NOTIFY_ID_USB: 0
+[   20.669139] pdic_notifier_notify: src:3 dest:1 id:03 sub1:0 sub2:00 sub3:00
+[   20.669145] [MUIC] vt_muic: vt_muic_manager_nb_func: src:3 dest:4 id:1 sub[0 0 0]
+[   20.669151] TCM: manager_handle_pdic_notification: src:PDIC dest:USB id:ID_USB sub1:00 sub2:00 sub3:00
+[   20.669156] TCM: manager_usb_event_send(USB_DETACH): Duplicate event
+[   20.669161] [GRIP_MAIN] a96t396_pdic_handle_notification: src 3 id 1 attach 0
+[   20.669167] pdic_notifier_notify: notify done(0x0)
+[   20.669175] TCM: manager_muic_event_notify: done(0x0)
+[   20.669180] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: CMD[NONE], CABLE_TYPE[1]
+[   20.669187] pdic_policy: usb:pdic_policy_event_notifier, dest=PDIC, id=ID_PIN_STATUS, attach=0, event=0
+[   20.669193] pdic_notifier_notify: src:3 dest:3 id:0f sub1:0 sub2:00 sub3:00
+[   20.669199] TCM: manager_handle_pdic_notification: src:PDIC dest:PDIC id:ID_PIN_STATUS sub1:00 sub2:00 sub3:00
+[   20.669204] TCM: manager_event_work src:PDIC dest:PDIC
+[   20.669227] TCM: manager_event_notify: notify done(0x0)
+[   20.669232] pdic_notifier_notify: notify done(0x0)
+[   20.669240] TCM: manager_event_notify: src:PDIC dest:PDIC id:ID_PIN_STATUS sub1:00 sub2:00 sub3:00
+[   20.669247] himax_tp spi1.1: [sec_input] [HXTP] tsp_ccic_notification : otg_flag 0
+[   20.669256] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: action:15 src:3, dest:3, id:15, sub1:0, sub2:0, sub3:0
+[   20.669263] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: skip handler dest(3)
+[   20.669268] TCM: manager_event_notify: notify done(0x0)
+[   20.669899] [GRIP_MAIN] pdic_detach_reset_work_func: pdic_detach
+[   20.670472] TCPC-TYPEC:** Unattached.SNK\x0d
+[   20.671446] pdic_policy: pdic_policy_send_msg msg=(VBUSOFF) +
+[   20.671453] usb_notify: is_blocked type=1, disable_state=0
+[   20.671459] usb_notify: is_usb_host 1
+[   20.671465] pdic_policy: vbus_turn_on_ctrl : enable=0, must_block_host=0 unsupport_host=0
+[   20.671470] pdic_policy: vbus_turn_on_ctrl on=0
+[   20.671488] sy6970_otg_set_property: OTG OFF
+[   20.671494] sec_otg_set_property: Fail to syv660-otg set psp (-1)
+[   20.671507] pdic_policy: vbus_turn_on_ctrl: fail to set power_suppy ONLINE property(-1)
+[   20.671515] pdic_policy: pdic_policy_send_msg msg=(VBUSOFF) -
+[   20.671973] max1726x_get_scaled_capacity : capacity_max (1000) scaled capacity(77.7), raw_soc(77.7)
+[   20.671980] max1726x_check_vempty_recover_time: check vempty time(2, 18)
+[   20.671990] sec_bat_get_battery_info:Vnow(4027mV),Vavg(4096mV),Inow(-259mA),Iavg(124mA),Isysavg(0mA),Imax(100mA),Ichg(100mA),SOC(77%),Tbat(313),Tusb(313),Tchg(-200),Twpc(0),Tblkt(0),Tlrp(0),
+[   20.673235] TCPC-TYPEC:[CC_Alert] 5/0\x0d
+[   20.673518] TCPC-TYPEC:** AttachWait.SNK\x0d
+[   20.673692] sec-battery samsung_mobile_device:battery: sec_bat_cisd_check: [CISD] CAP_NOM 4475mAh
+[   20.673700] sec_bat_cisd_check: Fail to max1726x-fuelgauge get POWER_SUPPLY_PROP_ENERGY_NOW (-22)
+[   20.673714] sec-battery samsung_mobile_device:battery: sec_bat_cisd_check: [CISD] RC0 0x0
+[   20.673726] sec_bat_thermal_check: co_c3: 0, c3_c2: 50, c2_c1: 150, c1_no: 150, no_wa: 420, wa_ov: 500, tz(NORMAL)
+[   20.673746] sec_bat_set_current_event: current event before(0x40800000), after(0x40800000)
+[   20.673756] sec_bat_set_current_event: current event before(0x40800000), after(0x40800000)
+[   20.676678] sy6970_test_read: [0x00]0x40,[0x01]0x06,[0x02]0x4d,[0x03]0x08,[0x04]0x01,[0x05]0x62,[0x06]0x82,[0x07]0x87,[0x08]0x03,[0x09]0x50,[0x0a]0x82,[0x0b]0x02,[0x0c]0x00,[0x0d]0x93,[0x0e]0x56,[0x0f]0x56,[0x10]0x59,[0x11]0x00,[0x12]0x04,[0x13]0x00,[0x14]0x0c,
+[   20.687161] vbus_notifier_handle: (1)->(1)
+[   20.687168] TCPC-TCPC:ps_change=0\x0d
+[   20.698734] vbus_notifier_handle: (1)->(1)
+[   20.698740] TCPC-TCPC:ps_change=0\x0d
+[   20.712167] max1726x: [FG] 8080h,ffa0h,7f80h,ff01h,0000h,0e06h,4db8h,61c1h,1f4ch,c95bh,fcbfh,018fh,0003h,50c3h,4e39h,0e1eh,120bh,ffffh,4400h,5d00h,05dbh,00a0h,1faah,0247h,11e1h,cccdh,2813h,da9dh,1eefh,0304h,0820h,0e1bh,0000h,4031h,2300h,117bh,1400h,2305h,1faah,88d0h,4476h,cea4h,023ch,3830h,ee56h,1da4h,0400h,0000h,7137h,4d4fh,1200h,0000h,24ach,1215h,f448h,4000h,08a0h,1202h,7d54h,018fh,00b4h,1008h,b335h,0000h,0000h,b605h,0f00h,8080h,ccd7h,2086h,2e83h,0170h,28ceh,2241h,0dddh,0000h,fc8fh,03b1h,6ecbh,1218h,0100h,fd70h,0003h,01dch,3ecbh,0005h,000ah,09f0h,0000h,0025h,870ch,0518h,0277h,0204h,00a7h,0000h,0000h,479eh,0000h,1002h,b80ah,0ac0h,0000h,0000h,9600h,0860h,215bh,0404h,1d24h,fd03h,00e6h,0000h,2f04h,0028h,0001h,ffffh,00b3h,0000h,7fffh,0003h,4b9fh,000ch,4849h,0000h,53b8h,0280h,a6f0h,0820h,0000h,4c00h,0000h,0000h,0000h,000ah,0000h,fffbh,1a20h,552bh,fd1eh,ca52h,0038h,3900h,c95bh,4f53h,
+[   20.712181] sec_bat_monitor_work: Status(Discharging), mode(None), Health(Good), Cable(NONE, NONE, 0, 0), rp(1), HV(NONE), flash(0) mst(0)
+[   20.712187] sec_bat_monitor_work: lcd(1), slate(0), store(0), siop_level(0), sleep_mode(0), Cycle(-1)
+[   20.712207] sec-battery samsung_mobile_device:battery: sec_bat_set_polling: Polling time 30/30 sec.
+[   20.715998] vbus_notifier_handle: (1)->(1)
+[   20.716008] TCPC-TCPC:ps_change=0\x0d
+[   20.734284] vbus_notifier_handle: (1)->(1)
+[   20.734292] TCPC-TCPC:ps_change=0\x0d
+[   20.752674] vbus_notifier_handle: (1)->(1)
+[   20.752680] TCPC-TCPC:ps_change=0\x0d
+[   20.771056] vbus_notifier_handle: (1)->(1)
+[   20.771062] TCPC-TCPC:ps_change=0\x0d
+[   20.789562] vbus_notifier_handle: (1)->(1)
+[   20.789568] TCPC-TCPC:ps_change=0\x0d
+[   20.793548] TCPC-TYPEC:[CC_Change] 5/0\x0d
+[   20.793554] TCPC-TYPEC:wait_ps=SNK_VSafe5V\x0d
+[   20.806405] vbus_notifier_handle: (1)->(2)
+[   20.806412] vbus_notifier_notify: CMD=2, DATA=2
+[   20.806420] TCM: manager_handle_vbus_notification: cmd=2, vbus_type=HIGH, WATER DET=0 ATTACH=DETACH
+[   20.806439] TCM: manager_check_vbus_by_otg otg power? 0 (otg?0, vbusTimeCheck?0)
+[   20.806449] himax_tp spi1.1: [sec_input] [HXTP] tsp_vbus_notification cmd=2, vbus_type=2
+[   20.806460] himax_tp spi1.1: [sec_input] [HXTP] tsp_vbus_notification : attach
+[   20.806744] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   20.807147] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   20.807544] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   20.807971] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   20.808364] himax_tp spi1.1: [sec_input] [HXTP] himax_mcu_usb_detect_set: USB detect status IN!
+[   20.808566] himax_tp spi1.1: [sec_input] [HXTP] himax_cable_detect_func: Cable status change: 0x01
+[   20.808576] vbus_handle_notification: action=2, vbus_status=2
+[   20.808583] usb_notifier: vbus_handle_notification cmd=2, vbus_type=HIGH
+[   20.808590] usb_notify: send_otg_notify event=vbus_power(35) enable=1
+[   20.808597] usb_notify: extra_notifier_callback event=vbus_power(35)
+[   20.808603] usb_notify: extra_notify_state+ event=vbus_power(35), enable=on
+[   20.808610] usb_notify: extra_notify_state- event=vbus_power(35), cable=none
+[   20.808616] vbus_notifier_notify: notify done(0x0)
+[   20.808621] TCPC-TCPC:ps_change=2\x0d
+[   20.808626] TCPC-TYPEC:wait_ps=Disable\x0d
+[   20.808632] TCPC-TYPEC:** Attached.SNK\x0d
+[   20.809853] pdic_policy: pdic_policy_send_msg msg=(SNK) +
+[   20.809861] usb_notify: send_otg_notify event=power_role_source(27) enable=0
+[   20.809867] usb_notify: extra_notifier_callback event=power_role_source(27)
+[   20.809872] usb_notify: extra_notify_state+ event=power_role_source(27), enable=off
+[   20.809878] host_notify: ndev name=usb_otg: state=sink
+[   20.809885] usb_notify: send_external_notify: cmd=power_role_notify(7), data=0
+[   20.809891] pdic_policy: pdic_policy_handle_usb_ext_noti action=7 enable=0 +
+[   20.809897] pdic_policy: pdic_policy_handle_usb_ext_noti action=7 enable=0 -
+[   20.809902] usb_notify: send_external_notify: notify done(0x0)
+[   20.809908] usb_notify: extra_notify_state- event=power_role_source(27), cable=none
+[   20.809914] pdic_policy: pdic_policy_send_msg msg=(SNK) -
+[   20.809919] pdic_policy: pdic_policy_send_msg msg=(UFP) +
+[   20.809925] pdic_policy: process_policy_data_role msg=UFP p_data=detach p_power=sink +
+[   20.810017] usb_notify: send_otg_notify event=pd_contract(28) enable=0
+[   20.810023] usb_notify: extra_notifier_callback event=pd_contract(28)
+[   20.810028] usb_notify: extra_notify_state+ event=pd_contract(28), enable=off
+[   20.810034] usb_notify: extra_notify_state- event=pd_contract(28), cable=none
+[   20.810039] typec_set_pwr_opmode pwr_opmode=0 opmode=0
+[   20.810045] pdic_policy: process_typec_data_role registerd partner. usb_pd=0
+[   20.810050] pdic_policy: usb: pdic_policy_event_work
+[   20.810081] pdic_policy: usb: pdic_policy_event_work
+[   20.810087] pdic_policy: usb:pdic_policy_event_notifier, dest=MUIC, id=ID_ATTACH, attach=1, event=0
+[   20.810096] pdic_notifier_notify: src:3 dest:4 id:01 attach:01 cable_type:00 rprd:0
+[   20.810104] TCM: manager_handle_pdic_notification: src:PDIC dest:MUIC id:ID_ATTACH sub1:01 sub2:00 sub3:00
+[   20.810110] pdic_policy: process_policy_data_role msg=UFP p_data=UFP p_power=sink -
+[   20.810114] TCM: manager_handle_pdic_notification: PDIC_NOTIFY_ATTACH
+[   20.810119] pdic_policy: pdic_policy_send_msg msg=(UFP) -
+[   20.810123] TCM: manager_event_work src:PDIC dest:MUIC
+[   20.810128] pdic_policy: pdic_policy_send_msg msg=(RP56K) +
+[   20.810134] pdic_policy: process_policy_rpcurrent RP56K (no contract)
+[   20.810138] pdic_policy: usb: pdic_policy_event_work
+[   20.810151] pdic_policy: usb: pdic_policy_event_work
+[   20.810155] pdic_notifier_notify: notify done(0x0)
+[   20.810162] TCM: manager_muic_event_notify: id:ID_ATTACH sub1:01 sub2:00 sub3:00
+[   20.810169] pdic_policy: usb:pdic_policy_event_notifier, dest=USB, id=ID_USB, attach=Attached, drp=USB_ATTACH_UFP
+[   20.810175] pdic_notifier_notify: src:3 dest:1 id:03 sub1:1 sub2:02 sub3:00
+[   20.810181] [MUIC] vt_muic: vt_muic_manager_nb_func: src:3 dest:4 id:1 sub[1 0 0]
+[   20.810187] TCM: manager_handle_pdic_notification: src:PDIC dest:USB id:ID_USB sub1:01 sub2:02 sub3:00
+[   20.810192] [GRIP_MAIN] a96t396_pdic_handle_notification: src 3 id 1 attach 1
+[   20.810196] pdic_policy: pdic_policy_send_msg msg=(RP56K) -
+[   20.810201] pdic_policy: pdic_policy_send_msg msg=(CC1) +
+[   20.810206] TCM: manager_usb_event_send(USB_ATTACH_UFP): Skip event (muic_none)
+[   20.810210] pdic_notifier_notify: notify done(0x0)
+[   20.810214] pdic_policy: usb: pdic_policy_event_work
+[   20.810219] TCM: manager_muic_event_notify: done(0x0)
+[   20.810235] pdic_policy: pdic_policy_send_msg msg=(CC1) -
+[   20.810240] pdic_policy: usb:pdic_policy_event_notifier, dest=MUIC, id=ID_TA, attach=1, event=0
+[   20.810246] pdic_notifier_notify: src:3 dest:4 id:08 sub1:1 sub2:00 sub3:00
+[   20.810251] TCPC-TYPEC:Attached-> SINK\x0d
+[   20.810257] TCM: manager_handle_pdic_notification: src:PDIC dest:MUIC id:ID_TA sub1:01 sub2:00 sub3:00
+[   20.810261] TCPC-TCPC:usb_port_attached\x0d
+[   20.810266] TCM: manager_event_work src:PDIC dest:MUIC
+[   20.810291] pdic_notifier_notify: notify done(0x0)
+[   20.810298] TCM: manager_muic_event_notify: id:ID_TA sub1:01 sub2:00 sub3:00
+[   20.810303] pdic_policy: usb:pdic_policy_event_notifier, dest=BATTERY, id=ID_POWER_STATUS, attach=0, event=0
+[   20.810310] pdic_notifier_notify: src:3 dest:2 id:04 attach:00 cable_type:00 rprd:0
+[   20.810315] [MUIC] vt_muic: vt_muic_manager_nb_func: src:3 dest:4 id:8 sub[1 0 0]
+[   20.810320] TCM: manager_handle_pdic_notification: src:PDIC dest:BATTERY id:ID_POWER_STATUS sub1:00 sub2:00 sub3:00
+[   20.810325] TCM: manager_event_work src:PDIC dest:BATTERY
+[   20.810329] TCM: manager_muic_event_notify: done(0x0)
+[   20.810367] pdic_notifier_notify: notify done(0x0)
+[   20.810373] TCM: manager_event_notify: src:PDIC dest:BATTERY id:ID_POWER_STATUS sub1:00 sub2:00 sub3:00
+[   20.810381] pdic_policy: usb:pdic_policy_event_notifier, dest=PDIC, id=ID_PIN_STATUS, attach=1, event=0
+[   20.810387] pdic_notifier_notify: src:3 dest:3 id:0f sub1:1 sub2:00 sub3:00
+[   20.810392] TCM: manager_handle_pdic_notification: src:PDIC dest:PDIC id:ID_PIN_STATUS sub1:01 sub2:00 sub3:00
+[   20.810398] himax_tp spi1.1: [sec_input] [HXTP] tsp_ccic_notification : otg_flag 0
+[   20.810403] sec_dfp_notify_pe_startup
+[   20.810409] [AFC] gpio_afc_tcm_handle_notification rplvl=1
+[   20.810413] TCPC-PE-EVT:Attached\x0d
+[   20.810417] TCM: manager_event_work src:PDIC dest:PDIC
+[   20.810422] TCPC-PE:PD-> SNK_START\x0d
+[   20.810428] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: action:4 src:3, dest:2, id:4, sub1:0, sub2:0, sub3:0
+[   20.810436] sec-battery samsung_mobile_device:battery: usb_typec_handle_id_power_status: pd_event(1)
+[   20.810442] sec-battery samsung_mobile_device:battery: usb_typec_handle_id_power_status: battery->rp_currentlvl(1)
+[   20.810448] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: CMD[NONE], CABLE_TYPE[1]
+[   20.810453] pdic_notifier_notify: notify done(0x0)
+[   20.810462] TCM: manager_event_notify: notify done(0x0)
+[   20.810469] TCM: manager_event_notify: src:PDIC dest:PDIC id:ID_PIN_STATUS sub1:01 sub2:00 sub3:00
+[   20.810476] himax_tp spi1.1: [sec_input] [HXTP] tsp_ccic_notification : otg_flag 0
+[   20.810485] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: action:15 src:3, dest:3, id:15, sub1:1, sub2:0, sub3:0
+[   20.810495] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: skip handler dest(3)
+[   20.810502] TCM: manager_event_notify: notify done(0x0)
+[   20.810667] [GRIP_MAIN] pdic_attach_reset_work_func: pdic_attach
+[   20.810720] TCPC-PE-EVT:reset_prl_done\x0d
+[   20.810726] TCPC-PE:PD-> SNK_DISC\x0d
+[   20.810731] TCPC-PE-EVT:vbus_high\x0d
+[   20.810736] TCPC-PE:PD-> SNK_WAIT_CAP\x0d
+[   21.073467] sy6970_irq_handler_thread
+[   21.076141] sy6970_get_chip_state: S:CHG/PG/VSYS=0x0/0x1/0x0, F:CHG/BOOST/BAT=0x0/0x0/0x0, ct:0x0, vbus:0x1
+[   21.076149] __sy6970_handle_irq: there is no cable_change. skip cable settings
+[   21.183186] TCPC-PE-EVT:timer\x0d
+[   21.183199] TCPC-PE:PD-> SNK_HRESET\x0d
+[   21.184170] TCPC-PE-EVT:hard_reset_done\x0d
+[   21.184178] TCPC-PE:PD-> SNK_TRANS_DFT\x0d
+[   21.184925] pdic_policy: pdic_policy_send_msg msg=(UFP) +
+[   21.184933] pdic_policy: process_policy_data_role msg=UFP p_data=UFP p_power=sink +
+[   21.184938] pdic_policy: process_policy_data_role msg=UFP p_data=UFP p_power=sink -
+[   21.184944] pdic_policy: pdic_policy_send_msg msg=(UFP) -
+[   21.185044] sec_dfp_notify_pe_startup
+[   21.185363] TCPC-PE-EVT:pr_at_dft\x0d
+[   21.185370] TCPC-PE:PD-> SNK_START\x0d
+[   21.238530] sy6970_irq_handler_thread
+[   21.240542] sy6970_get_chip_state: S:CHG/PG/VSYS=0x0/0x1/0x0, F:CHG/BOOST/BAT=0x0/0x0/0x0, ct:0x1, vbus:0x1
+[   21.241018] __sy6970_handle_irq: ct(4) ICL overwrite: 100mA
+[   21.241159] sy6970_charger_set_icl: set icl: 100, reg_data: 0x0
+[   21.241662] [MUIC] vt_muic: vt_muic_psy_nb_func: buck_status prev=3 new=1
+[   21.241669] [MUIC] vt_muic: vt_muic_psy_nb_func: batt_cable prev=1 new=4
+[   21.241712] [MUIC] vt_muic: vt_muic_work_func attached_dev(0) batt_cable(4) rprd(0) afc_dev(0)
+[   21.241718] [MUIC] muic_notifier_attach_attached_dev: (1)
+[   21.241729] [MUIC] muic_notifier_notify: CMD=1, DATA=1
+[   21.241735] muic_handle_cable_data_notification: MUIC uart type(0)
+[   21.241742] TCM: manager_handle_muic_notification: src:4 attach:1, cable_type:1
+[   21.241748] TCM: manager_handle_muic: USB(1) Attached, PDIC: Attached, MODE: Normal
+[   21.241759] TCM: manager_usb_event_send(USB_ATTACH_UFP)
+[   21.241765] TCM: manager_event_work src:MANAGER dest:USB
+[   21.241796] TCM: manager_event_work src:MUIC dest:BATTERY
+[   21.241803] usb_notifier: muic_usb_handle_notification action=1, attached_dev=1
+[   21.241810] usb_notify: send_otg_notify event=usb_cable(31) enable=1
+[   21.241817] usb_notify: extra_notifier_callback event=usb_cable(31)
+[   21.241832] usb_notify: extra_notify_state+ event=usb_cable(31), enable=on
+[   21.241838] usb_notify: extra_notify_state- event=usb_cable(31), cable=none
+[   21.241844] muic_handle_dock_notification: ignore(1)
+[   21.241848] [MUIC] muic_notifier_notify: notify done(0x0)
+[   21.241860] TCM: manager_event_notify: src:MANAGER dest:USB id:ID_USB sub1:01 sub2:02 sub3:00
+[   21.241869] usb_notifier: ccic_usb_handle_notification: Turn On Device(UFP)
+[   21.241874] usb_notify: send_otg_notify event=vbus(1) enable=1
+[   21.241879] usb_notify: otg_notifier_callback event=vbus(1)
+[   21.241913] usb_notify: is_blocked type=2, disable_state=0
+[   21.241925] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: action:3 src:6, dest:1, id:3, sub1:1, sub2:2, sub3:0
+[   21.241932] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: skip handler dest(1)
+[   21.241940] TCM: manager_event_notify: notify done(0x0)
+[   21.241948] usb_notify: otg_notify_state+ event=vbus(1), enable=on
+[   21.241982] TCM: manager_event_notify: src:MUIC dest:BATTERY id:ID_ATTACH sub1:01 sub2:00 sub3:01
+[   21.241991] himax_tp spi1.1: [sec_input] [HXTP] tsp_ccic_notification : otg_flag 0
+[   21.242001] [AFC] gpio_afc_tcm_handle_notification rplvl=1
+[   21.242008] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: action:1 src:4, dest:2, id:1, sub1:1, sub2:0, sub3:1
+[   21.242014] [sec_bat_cable_check]ATTACHED(1)
+[   21.242020] sec_bat_change_default_current: cable_type: 4(1,1), input: 475, output: 550
+[   21.242025] sec_bat_set_rp_current:(1)
+[   21.242032] sec-battery samsung_mobile_device:battery: usb_typec_handle_id_attach: cable_type:4, muic_cable_type:1
+[   21.242038] sec_bat_set_misc_event: misc event before(0x0), after(0x0)
+[   21.242070] sec-battery samsung_mobile_device:battery: usb_typec_handle_notification: CMD[ATTACH], CABLE_TYPE[4]
+[   21.242076] TCM: manager_event_notify: notify done(0x0)
+[   21.242081] sec-battery samsung_mobile_device:battery: sec_bat_cable_work: Start
+[   21.242087] sec_bat_set_current_event: current event before(0x40800000), after(0x40800004)
+[   21.242092] sec_bat_set_misc_event: misc event before(0x0), after(0x0)
+[   21.242106] CHGEN: refresh (None, 1, 0)
+[   21.242112] sec_bat_set_charge set Charging-Off mode
+[   21.242119] sy6970_chg_en_gpio_chg_on : flip chg_en 0
+[   21.242133] sy6970_charger_set_chg_mode: buck on, chg off
+[   21.242433] sec_bat_cable_work: c: 4, ov: 0, at: 0, cm: 1, tz: 4
+[   21.242439] chg_start_time_check: start time = 21
+[   21.242447] sec_bat_thermal_check: co_c3: 0, c3_c2: 50, c2_c1: 150, c1_no: 150, no_wa: 420, wa_ov: 500, tz(NORMAL)
+[   21.242456] sec_usb_thm_overheatlimit: USB_THM, Invalid Temp Check Type, usb_thm <- bat_thm
+[   21.242466] _sec_vote(cw_prev_cable_is_nocharge:5005): CHGEN (None, 1) -> (VOTER_CABLE, 3)
+[   21.242471] sec_bat_set_charge set Charging-On mode
+[   21.242478] sy6970_chg_en_gpio_chg_on : flip chg_en 0
+[   21.242488] sy6970_charger_set_chg_mode: buck on, chg on
+[   21.242877] IV: refresh (None, 5000, 0)
+[   21.242885] _sec_vote(cw_set_iv:5061): IV (None, 5000) -> (VOTER_CABLE, 5000)
+[   21.242916] sec_bat_set_current_event: current event before(0x40800004), after(0x40800004)
+[   21.242923] sec_bat_check_input_voltage: input_voltage:5000mV, charge_power:2375mW, max_charge_power:2375mW)
+[   21.242929] ICL: refresh (VOTER_USB_100MA, 100, 0)
+[   21.244219] sy6970_charger_set_icl: set icl: 100, reg_data: 0x0
+[   21.244384] sec_bat_set_current_event: current event before(0x40800004), after(0x40800004)
+[   21.244392] sec_bat_cable_work: Status:Charging, Sleep:No, Charging:Yes, Short Poll:Yes
+[   21.244397] sec_bat_cable_work: Polling time is reset to 30 sec.
+[   21.244436] sec-battery samsung_mobile_device:battery: sec_bat_cable_work: End
+[   21.244446] sec_bat_siop_level_work : set current by siop level(0), siop_step(3)
+[   21.244454] sec_bat_siop_level_work: icl(1200), fcc(1800)
+[   21.246174] sy6970_irq_handler_thread
+[   21.247525] sy6970_get_chip_state: S:CHG/PG/VSYS=0x0/0x1/0x0, F:CHG/BOOST/BAT=0x0/0x0/0x0, ct:0x1, vbus:0x1
+[   21.247532] __sy6970_handle_irq: there is no state change. skip irq
+[   21.247703] max1726x_get_scaled_capacity : capacity_max (1000) scaled capacity(77.7), raw_soc(77.7)
+[   21.247711] max1726x_check_vempty_recover_time: check vempty time(2, 19)
+[   21.247721] sec_bat_get_battery_info:Vnow(4022mV),Vavg(4094mV),Inow(-327mA),Iavg(101mA),Isysavg(0mA),Imax(100mA),Ichg(100mA),SOC(77%),Tbat(313),Tusb(313),Tchg(335),Twpc(0),Tblkt(0),Tlrp(0),
+[   21.247818] get_cc_cv_time: cap: 4600, soc:  777, T:   7772, avg:  101, cv soc: 1000, i:   11, val: 475, minimum:1
+[   21.247831] sec-battery samsung_mobile_device:battery: sec_bat_calc_time_to_full: T:  7832 sec, passed time:     0, current: 475
+[   21.247847] sec_bat_thermal_check: co_c3: 0, c3_c2: 50, c2_c1: 150, c1_no: 150, no_wa: 420, wa_ov: 500, tz(NORMAL)
+[   21.247857] sec_usb_thm_overheatlimit: USB_THM, Invalid Temp Check Type, usb_thm <- bat_thm
+[   21.247867] sec-battery samsung_mobile_device:battery: sec_bat_fullcharged_check: Charging Mode : Normal
+[   21.247873] sec_bat_set_current_event: current event before(0x40800004), after(0x40800000)
+[   21.247881] sec_bat_check_temp_ctrl_by_cable: ct : USB
+[   21.247993] usb_notifier: exynos_set_peripheral usb attached
+[   21.247999] usb_notifier: check_usb_vbus_state vbus state = 1
+[   21.249033] usb_notifier: check_usb_vbus_state: get the 13600000.usb platform_device
+[   21.249083] exynos-dwc3 13600000.usb: dwc3_exynos_rsw_work
+[   21.249096] dwc3 13600000.dwc3: Turn on gadget dwc3-gadget
+[   21.249105] dwc3 13600000.dwc3: dwc3_otg_phy_enable phy control=0 owner=0 (usb:0 dp:1) on=1
+[   21.249112] phy_exynos_usbdrd 135d0000.phy: USB PHY Conn Set
+[   21.249118] phy_exynos_usbdrd 135d0000.phy: Turn on LDO
+[   21.249149] exynos-dwc3 13600000.usb: dwc3_exynos_runtime_resume
+[   21.249166] exynos_usbdrd_phy_link_rst
+[   21.249192] exynos_usbdrd_utmi_init: +++
+[   21.250898] exynos_usbdrd_utmi_init: ---
+[   21.250927] phy_exynos_usbdrd 135d0000.phy: exynos_usbdrd_utmi_tune
+[   21.250938] dwc3 13600000.dwc3: dwc3_core_init: max speed:3, hibernation:0, nr_scratch:0
+[   21.250955] usb: dwc3_gadget_vbus_session: is_active = 1, softconnect = 1, vbus_session = 0
+[   21.251361] sy6970_test_read: [0x00]0x40,[0x01]0x06,[0x02]0xcc,[0x03]0x18,[0x04]0x01,[0x05]0x62,[0x06]0x82,[0x07]0x8d,[0x08]0x03,[0x09]0x50,[0x0a]0x82,[0x0b]0x26,[0x0c]0x00,[0x0d]0x93,[0x0e]0x57,[0x0f]0x57,[0x10]0x59,[0x11]0x80,[0x12]0x04,[0x13]0x40,[0x14]0x0c,
+[   21.251675] usb_notify: otg_notify_state- event=vbus, cable=vbus
+[   21.251711] usb: dwc3_gadget_linksts_change_interrupt : evtinfo = 0x0 link state = 0
+[   21.254758] usb: dwc3_gadget_linksts_change_interrupt : evtinfo = 0x5 link state = 5
+[   21.257820] usb: dwc3_gadget_linksts_change_interrupt : evtinfo = 0x3 link state = 3
+[   21.257827] usb: sending usb u3 suspend state
+[   21.257858] usb_notify: send_otg_notify event=usb_d_suspended(32) enable=1
+[   21.257865] usb_notify: extra_notifier_callback event=usb_d_suspended(32)
+[   21.257871] usb_notify: extra_notify_state+ event=usb_d_suspended(32), enable=on
+[   21.258216] usb_notifier: usb_set_chg_current: charger_name = syv660-charger
+[   21.258221] usb_notifier: usb: charging current set = 1
+[   21.258235] sec_bat_set_usb_configure: usb configured 0 -> 1
+[   21.258246] sec_bat_set_current_event: current event before(0x40800000), after(0x10800000)
+[   21.258254] _sec_vote(sec_bat_set_usb_configure:4448): CHGEN (VOTER_CABLE, 3) -> (VOTER_SUSPEND, 0)
+[   21.258260] sec_bat_set_charge set Buck-Off mode
+[   21.258298] sy6970_chg_en_gpio_chg_on : flip chg_en 0
+[   21.258314] sy6970_charger_set_chg_mode: buck off, chg off
+[   21.258631] sy6970_irq_handler_thread
+[   21.258898] sy6970_charger_set_chg_mode: chg_mode(0), prev_chg_mode(3)
+[   21.258917] usb_notify: extra_notify_state- event=usb_d_suspended(32), cable=vbus
+[   21.258937] [MUIC] vt_muic: vt_muic_psy_nb_func: buck_status prev=1 new=0
+[   21.258943] [MUIC] vt_muic: vt_muic_psy_nb_func: batt_cable prev=4 new=4
+[   21.258986] [MUIC] vt_muic: vt_muic_work_func attached_dev(1) batt_cable(4) rprd(0) afc_dev(0)
+[   21.258996] [MUIC] vt_muic: vt_muic_work_func: Duplicated(1), ignore
+[   21.260201] sy6970_get_chip_state: S:CHG/PG/VSYS=0x0/0x0/0x0, F:CHG/BOOST/BAT=0x0/0x0/0x0, ct:0x0, vbus:0x1
+[   21.260209] __sy6970_handle_irq: chg_vbus(1), ignore detach
+[   21.287076] max1726x: [FG] 8080h,ffa0h,7f80h,ff01h,0000h,0e06h,4db8h,61c1h,1f4ch,c91ch,fbe6h,0146h,0004h,50c3h,4e39h,0e1eh,120bh,ffffh,4400h,5d00h,05dbh,00a0h,1fa9h,0247h,11e1h,ccbeh,2813h,da9dh,1eefh,0304h,0820h,0e1ah,0000h,4031h,2300h,117bh,1400h,2305h,1fa9h,88d0h,4476h,cea4h,023ch,3830h,ee56h,1da4h,0400h,0000h,7137h,4d4fh,1200h,0000h,24b1h,1214h,f448h,4000h,08a0h,1202h,7d54h,0146h,00b4h,1008h,b338h,0000h,0000h,b605h,0f00h,8080h,ccd7h,2086h,2e83h,0170h,28ceh,2241h,0dddh,0000h,fc8fh,03b1h,60c8h,1218h,0100h,fc43h,0003h,01bbh,3ecbh,0005h,000ah,09f0h,0000h,0025h,870ch,0518h,02efh,0204h,00a7h,0000h,0000h,479eh,0000h,1002h,b80ah,0ac0h,0000h,0000h,9600h,0860h,215bh,0404h,1d24h,fd03h,00e6h,0000h,3c83h,11e1h,0c7dh,0011h,11e1h,c78eh,ca52h,8083h,4b9fh,000ch,4849h,0000h,53b8h,0280h,a6f0h,0820h,0000h,4c00h,0000h,0000h,0000h,000ah,0000h,ffc6h,1a24h,54fch,fbc8h,ca52h,0038h,3900h,c8ech,4f53h,
+[   21.287097] sec_bat_monitor_work: Status(Charging), mode(Normal), Health(Good), Cable(USB, USB, 1, 0), rp(1), HV(NONE), flash(0) mst(0)
+[   21.287103] sec_bat_monitor_work: lcd(1), slate(0), store(0), siop_level(0), sleep_mode(0), Cycle(-1)
+[   21.287127] sec-battery samsung_mobile_device:battery: sec_bat_set_polling: Polling time 10/30 sec.
+[   21.353865] usb: dwc3_gadget_interrupt RESET
+[   21.353885] usb: dwc3_gadget_link_state_print (00 > 00 > 00 > 05 > 03 > 00 > 05 > 03 > RESET)
+[   21.353955] usb_notify: send_otg_notify event=usb_d_unconfigured(33) enable=1
+[   21.353962] usb_notify: extra_notifier_callback event=usb_d_unconfigured(33)
+[   21.353968] usb_notify: extra_notify_state+ event=usb_d_unconfigured(33), enable=on
+[   21.353974] usb_notify: extra_notify_state- event=usb_d_unconfigured(33), cable=vbus
+[   21.353979] usb: dwc3_set_vbus_current : 100mA
+[   21.353995] sec_bat_set_usb_configure: usb configured 1 -> 100
+[   21.354006] sec_bat_set_current_event: current event before(0x10800000), after(0x40800000)
+[   21.354019] _sec_vote(sec_bat_set_usb_configure:4473): CHGEN (VOTER_SUSPEND, 0) -> (VOTER_CABLE, 3)
+[   21.354030] sec_bat_set_charge set Charging-On mode
+[   21.354044] sy6970_chg_en_gpio_chg_on : flip chg_en 0
+[   21.354062] sy6970_charger_set_chg_mode: buck on, chg on
+[   21.354543] sy6970_charger_set_chg_mode: chg_mode(3), prev_chg_mode(0)
+[   21.354589] [MUIC] vt_muic: vt_muic_psy_nb_func: buck_status prev=0 new=3
+[   21.354602] [AFC] afc_dpdm_ctrl: onoff=0, pdata->gpio_afc_hvdcp=18 ret=0
+[   21.354646] sec-battery samsung_mobile_device:battery: sec_bat_cable_work: Start
+[   21.354654] sec_bat_set_current_event: current event before(0x40800000), after(0x40800004)
+[   21.354660] sec_bat_set_misc_event: misc event before(0x0), after(0x0)
+[   21.354667] sec-battery samsung_mobile_device:battery: cw_check_skip_condition: set usb charging current to 100 mA
+[   21.354675] sec_bat_check_temp_ctrl_by_cable: ct : USB
+[   21.354682] sec-battery samsung_mobile_device:battery: cw_check_skip_condition: Cable is NOT Changed(4)
+[   21.354689] sec-battery samsung_mobile_device:battery: sec_bat_cable_work: End
+[   21.408628] usb: dwc3_gadget_linksts_change_interrupt : evtinfo = 0x0 link state = 0
+[   21.442775] usb: android_work: sent uevent USB_STATE=CONNECTED
+[   21.453585] usb: GET_DES(HS)
+[   21.596516] usb: dwc3_gadget_linksts_change_interrupt : evtinfo = 0x5 link state = 5
+[   21.599575] usb: dwc3_gadget_linksts_change_interrupt : evtinfo = 0x3 link state = 3
+[   21.599583] usb: sending usb u3 suspend state
+[   21.599649] usb_notify: send_otg_notify event=usb_d_suspended(32) enable=1
+[   21.599657] usb_notify: extra_notifier_callback event=usb_d_suspended(32)
+[   21.599663] usb_notify: extra_notify_state+ event=usb_d_suspended(32), enable=on
+[   21.600037] usb_notifier: usb_set_chg_current: charger_name = syv660-charger
+[   21.600044] usb_notifier: usb: charging current set = 1
+[   21.600059] sec_bat_set_usb_configure: usb configured 0 -> 1
+[   21.600066] sec_bat_set_current_event: current event before(0x40800004), after(0x10800004)
+[   21.600075] _sec_vote(sec_bat_set_usb_configure:4448): CHGEN (VOTER_CABLE, 3) -> (VOTER_SUSPEND, 0)
+[   21.600081] sec_bat_set_charge set Buck-Off mode
+[   21.600090] sy6970_chg_en_gpio_chg_on : flip chg_en 0
+[   21.600105] sy6970_charger_set_chg_mode: buck off, chg off
+[   21.600588] sy6970_charger_set_chg_mode: chg_mode(0), prev_chg_mode(3)
+[   21.600606] usb_notify: extra_notify_state- event=usb_d_suspended(32), cable=vbus
+[   21.600624] [MUIC] vt_muic: vt_muic_psy_nb_func: buck_status prev=3 new=0
+[   21.600630] [MUIC] vt_muic: vt_muic_psy_nb_func: batt_cable prev=4 new=4
+[   21.600671] [MUIC] vt_muic: vt_muic_work_func attached_dev(1) batt_cable(4) rprd(0) afc_dev(0)
+[   21.600677] [MUIC] vt_muic: vt_muic_work_func: Duplicated(1), ignore
+[   21.716549] usb: dwc3_gadget_interrupt RESET
+[   21.716563] usb: dwc3_gadget_link_state_print (05 > 03 > 00 > 05 > 03 > 00 > 05 > 03 > RESET)
+[   21.716584] usb: android_disconnect con(0), sw(1)
+[   21.716589] usb: android_disconnect schedule_work con(0) sw(1)
+[   21.716651] usb_notify: send_otg_notify event=usb_d_unconfigured(33) enable=1
+[   21.716658] usb_notify: extra_notifier_callback event=usb_d_unconfigured(33)
+[   21.716663] usb_notify: extra_notify_state+ event=usb_d_unconfigured(33), enable=on
+[   21.716670] usb_notify: extra_notify_state- event=usb_d_unconfigured(33), cable=vbus
+[   21.716675] usb: dwc3_set_vbus_current : 100mA
+[   21.716691] sec_bat_set_usb_configure: usb configured 1 -> 100
+[   21.716701] sec_bat_set_current_event: current event before(0x10800004), after(0x40800004)
+[   21.716717] _sec_vote(sec_bat_set_usb_configure:4473): CHGEN (VOTER_SUSPEND, 0) -> (VOTER_CABLE, 3)
+[   21.716728] sec_bat_set_charge set Charging-On mode
+[   21.716742] sy6970_chg_en_gpio_chg_on : flip chg_en 0
+[   21.716761] sy6970_charger_set_chg_mode: buck on, chg on
+[   21.716850] usb: android_work: sent uevent USB_STATE=DISCONNECTED
+[   21.717248] sy6970_charger_set_chg_mode: chg_mode(3), prev_chg_mode(0)
+[   21.717309] [MUIC] vt_muic: vt_muic_psy_nb_func: buck_status prev=0 new=3
+[   21.717322] [AFC] afc_dpdm_ctrl: onoff=0, pdata->gpio_afc_hvdcp=18 ret=0
+[   21.717386] sec-battery samsung_mobile_device:battery: sec_bat_cable_work: Start
+[   21.717393] sec_bat_set_current_event: current event before(0x40800004), after(0x40800004)
+[   21.717400] sec_bat_set_misc_event: misc event before(0x0), after(0x0)
+[   21.717407] sec-battery samsung_mobile_device:battery: cw_check_skip_condition: set usb charging current to 100 mA
+[   21.717414] sec_bat_check_temp_ctrl_by_cable: ct : USB
+[   21.717420] sec-battery samsung_mobile_device:battery: cw_check_skip_condition: Cable is NOT Changed(4)
+[   21.717427] sec-battery samsung_mobile_device:battery: sec_bat_cable_work: End
+[   21.771311] usb: dwc3_gadget_linksts_change_interrupt : evtinfo = 0x0 link state = 0
+[   21.805684] usb: android_work: sent uevent USB_STATE=CONNECTED
+[   21.816672] usb: GET_DES(HS)
+[   21.855351] usb: GET_CONFIG (0)
+[   21.855364] usb: config_buf f->mtp
+[   21.855370] usb: config_buf f->adb
+[   21.855375] usb: config_buf f->ss_mon
+[   21.855855] usb: get_string f->mtp
+[   21.855863] usb: get_string f->adb
+[   21.855868] usb: get_string f->ss_mon
+[   21.947751] usb: dwc3_gadget_linksts_change_interrupt : evtinfo = 0x5 link state = 5
+[   21.950767] usb: dwc3_gadget_linksts_change_interrupt : evtinfo = 0x3 link state = 3
+[   21.950775] usb: sending usb u3 suspend state
+[   21.950834] usb_notify: send_otg_notify event=usb_d_suspended(32) enable=1
+[   21.950842] usb_notify: extra_notifier_callback event=usb_d_suspended(32)
+[   21.950847] usb_notify: extra_notify_state+ event=usb_d_suspended(32), enable=on
+[   21.951188] usb_notifier: usb_set_chg_current: charger_name = syv660-charger
+[   21.951194] usb_notifier: usb: charging current set = 1
+[   21.951208] sec_bat_set_usb_configure: usb configured 0 -> 1
+[   21.951214] sec_bat_set_current_event: current event before(0x40800004), after(0x10800004)
+[   21.951222] _sec_vote(sec_bat_set_usb_configure:4448): CHGEN (VOTER_CABLE, 3) -> (VOTER_SUSPEND, 0)
+[   21.951228] sec_bat_set_charge set Buck-Off mode
+[   21.951237] sy6970_chg_en_gpio_chg_on : flip chg_en 0
+[   21.951251] sy6970_charger_set_chg_mode: buck off, chg off
+[   21.952215] sy6970_charger_set_chg_mode: chg_mode(0), prev_chg_mode(3)
+[   21.952244] usb_notify: extra_notify_state- event=usb_d_suspended(32), cable=vbus
+[   21.952265] [MUIC] vt_muic: vt_muic_psy_nb_func: buck_status prev=3 new=0
+[   21.952271] [MUIC] vt_muic: vt_muic_psy_nb_func: batt_cable prev=4 new=4
+[   21.952313] [MUIC] vt_muic: vt_muic_work_func attached_dev(1) batt_cable(4) rprd(0) afc_dev(0)
+[   21.952319] [MUIC] vt_muic: vt_muic_work_func: Duplicated(1), ignore
+[   22.066476] usb: dwc3_gadget_interrupt RESET
+[   22.066494] usb: dwc3_gadget_link_state_print (05 > 03 > 00 > 05 > 03 > 00 > 05 > 03 > RESET)
+[   22.066513] usb: android_disconnect con(0), sw(1)
+[   22.066519] usb: android_disconnect schedule_work con(0) sw(1)
+[   22.066583] usb_notify: send_otg_notify event=usb_d_unconfigured(33) enable=1
+[   22.066590] usb_notify: extra_notifier_callback event=usb_d_unconfigured(33)
+[   22.066595] usb_notify: extra_notify_state+ event=usb_d_unconfigured(33), enable=on
+[   22.066601] usb_notify: extra_notify_state- event=usb_d_unconfigured(33), cable=vbus
+[   22.066607] usb: dwc3_set_vbus_current : 100mA
+[   22.066623] sec_bat_set_usb_configure: usb configured 1 -> 100
+[   22.066633] sec_bat_set_current_event: current event before(0x10800004), after(0x40800004)
+[   22.066647] _sec_vote(sec_bat_set_usb_configure:4473): CHGEN (VOTER_SUSPEND, 0) -> (VOTER_CABLE, 3)
+[   22.066658] sec_bat_set_charge set Charging-On mode
+[   22.066672] sy6970_chg_en_gpio_chg_on : flip chg_en 0
+[   22.066691] sy6970_charger_set_chg_mode: buck on, chg on
+[   22.066780] usb: android_work: sent uevent USB_STATE=DISCONNECTED
+[   22.067181] sy6970_charger_set_chg_mode: chg_mode(3), prev_chg_mode(0)
+[   22.067239] [MUIC] vt_muic: vt_muic_psy_nb_func: buck_status prev=0 new=3
+[   22.067252] [AFC] afc_dpdm_ctrl: onoff=0, pdata->gpio_afc_hvdcp=18 ret=0
+[   22.067307] sec-battery samsung_mobile_device:battery: sec_bat_cable_work: Start
+[   22.067315] sec_bat_set_current_event: current event before(0x40800004), after(0x40800004)
+[   22.067321] sec_bat_set_misc_event: misc event before(0x0), after(0x0)
+[   22.067328] sec-battery samsung_mobile_device:battery: cw_check_skip_condition: set usb charging current to 100 mA
+[   22.067336] sec_bat_check_temp_ctrl_by_cable: ct : USB
+[   22.067342] sec-battery samsung_mobile_device:battery: cw_check_skip_condition: Cable is NOT Changed(4)
+[   22.067349] sec-battery samsung_mobile_device:battery: sec_bat_cable_work: End
+[   22.121240] usb: dwc3_gadget_linksts_change_interrupt : evtinfo = 0x0 link state = 0
+[   22.154449] usb: android_work: sent uevent USB_STATE=CONNECTED
+[   22.164953] usb: GET_DES(HS)
+[   22.209245] usb: GET_CONFIG (0)
+[   22.209258] usb: config_buf f->mtp
+[   22.209264] usb: config_buf f->adb
+[   22.209270] usb: config_buf f->ss_mon
+[   22.209658] usb: get_string f->mtp
+[   22.209665] usb: get_string f->adb
+[   22.209670] usb: get_string f->ss_mon
+[   22.226895] usb: GET_DES(HS)
+[   22.227094] usb: GET_CONFIG (0)
+[   22.227104] usb: config_buf f->mtp
+[   22.227110] usb: config_buf f->adb
+[   22.227115] usb: config_buf f->ss_mon
+[   22.227269] usb: GET_CONFIG (0)
+[   22.227276] usb: config_buf f->mtp
+[   22.227281] usb: config_buf f->adb
+[   22.227286] usb: config_buf f->ss_mon
+[   22.237604] configfs-gadget gadget: high-speed config #1: b
+[   22.237613] usb: set_config e mtp[0]
+[   22.237665] usb: set_config e adb[1]
+[   22.237710] usb: SET_CON
+[   22.237768] usb_notify: send_otg_notify event=usb_d_configured(34) enable=1
+[   22.237775] usb_notify: extra_notifier_callback event=usb_d_configured(34)
+[   22.237781] usb_notify: extra_notify_state+ event=usb_d_configured(34), enable=on
+[   22.237787] usb_notify: extra_notify_state- event=usb_d_configured(34), cable=vbus
+[   22.237792] usb: dwc3_set_vbus_current : 475mA
+[   22.237811] sec_bat_set_usb_configure: usb configured 0 -> 475
+[   22.237824] _sec_vote(sec_bat_set_usb_configure:4397): FCC (VOTER_USB_100MA, 100) -> (VOTER_CABLE, 550)
+[   22.237834] sy6970_charger_set_fcc: set fcc: 550, reg_data: 0x8
+[   22.237927] usb: android_work: sent uevent USB_STATE=CONFIGURED
+[   22.238101] set_charging_current: power(500), input(100), charge(550)
+[   22.238114] _sec_vote(sec_bat_set_usb_configure:4398): ICL (VOTER_USB_100MA, 100) -> (VOTER_CABLE, 475)
+[   22.238369] sy6970_charger_set_icl: set icl: 450, reg_data: 0x7
+[   22.238611] sec_bat_set_current_event: current event before(0x40800004), after(0x800004)
+[   22.238679] sec-battery samsung_mobile_device:battery: sec_bat_cable_work: Start
+[   22.238686] sec_bat_set_current_event: current event before(0x800004), after(0x800004)
+[   22.238692] sec_bat_set_misc_event: misc event before(0x0), after(0x0)
+[   22.238699] sec-battery samsung_mobile_device:battery: cw_check_skip_condition: set usb charging current to 475 mA
+[   22.238707] sec_bat_check_temp_ctrl_by_cable: ct : USB
+[   22.238713] sec-battery samsung_mobile_device:battery: cw_check_skip_condition: Cable is NOT Changed(4)
+[   22.238720] sec-battery samsung_mobile_device:battery: sec_bat_cable_work: End
+[   22.245364] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   22.246562] healthd: BatteryCycleCountPath not found
+[   22.246579] healthd: batteryCapacityLevelPath not found
+[   22.307954] sy6970_irq_handler_thread
+[   22.309024] sy6970_get_chip_state: S:CHG/PG/VSYS=0x0/0x1/0x0, F:CHG/BOOST/BAT=0x0/0x0/0x0, ct:0x0, vbus:0x1
+[   22.309031] __sy6970_handle_irq: there is no cable_change. skip cable settings
+[   22.847196] [Exynos][WDT][  INFO]: Watchdog cluster 1 keepalive!, wtcnt = b32b
+[   22.848605] s2mpu12-rtc s2mpu12-rtc: s2m_rtc_read_time: 2025-03-05 00:39:51(0x08)AM
+[   22.848621] [Exynos][WDT][  INFO]: Watchdog cluster 0 keepalive!, wtcnt = fff5
+[   22.850002] s2mpu12-rtc s2mpu12-rtc: s2m_rtc_read_time: 2025-03-05 00:39:51(0x08)AM
+[   22.850011] secdbg_wdd_set_keepalive: wdd_info: 0x00000000fae205ec
+[   22.850020] Watchdog: secdbg_wdd_set_keepalive RTC 2025-03-05 00:39:50 UTC
+[   23.011823] fps_et5xx_work_func_debug: ldo: 0, sleep: 0, tz: 1, spi_value: 0x0, type: unknown
+[   23.195473] sy6970_irq_handler_thread
+[   23.198989] sy6970_get_chip_state: S:CHG/PG/VSYS=0x0/0x1/0x0, F:CHG/BOOST/BAT=0x0/0x0/0x0, ct:0x0, vbus:0x1
+[   23.198997] __sy6970_handle_irq: there is no state change. skip irq
+[   24.249945] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   24.251081] healthd: BatteryCycleCountPath not found
+[   24.251098] healthd: batteryCapacityLevelPath not found
+[   24.291860] sec_bat_check_slowcharging_work:
+[   24.293921] sy6970_check_health: VBUS(4700), VDPM(0), VDPM_ILIM(450), IDPM(1), IDPM_ICHGR(150)
+[   25.059934] [SHUB]      debug_work_func( 122): FW(0):0, Sensor state: 0x0, En: 0x0, Reset cnt: -1[0 : C 0(0, 0), N 0, 0], Cal result : [M:N, P:N]
+[   25.885595] TCPC-PE-EVT:timer\x0d
+[   25.885612] TCPC-PE:PD-> SNK_HRESET\x0d
+[   25.886816] TCPC-PE-EVT:hard_reset_done\x0d
+[   25.886824] TCPC-PE:PD-> SNK_TRANS_DFT\x0d
+[   25.887575] pdic_policy: pdic_policy_send_msg msg=(UFP) +
+[   25.887582] pdic_policy: process_policy_data_role msg=UFP p_data=UFP p_power=sink +
+[   25.887588] pdic_policy: process_policy_data_role msg=UFP p_data=UFP p_power=sink -
+[   25.887594] pdic_policy: pdic_policy_send_msg msg=(UFP) -
+[   25.887699] sec_dfp_notify_pe_startup
+[   25.888060] TCPC-PE-EVT:pr_at_dft\x0d
+[   25.888066] TCPC-PE:PD-> SNK_START\x0d
+[   26.254702] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   26.255911] healthd: BatteryCycleCountPath not found
+[   26.255926] healthd: batteryCapacityLevelPath not found
+[   28.259447] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   28.260840] healthd: BatteryCycleCountPath not found
+[   28.260855] healthd: batteryCapacityLevelPath not found
+[   30.264339] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   30.265698] healthd: BatteryCycleCountPath not found
+[   30.265715] healthd: batteryCapacityLevelPath not found
+[   30.588308] TCPC-PE-EVT:timer\x0d
+[   30.588324] TCPC-PE:PD-> SNK_HRESET\x0d
+[   30.589505] TCPC-PE-EVT:hard_reset_done\x0d
+[   30.589513] TCPC-PE:PD-> SNK_TRANS_DFT\x0d
+[   30.590238] pdic_policy: pdic_policy_send_msg msg=(UFP) +
+[   30.590245] pdic_policy: process_policy_data_role msg=UFP p_data=UFP p_power=sink +
+[   30.590251] pdic_policy: process_policy_data_role msg=UFP p_data=UFP p_power=sink -
+[   30.590257] pdic_policy: pdic_policy_send_msg msg=(UFP) -
+[   30.590669] TCPC-PE-EVT:pr_at_dft\x0d
+[   30.590675] TCPC-PE:PD-> SNK_START\x0d
+[   30.947948] [SHUB]      debug_work_func( 122): FW(0):0, Sensor state: 0x0, En: 0x0, Reset cnt: -1[0 : C 0(0, 0), N 0, 0], Cal result : [M:N, P:N]
+[   31.291038] max1726x_get_scaled_capacity : capacity_max (1000) scaled capacity(77.7), raw_soc(77.7)
+[   31.291052] max1726x_check_vempty_recover_time: check vempty time(2, 29)
+[   31.291063] sec_bat_get_battery_info:Vnow(4089mV),Vavg(4091mV),Inow(170mA),Iavg(105mA),Isysavg(0mA),Imax(450mA),Ichg(550mA),SOC(77%),Tbat(317),Tusb(313),Tchg(353),Twpc(0),Tblkt(0),Tlrp(0),
+[   31.291109] get_cc_cv_time: cap: 4600, soc:  777, T:   7772, avg:  105, cv soc: 1000, i:   11, val: 475, minimum:1
+[   31.291120] sec-battery samsung_mobile_device:battery: sec_bat_calc_time_to_full: T:  7832 sec, passed time:     0, current: 475
+[   31.294155] sy6970_test_read: [0x00]0x47,[0x01]0x06,[0x02]0x5c,[0x03]0x18,[0x04]0x08,[0x05]0x62,[0x06]0x82,[0x07]0x8d,[0x08]0x03,[0x09]0x50,[0x0a]0x82,[0x0b]0x16,[0x0c]0x00,[0x0d]0x93,[0x0e]0x5b,[0x0f]0x5b,[0x10]0x58,[0x11]0x95,[0x12]0x03,[0x13]0x47,[0x14]0x0c,
+[   31.328918] max1726x: [FG] 8080h,ffa0h,7f80h,ff01h,0000h,0e06h,4dbch,61c1h,1fb3h,cc7ah,0222h,0153h,0004h,50c3h,4e39h,0e1eh,120bh,ffffh,4400h,5d00h,05dbh,00a0h,1f9fh,0247h,11e1h,cc8dh,2813h,da9dh,1eefh,0304h,0820h,0e1ah,0000h,4031h,2300h,117bh,1400h,2305h,1f9fh,88d0h,4476h,cea4h,023ch,3830h,ee56h,1da4h,0400h,0000h,7137h,4d4fh,1200h,0000h,24d6h,1214h,f448h,4000h,08a0h,1202h,7d54h,0153h,00b4h,1008h,b372h,0000h,0000h,b605h,0f00h,8080h,ccd7h,2086h,2e83h,016ch,28ceh,2241h,0ddeh,0000h,fc8fh,03b1h,98a6h,1218h,0100h,01b4h,0003h,0171h,3ecbh,0005h,000ah,09f0h,0000h,0025h,870ch,0518h,0388h,0204h,00a7h,0000h,0000h,479eh,0000h,1002h,b80ah,0ac0h,0000h,0000h,9600h,0860h,215bh,0404h,1d24h,fd03h,00e6h,0000h,3065h,7f00h,fbb3h,7f20h,0011h,0000h,1000h,0000h,4b9fh,000ch,4849h,0000h,53b8h,0280h,a6f0h,0820h,0000h,4c00h,0000h,0000h,0000h,000ah,0000h,ff71h,1a40h,567dh,01e3h,ca54h,0038h,3900h,cc7ah,4f57h,
+[   31.328935] sec_bat_monitor_work: Status(Charging), mode(Normal), Health(Good), Cable(USB, USB, 1, 0), rp(1), HV(NONE), flash(0) mst(0)
+[   31.328942] sec_bat_monitor_work: lcd(1), slate(0), store(0), siop_level(0), sleep_mode(0), Cycle(-1)
+[   31.328964] sec-battery samsung_mobile_device:battery: sec_bat_set_polling: Polling time 20/30 sec.
+[   32.269372] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   32.270609] healthd: BatteryCycleCountPath not found
+[   32.270625] healthd: batteryCapacityLevelPath not found
+[   32.850204] [Exynos][WDT][  INFO]: Watchdog cluster 1 keepalive!, wtcnt = b32b
+[   32.851611] s2mpu12-rtc s2mpu12-rtc: s2m_rtc_read_time: 2025-03-05 00:40:01(0x08)AM
+[   32.851623] [Exynos][WDT][  INFO]: Watchdog cluster 0 keepalive!, wtcnt = fff5
+[   32.853004] s2mpu12-rtc s2mpu12-rtc: s2m_rtc_read_time: 2025-03-05 00:40:01(0x08)AM
+[   32.853014] secdbg_wdd_set_keepalive: wdd_info: 0x00000000fae205ec
+[   32.853022] Watchdog: secdbg_wdd_set_keepalive RTC 2025-03-05 00:40:00 UTC
+[   33.763873] fixed_regulator0: disabling
+[   34.019867] fps_et5xx_work_func_debug: ldo: 0, sleep: 0, tz: 1, spi_value: 0x0, type: unknown
+[   34.274197] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   34.275395] healthd: BatteryCycleCountPath not found
+[   34.275412] healthd: batteryCapacityLevelPath not found
+[   35.290745] TCPC-PE-EVT:timer\x0d
+[   35.290759] TCPC-PE:TYPE-C Only Charger!\x0d
+[   35.811864] himax_tp spi1.1: [sec_input] tc:0 lp:0 ta:1 noise:0 lamp:0 // v:HX00000000 // #2 2
+[   36.278952] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   36.280231] healthd: BatteryCycleCountPath not found
+[   36.280247] healthd: batteryCapacityLevelPath not found
+[   36.835933] [SHUB]      debug_work_func( 122): FW(0):0, Sensor state: 0x0, En: 0x0, Reset cnt: -1[0 : C 0(0, 0), N 0, 0], Cal result : [M:N, P:N]
+[   38.283733] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   38.285024] healthd: BatteryCycleCountPath not found
+[   38.285041] healthd: batteryCapacityLevelPath not found
+[   40.288700] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   40.289976] healthd: BatteryCycleCountPath not found
+[   40.289992] healthd: batteryCapacityLevelPath not found
+[   41.331676] max1726x_get_scaled_capacity : capacity_max (1000) scaled capacity(77.7), raw_soc(77.7)
+[   41.331690] max1726x_check_vempty_recover_time: check vempty time(2, 39)
+[   41.331701] sec_bat_get_battery_info:Vnow(4090mV),Vavg(4090mV),Inow(192mA),Iavg(151mA),Isysavg(0mA),Imax(450mA),Ichg(550mA),SOC(77%),Tbat(317),Tusb(313),Tchg(353),Twpc(0),Tblkt(0),Tlrp(0),
+[   41.331744] get_cc_cv_time: cap: 4600, soc:  777, T:   7772, avg:  151, cv soc: 1000, i:   11, val: 475, minimum:1
+[   41.331755] sec-battery samsung_mobile_device:battery: sec_bat_calc_time_to_full: T:  7832 sec, passed time:     0, current: 475
+[   41.334814] sy6970_test_read: [0x00]0x47,[0x01]0x06,[0x02]0x5c,[0x03]0x18,[0x04]0x08,[0x05]0x62,[0x06]0x82,[0x07]0x8d,[0x08]0x03,[0x09]0x50,[0x0a]0x82,[0x0b]0x16,[0x0c]0x00,[0x0d]0x93,[0x0e]0x5a,[0x0f]0x5b,[0x10]0x58,[0x11]0x95,[0x12]0x03,[0x13]0x47,[0x14]0x0c,
+[   41.369757] max1726x: [FG] 8080h,ffa0h,7f80h,ff01h,0000h,0e07h,4dbfh,61c1h,1fb3h,cc88h,0269h,01e4h,0004h,50c6h,4e3ch,0e1fh,120bh,ffffh,4400h,5d00h,05dbh,00a0h,1fa1h,0247h,11e1h,cc88h,2813h,da9dh,1eefh,0304h,0820h,0e1bh,0000h,4031h,2300h,117bh,1400h,2305h,1fa1h,88d0h,4476h,cea4h,023ch,3830h,ee56h,1da4h,0400h,0000h,7137h,4d4fh,1200h,0000h,247dh,1214h,f448h,4000h,08a0h,1202h,7d54h,01e4h,00b4h,1008h,b3abh,0000h,0000h,b605h,0f00h,8080h,ccd7h,2086h,2e83h,0163h,28ceh,2241h,0de0h,0000h,fc8fh,03b2h,1a3ah,1218h,0100h,01b6h,0003h,0194h,3ecbh,0005h,000ah,09f0h,0000h,0025h,870ch,0518h,02edh,0204h,00a7h,0000h,0000h,479eh,0000h,1002h,b80ah,0ac0h,0000h,0000h,9600h,0860h,215bh,0404h,1d24h,fd03h,00e6h,0000h,0fffh,ffc1h,0012h,0003h,000eh,003fh,0000h,0002h,4b9fh,000ch,4849h,0000h,53b8h,0280h,a6f0h,0820h,0000h,4c00h,0000h,0000h,0000h,000ah,0000h,ffceh,19fch,567ah,01e6h,ca5ah,0038h,3900h,cc73h,4f63h,
+[   41.369773] sec_bat_monitor_work: Status(Charging), mode(Normal), Health(Good), Cable(USB, USB, 1, 0), rp(1), HV(NONE), flash(0) mst(0)
+[   41.369780] sec_bat_monitor_work: lcd(1), slate(0), store(0), siop_level(0), sleep_mode(0), Cycle(-1)
+[   41.369801] sec-battery samsung_mobile_device:battery: sec_bat_set_polling: Polling time 30/30 sec.
+[   42.295447] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   42.300122] healthd: BatteryCycleCountPath not found
+[   42.300170] healthd: batteryCapacityLevelPath not found
+[   42.853244] [Exynos][WDT][  INFO]: Watchdog cluster 1 keepalive!, wtcnt = b32b
+[   42.855056] s2mpu12-rtc s2mpu12-rtc: s2m_rtc_read_time: 2025-03-05 00:40:11(0x08)AM
+[   42.855094] [Exynos][WDT][  INFO]: Watchdog cluster 0 keepalive!, wtcnt = fff5
+[   42.856686] s2mpu12-rtc s2mpu12-rtc: s2m_rtc_read_time: 2025-03-05 00:40:11(0x08)AM
+[   42.856715] secdbg_wdd_set_keepalive: wdd_info: 0x00000000fae205ec
+[   42.856740] Watchdog: secdbg_wdd_set_keepalive RTC 2025-03-05 00:40:10 UTC
+[   42.979961] [SHUB]      debug_work_func( 122): FW(0):0, Sensor state: 0x0, En: 0x0, Reset cnt: -1[0 : C 0(0, 0), N 0, 0], Cal result : [M:N, P:N]
+[   44.309257] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   44.313460] healthd: BatteryCycleCountPath not found
+[   44.313501] healthd: batteryCapacityLevelPath not found
+[   45.027955] fps_et5xx_work_func_debug: ldo: 0, sleep: 0, tz: 1, spi_value: 0x0, type: unknown
+[   46.320784] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   46.321972] healthd: BatteryCycleCountPath not found
+[   46.321989] healthd: batteryCapacityLevelPath not found
+[   48.328959] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   48.332912] healthd: BatteryCycleCountPath not found
+[   48.332946] healthd: batteryCapacityLevelPath not found
+[   48.867990] [SHUB]      debug_work_func( 122): FW(0):0, Sensor state: 0x0, En: 0x0, Reset cnt: -1[0 : C 0(0, 0), N 0, 0], Cal result : [M:N, P:N]
+[   50.341454] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   50.345435] healthd: BatteryCycleCountPath not found
+[   50.345479] healthd: batteryCapacityLevelPath not found
+[   51.373671] max1726x_get_scaled_capacity : capacity_max (1000) scaled capacity(77.7), raw_soc(77.7)
+[   51.373710] max1726x_check_vempty_recover_time: check vempty time(2, 49)
+[   51.373745] sec_bat_get_battery_info:Vnow(4093mV),Vavg(4091mV),Inow(219mA),Iavg(189mA),Isysavg(0mA),Imax(450mA),Ichg(550mA),SOC(77%),Tbat(317),Tusb(313),Tchg(353),Twpc(0),Tblkt(0),Tlrp(0),
+[   51.373868] get_cc_cv_time: cap: 4600, soc:  777, T:   7772, avg:  189, cv soc: 1000, i:   11, val: 475, minimum:1
+[   51.373901] sec-battery samsung_mobile_device:battery: sec_bat_calc_time_to_full: T:  7832 sec, passed time:     0, current: 475
+[   51.373938] sec_bat_thermal_check: co_c3: 0, c3_c2: 50, c2_c1: 150, c1_no: 150, no_wa: 420, wa_ov: 500, tz(NORMAL)
+[   51.373969] sec_usb_thm_overheatlimit: USB_THM, Invalid Temp Check Type, usb_thm <- bat_thm
+[   51.374005] sec-battery samsung_mobile_device:battery: sec_bat_fullcharged_check: Charging Mode : Normal
+[   51.374026] sec_bat_set_current_event: current event before(0x800004), after(0x800000)
+[   51.374050] sec_bat_check_temp_ctrl_by_cable: ct : USB
+[   51.378274] sy6970_test_read: [0x00]0x47,[0x01]0x06,[0x02]0x5c,[0x03]0x18,[0x04]0x08,[0x05]0x62,[0x06]0x82,[0x07]0x8d,[0x08]0x03,[0x09]0x50,[0x0a]0x82,[0x0b]0x16,[0x0c]0x00,[0x0d]0x93,[0x0e]0x5b,[0x0f]0x5c,[0x10]0x58,[0x11]0x95,[0x12]0x04,[0x13]0x47,[0x14]0x0c,
+[   51.425598] max1726x: [FG] 8080h,ffa0h,7f80h,ff01h,0000h,0e07h,4dc2h,61c1h,1fb3h,ccaeh,02beh,025eh,0003h,50c9h,4e3fh,0e1fh,120bh,ffffh,4400h,5d00h,05ddh,00a0h,1fa3h,0247h,11e1h,cc90h,2813h,da9dh,1eefh,0304h,0820h,0e1ch,0000h,4031h,2300h,117bh,1400h,2305h,1fa3h,88d0h,4476h,cea4h,023ch,3830h,ee56h,1da4h,0400h,0000h,721eh,4dcfh,1200h,0000h,2443h,1215h,f448h,4000h,08a0h,1202h,7d54h,025eh,00b4h,1008h,b3e4h,0000h,0000h,b605h,0f00h,8080h,ccd7h,2086h,2e83h,0162h,28ceh,2241h,0de1h,0000h,fc8fh,03b2h,b589h,1218h,0100h,0231h,0003h,01c9h,3ecbh,0005h,000ah,09f0h,0000h,0025h,870ch,0518h,0259h,0204h,00a7h,0000h,0000h,479eh,0000h,1002h,b80ah,0ac0h,0000h,0000h,9600h,0860h,215bh,0404h,1d24h,fd03h,00e6h,0000h,23cah,0020h,0001h,ffe0h,0003h,fd40h,029eh,ffffh,4b9fh,000ch,4849h,0000h,53b8h,0280h,a6f0h,0820h,0000h,4c00h,0000h,0000h,0000h,000ah,0000h,ff70h,19d0h,5693h,026dh,ca5ch,0038h,3900h,ccaeh,4f67h,
+[   51.425649] sec_bat_monitor_work: Status(Charging), mode(Normal), Health(Good), Cable(USB, USB, 1, 0), rp(1), HV(NONE), flash(0) mst(0)
+[   51.425672] sec_bat_monitor_work: lcd(1), slate(0), store(0), siop_level(0), sleep_mode(0), Cycle(-1)
+[   51.425735] sec-battery samsung_mobile_device:battery: sec_bat_set_polling: Polling time 10/30 sec.
+[   52.354439] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   52.358790] healthd: BatteryCycleCountPath not found
+[   52.358836] healthd: batteryCapacityLevelPath not found
+[   52.857204] [Exynos][WDT][  INFO]: Watchdog cluster 1 keepalive!, wtcnt = b32b
+[   52.858792] s2mpu12-rtc s2mpu12-rtc: s2m_rtc_read_time: 2025-03-05 00:40:21(0x08)AM
+[   52.858828] [Exynos][WDT][  INFO]: Watchdog cluster 0 keepalive!, wtcnt = fff5
+[   52.860496] s2mpu12-rtc s2mpu12-rtc: s2m_rtc_read_time: 2025-03-05 00:40:21(0x08)AM
+[   52.860528] secdbg_wdd_set_keepalive: wdd_info: 0x00000000fae205ec
+[   52.860555] Watchdog: secdbg_wdd_set_keepalive RTC 2025-03-05 00:40:20 UTC
+[   54.367651] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   54.372305] healthd: BatteryCycleCountPath not found
+[   54.372343] healthd: batteryCapacityLevelPath not found
+[   55.012085] [SHUB]      debug_work_func( 122): FW(0):0, Sensor state: 0x0, En: 0x0, Reset cnt: -1[0 : C 0(0, 0), N 0, 0], Cal result : [M:N, P:N]
+[   56.036183] fps_et5xx_work_func_debug: ldo: 0, sleep: 0, tz: 1, spi_value: 0x0, type: unknown
+[   56.381174] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   56.385972] healthd: BatteryCycleCountPath not found
+[   56.386019] healthd: batteryCapacityLevelPath not found
+[   58.395381] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   58.400173] healthd: BatteryCycleCountPath not found
+[   58.400220] healthd: batteryCapacityLevelPath not found
+[   60.409369] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   60.413813] healthd: BatteryCycleCountPath not found
+[   60.413860] healthd: batteryCapacityLevelPath not found
+[   60.900107] [SHUB]      debug_work_func( 122): FW(0):0, Sensor state: 0x0, En: 0x0, Reset cnt: -1[0 : C 0(0, 0), N 0, 0], Cal result : [M:N, P:N]
+[   61.430290] max1726x_get_scaled_capacity : capacity_max (1000) scaled capacity(77.7), raw_soc(77.7)
+[   61.430343] max1726x_check_vempty_recover_time: check vempty time(2, 59)
+[   61.430384] sec_bat_get_battery_info:Vnow(4096mV),Vavg(4092mV),Inow(228mA),Iavg(208mA),Isysavg(0mA),Imax(450mA),Ichg(550mA),SOC(77%),Tbat(317),Tusb(317),Tchg(353),Twpc(0),Tblkt(0),Tlrp(0),
+[   61.430505] get_cc_cv_time: cap: 4600, soc:  777, T:   7772, avg:  208, cv soc: 1000, i:   11, val: 475, minimum:1
+[   61.430539] sec-battery samsung_mobile_device:battery: sec_bat_calc_time_to_full: T:  7832 sec, passed time:    29, current: 475
+[   61.434883] sy6970_test_read: [0x00]0x47,[0x01]0x06,[0x02]0x5c,[0x03]0x18,[0x04]0x08,[0x05]0x62,[0x06]0x82,[0x07]0x8d,[0x08]0x03,[0x09]0x50,[0x0a]0x82,[0x0b]0x16,[0x0c]0x00,[0x0d]0x93,[0x0e]0x5b,[0x0f]0x5c,[0x10]0x58,[0x11]0x95,[0x12]0x04,[0x13]0x47,[0x14]0x0c,
+[   61.481047] max1726x: [FG] 8080h,ffa0h,7f80h,ff01h,0000h,0e08h,4dc5h,61c1h,1fb3h,ccd4h,02dch,029ch,0002h,50cfh,4e45h,0e20h,120bh,ffffh,4400h,5d00h,05e2h,00a0h,1fa5h,0247h,11e1h,cc9bh,2813h,da9dh,1eefh,0304h,0820h,0e1eh,0000h,4031h,2300h,117bh,1400h,2305h,1fa5h,88d0h,4476h,cea4h,023ch,3830h,ee56h,1da4h,0400h,0000h,7452h,4f11h,1200h,0000h,2405h,1216h,f448h,4000h,08a0h,1202h,7d54h,029ch,00b4h,1008h,b41eh,0000h,0000h,b605h,0f00h,8080h,ccd7h,2086h,2e83h,0159h,28ceh,2241h,0de3h,0000h,fc8fh,03b3h,535ah,1218h,0100h,0220h,0003h,01f1h,3ecbh,0005h,000ah,09f0h,0000h,0025h,870ch,0518h,01d3h,0204h,00a7h,0000h,0000h,479eh,0000h,1002h,b80ah,0ac0h,0000h,0000h,9600h,0860h,215bh,0404h,1d24h,fd03h,00e6h,0000h,10a3h,0e20h,df81h,117bh,cee0h,ffffh,0004h,0000h,4b9fh,000ch,4849h,0000h,53b8h,0280h,a6f0h,0820h,0000h,4c00h,0000h,0000h,0000h,000ah,0000h,ffc7h,19a0h,5696h,025bh,ca63h,0038h,3900h,ccb5h,4f76h,
+[   61.481099] sec_bat_monitor_work: Status(Charging), mode(Normal), Health(Good), Cable(USB, USB, 1, 0), rp(1), HV(NONE), flash(0) mst(0)
+[   61.481123] sec_bat_monitor_work: lcd(1), slate(0), store(0), siop_level(0), sleep_mode(0), Cycle(-1)
+[   61.481188] sec-battery samsung_mobile_device:battery: sec_bat_set_polling: Polling time 20/30 sec.
+[   62.422950] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   62.427400] healthd: BatteryCycleCountPath not found
+[   62.427447] healthd: batteryCapacityLevelPath not found
+[   62.860947] [Exynos][WDT][  INFO]: Watchdog cluster 1 keepalive!, wtcnt = b32b
+[   62.862719] s2mpu12-rtc s2mpu12-rtc: s2m_rtc_read_time: 2025-03-05 00:40:31(0x08)AM
+[   62.862756] [Exynos][WDT][  INFO]: Watchdog cluster 0 keepalive!, wtcnt = fff5
+[   62.864311] s2mpu12-rtc s2mpu12-rtc: s2m_rtc_read_time: 2025-03-05 00:40:31(0x08)AM
+[   62.864342] secdbg_wdd_set_keepalive: wdd_info: 0x00000000fae205ec
+[   62.864389] Watchdog: secdbg_wdd_set_keepalive RTC 2025-03-05 00:40:30 UTC
+[   64.435760] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   64.440672] healthd: BatteryCycleCountPath not found
+[   64.440708] healthd: batteryCapacityLevelPath not found
+[   66.450035] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   66.453870] healthd: BatteryCycleCountPath not found
+[   66.453907] healthd: batteryCapacityLevelPath not found
+[   66.531913] himax_tp spi1.1: [sec_input] tc:0 lp:0 ta:1 noise:0 lamp:0 // v:HX00000000 // #3 3
+[   67.044145] [SHUB]      debug_work_func( 122): FW(0):0, Sensor state: 0x0, En: 0x0, Reset cnt: -1[0 : C 0(0, 0), N 0, 0], Cal result : [M:N, P:N]
+[   67.044199] fps_et5xx_work_func_debug: ldo: 0, sleep: 0, tz: 1, spi_value: 0x0, type: unknown
+[   68.464031] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   68.468395] healthd: BatteryCycleCountPath not found
+[   68.468439] healthd: batteryCapacityLevelPath not found
+[   70.477761] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   70.482336] healthd: BatteryCycleCountPath not found
+[   70.482383] healthd: batteryCapacityLevelPath not found
+[   71.486117] max1726x_get_scaled_capacity : capacity_max (1000) scaled capacity(77.7), raw_soc(77.7)
+[   71.486157] max1726x_check_vempty_recover_time: check vempty time(2, 69)
+[   71.486192] sec_bat_get_battery_info:Vnow(4096mV),Vavg(4092mV),Inow(233mA),Iavg(217mA),Isysavg(0mA),Imax(450mA),Ichg(550mA),SOC(77%),Tbat(317),Tusb(317),Tchg(353),Twpc(0),Tblkt(0),Tlrp(0),
+[   71.486312] get_cc_cv_time: cap: 4600, soc:  777, T:   7772, avg:  217, cv soc: 1000, i:   11, val: 475, minimum:1
+[   71.486344] sec-battery samsung_mobile_device:battery: sec_bat_calc_time_to_full: T:  7832 sec, passed time:    29, current: 475
+[   71.494689] sy6970_test_read: [0x00]0x47,[0x01]0x06,[0x02]0x5c,[0x03]0x18,[0x04]0x08,[0x05]0x62,[0x06]0x82,[0x07]0x8d,[0x08]0x03,[0x09]0x50,[0x0a]0x82,[0x0b]0x16,[0x0c]0x00,[0x0d]0x93,[0x0e]0x5b,[0x0f]0x5c,[0x10]0x58,[0x11]0x95,[0x12]0x03,[0x13]0x47,[0x14]0x0c,
+[   71.539897] max1726x: [FG] 8080h,ffa0h,7f80h,ff01h,0000h,0e09h,4dc8h,61c1h,1fb3h,cccdh,02edh,02b8h,0001h,50d2h,4e45h,0e20h,120bh,ffffh,4400h,5d00h,05e6h,00a0h,1fa6h,0247h,11e1h,cca4h,2813h,da9dh,1eefh,0304h,0820h,0e1fh,0000h,4031h,2300h,117bh,1400h,2305h,1fa6h,88d0h,4476h,cea4h,023ch,3830h,ee56h,1da4h,0400h,0000h,766bh,5045h,1200h,0000h,23ffh,1217h,f448h,4000h,08a0h,1202h,7d54h,02b8h,00b4h,1008h,b458h,0000h,0000h,b605h,0f00h,8080h,ccd7h,2086h,2e83h,0158h,28ceh,2241h,0de4h,0000h,fc8fh,03b3h,f569h,1218h,0100h,0257h,0003h,020ch,3ecbh,0005h,000ah,09f0h,0000h,0025h,870ch,0518h,0167h,0204h,00a7h,0000h,0000h,479eh,0000h,1002h,b80ah,0ac0h,0000h,0000h,9600h,0860h,215bh,0404h,1d24h,fd03h,00e6h,0000h,3084h,0000h,fb7eh,0004h,0011h,0000h,1000h,0000h,4b9fh,000ch,4849h,0000h,53b8h,0280h,a6f0h,0820h,0000h,4c00h,0000h,0000h,0000h,000ah,0000h,001bh,199ch,56a0h,0297h,ca65h,0038h,3900h,cccdh,4f7ah,
+[   71.539949] sec_bat_monitor_work: Status(Charging), mode(Normal), Health(Good), Cable(USB, USB, 1, 0), rp(1), HV(NONE), flash(0) mst(0)
+[   71.539973] sec_bat_monitor_work: lcd(1), slate(0), store(0), siop_level(0), sleep_mode(0), Cycle(-1)
+[   71.540040] sec-battery samsung_mobile_device:battery: sec_bat_set_polling: Polling time 30/30 sec.
+[   72.490822] init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default' for ctl.interface_start from pid: 276 (/system/bin/hwservicemanager)
+[   72.495238] healthd: BatteryCycleCountPath not found
+[   72.495288] healthd: batteryCapacityLevelPath not found
+[   72.864635] [Exynos][WDT][  INFO]: Watchdog cluster 1 keepalive!, wtcnt = b32b
+[   72.866226] s2mpu12-rtc s2mpu12-rtc: s2m_rtc_read_time: 2025-03-05 00:40:41(0x08)AM
+[   72.866263] [Exynos][WDT][  INFO]: Watchdog cluster 0 keepalive!, wtcnt = fff5
+[   72.867901] s2mpu12-rtc s2mpu12-rtc: s2m_rtc_read_time: 2025-03-05 00:40:41(0x08)AM
+[   72.867930] secdbg_wdd_set_keepalive: wdd_info: 0x00000000fae205ec
+[   72.867959] Watchdog: secdbg_wdd_set_keepalive RTC 2025-03-05 00:40:40 UTC
+[   72.932161] [SHUB]      debug_work_func( 122): FW(0):0, Sensor state: 0x0, En: 0x0, Reset cnt: -1[0 : C 0(0, 0), N 0, 0], Cal result : [M:N, P:N]
