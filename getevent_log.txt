@@ -1,16 +1,91 @@
-add device 1: /dev/input/event6
-  name:     "grip_notifier"
-add device 2: /dev/input/event5
-  name:     "grip_sensor"
-add device 3: /dev/input/event0
+add device 1: /dev/input/event0
   name:     "meta_event"
-add device 4: /dev/input/event4
+add device 2: /dev/input/event4
   name:     "sec_touchproximity"
+add device 3: /dev/input/event5
+  name:     "grip_sensor"
+add device 4: /dev/input/event6
+  name:     "grip_notifier"
 add device 5: /dev/input/event2
   name:     "sec-pmic-key"
 add device 6: /dev/input/event7
   name:     "AUD3004X Headset Input"
-add device 7: /dev/input/event1
-  name:     "gpio_keys"
-add device 8: /dev/input/event3
+add device 7: /dev/input/event3
   name:     "sec_touchscreen"
+add device 8: /dev/input/event1
+  name:     "gpio_keys"
+/dev/input/event3: EV_ABS       ABS_MT_TRACKING_ID   00000022            
+/dev/input/event3: EV_ABS       ABS_MT_POSITION_X    00000305            
+/dev/input/event3: EV_ABS       ABS_MT_POSITION_Y    00000804            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000008            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MINOR   00000006            
+/dev/input/event3: EV_KEY       BTN_TOUCH            DOWN                
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MINOR   00000007            
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000009            
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000008            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MINOR   00000006            
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000007            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MINOR   00000004            
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MINOR   00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TRACKING_ID   ffffffff            
+/dev/input/event3: EV_KEY       BTN_TOUCH            UP                  
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TRACKING_ID   00000023            
+/dev/input/event3: EV_ABS       ABS_MT_POSITION_X    00000125            
+/dev/input/event3: EV_ABS       ABS_MT_POSITION_Y    00000953            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000009            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MINOR   00000001            
+/dev/input/event3: EV_KEY       BTN_TOUCH            DOWN                
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000008            
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000007            
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000005            
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000004            
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MINOR   00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TRACKING_ID   ffffffff            
+/dev/input/event3: EV_KEY       BTN_TOUCH            UP                  
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TRACKING_ID   00000024            
+/dev/input/event3: EV_ABS       ABS_MT_POSITION_X    0000027c            
+/dev/input/event3: EV_ABS       ABS_MT_POSITION_Y    0000074c            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000008            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MINOR   00000006            
+/dev/input/event3: EV_KEY       BTN_TOUCH            DOWN                
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000007            
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MINOR   00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TRACKING_ID   ffffffff            
+/dev/input/event3: EV_KEY       BTN_TOUCH            UP                  
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TRACKING_ID   00000025            
+/dev/input/event3: EV_ABS       ABS_MT_POSITION_X    00000339            
+/dev/input/event3: EV_ABS       ABS_MT_POSITION_Y    00000468            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000007            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MINOR   00000005            
+/dev/input/event3: EV_KEY       BTN_TOUCH            DOWN                
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000008            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MINOR   00000006            
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MINOR   00000007            
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000007            
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MAJOR   00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TOUCH_MINOR   00000000            
+/dev/input/event3: EV_ABS       ABS_MT_TRACKING_ID   ffffffff            
+/dev/input/event3: EV_KEY       BTN_TOUCH            UP                  
+/dev/input/event3: EV_SYN       SYN_REPORT           00000000            
