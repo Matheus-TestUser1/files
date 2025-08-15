@@ -183,9 +183,9 @@ install_f2fs_tools() {
     log "Instalando TODAS as ferramentas F2FS..."
     
     local f2fs_packages=(
-        "f2fs-tools"           # Pacote principal F2FS
-        "kmod"                 # Módulos do kernel
-        "linux-modules-extra-$(uname -r)" # Módulos extras (se disponível)
+        "f2fs-tools"
+        "kmod"
+        "linux-modules-extra-$(uname -r)"
     )
     
     info "Instalando ferramentas F2FS específicas..."
