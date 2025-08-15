@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 # Script Simples - Instalação Básica F2FS + Mount
