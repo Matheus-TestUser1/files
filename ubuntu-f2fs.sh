@@ -1,431 +1,649 @@
-#!/bin/bash
+'====================================================================
+' SISTEMA PESQUISA PRODUTOS MADEIREIRA - VERSÃO CORRIGIDA
+' Data: 2025-08-16 - ENTREGA URGENTE
+' Correções críticas aplicadas para estabilidade e performance
+'====================================================================
 
-# Script FUNCIONAL para criar container Ubuntu com suporte ao F2FS no macOS Sequoia
-# Testado e validado para Docker Desktop
-# Versão: 2.0 - Completamente Funcional
+Option Explicit
 
-set -euo pipefail
+'====================================================================
+' ESTRUTURAS DE DADOS OTIMIZADAS
+'====================================================================
 
-# Configurações
-readonly CONTAINER_NAME="ubuntu-f2fs"
-readonly UBUNTU_VERSION="22.04"
-readonly IMAGE_NAME="ubuntu-f2fs:custom"
-readonly WORK_DIR="/workspace"
 
-# Cores para output
-readonly RED='\033[0;31m'
-readonly GREEN='\033[0;32m'
-readonly YELLOW='\033[1;33m'
-readonly BLUE='\033[0;34m'
-readonly NC='\033[0m' # No Color
+'====================================================================
+' VARIÁVEIS GLOBAIS ORGANIZADAS
+'====================================================================
+' Sistema de quantidade
+Private QuantidadeAtual As Double
+Private Const QUANTIDADE_MIN As Double = 1
+Private Const QUANTIDADE_MAX As Double = 999
 
-# Função de log
-log() {
-    echo -e "${GREEN}[$(date +'%H:%M:%S')]${NC} $1"
-}
+' Cache de performance
+Private dictProdutos As Object           ' Dictionary para lookup O(1)
+Private dictSelecionados As Object      ' Evita duplicatas
+Private arrProdutosFiltrados As Variant
+' Controles dinâmicos
+Dim WithEvents imgMais As MSForms.Image
+Dim WithEvents imgMenos As MSForms.Image
 
-warn() {
-    echo -e "${YELLOW}[AVISO]${NC} $1"
-}
+' Estados do sistema
+Private placeholderAtivo As Boolean
+Private atualizandoInterface As Boolean
+Private ultimoTermoPesquisa As String
 
-error() {
-    echo -e "${RED}[ERRO]${NC} $1"
-    exit 1
-}
-
-# Verificar se Docker está rodando
-check_docker() {
-    log "Verificando Docker..."
+'====================================================================
+' INICIALIZAÇÃO SEGURA
+'====================================================================
+Private Sub UserForm_Initialize()
+    On Error GoTo ErroInicializacao
     
-    if ! command -v docker &> /dev/null; then
-        error "Docker não está instalado. Instale o Docker Desktop para macOS."
-    fi
+    ' Inicializar estruturas de dados
+    Call InicializarSistema
     
-    if ! docker info >/dev/null 2>&1; then
-        error "Docker não está rodando. Abra o Docker Desktop."
-    fi
+    ' Configurar interface
+    Call ConfigurarInterface
     
-    # Verificar versão do Docker
-    local docker_version=$(docker --version | grep -o '[0-9]\+\.[0-9]\+' | head -n1)
-    log "Docker versão ${docker_version} detectado ✅"
-}
-
-# Limpar recursos existentes
-cleanup() {
-    log "Limpando recursos existentes..."
+    ' Carregar dados
+    Call CarregarProdutosComCache
     
-    # Parar container se estiver rodando
-    if docker ps --format "table {{.Names}}" | grep -q "^${CONTAINER_NAME}$"; then
-        log "Parando container ${CONTAINER_NAME}..."
-        docker stop "${CONTAINER_NAME}" >/dev/null
-    fi
+    ' Finalizar
+    Call DefinirEstadoInicial
     
-    # Remover container se existir
-    if docker ps -a --format "table {{.Names}}" | grep -q "^${CONTAINER_NAME}$"; then
-        log "Removendo container ${CONTAINER_NAME}..."
-        docker rm "${CONTAINER_NAME}" >/dev/null
-    fi
+    Exit Sub
     
-    # Remover imagem customizada se existir
-    if docker images --format "table {{.Repository}}:{{.Tag}}" | grep -q "^${IMAGE_NAME}$"; then
-        log "Removendo imagem customizada..."
-        docker rmi "${IMAGE_NAME}" >/dev/null 2>&1 || true
-    fi
-}
+ErroInicializacao:
+    MsgBox "ERRO CRÍTICO: " & Err.Description & vbCrLf & _
+           "Sistema será encerrado.", vbCritical, "Falha na Inicialização"
+    Unload Me
+End Sub
 
-# Criar Dockerfile otimizado
-create_dockerfile() {
-    log "Criando Dockerfile otimizado..."
+Private Sub InicializarSistema()
+    ' Criar dicionários para performance
+    Set dictProdutos = CreateObject("Scripting.Dictionary")
+    Set dictSelecionados = CreateObject("Scripting.Dictionary")
     
-    cat > Dockerfile << 'EOF'
-FROM ubuntu:22.04
+    ' Configurar variáveis
+    QuantidadeAtual = QUANTIDADE_MIN
+    placeholderAtivo = False
+    atualizandoInterface = False
+    ultimoTermoPesquisa = ""
+End Sub
 
-# Evitar prompts interativos
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=UTC
-
-# Instalar dependências em uma única camada
-RUN apt-get update && apt-get install -y \
-    f2fs-tools \
-    util-linux \
-    kmod \
-    fuse \
-    build-essential \
-    git \
-    wget \
-    curl \
-    nano \
-    vim \
-    htop \
-    tree \
-    unzip \
-    ca-certificates \
-    gnupg \
-    lsb-release \
-    file \
-    strace \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# Criar diretórios necessários
-RUN mkdir -p /mnt/f2fs /workspace /tmp/f2fs-images
-
-# Script de teste do F2FS
-RUN cat > /usr/local/bin/test-f2fs << 'SCRIPT_EOF' && chmod +x /usr/local/bin/test-f2fs
-#!/bin/bash
-set -e
-
-echo "🧪 Iniciando teste completo do F2FS..."
-echo "======================================"
-
-# Verificar se ferramentas estão disponíveis
-echo "🔍 Verificando ferramentas F2FS..."
-for tool in mkfs.f2fs fsck.f2fs dump.f2fs; do
-    if command -v $tool >/dev/null 2>&1; then
-        echo "  ✅ $tool: $(which $tool)"
-    else
-        echo "  ❌ $tool: NÃO ENCONTRADO"
-        exit 1
-    fi
-done
-
-# Criar arquivo de teste
-TEST_IMG="/tmp/f2fs-test-$(date +%s).img"
-echo "📁 Criando imagem de teste: $TEST_IMG"
-dd if=/dev/zero of="$TEST_IMG" bs=1M count=50 2>/dev/null
-
-# Formatar como F2FS
-echo "🔧 Formatando como F2FS..."
-if mkfs.f2fs -f "$TEST_IMG" >/dev/null 2>&1; then
-    echo "  ✅ Formatação F2FS: SUCESSO"
-else
-    echo "  ❌ Formatação F2FS: FALHOU"
-    rm -f "$TEST_IMG"
-    exit 1
-fi
-
-# Criar ponto de montagem
-MOUNT_POINT="/mnt/f2fs-test-$$"
-mkdir -p "$MOUNT_POINT"
-
-# Tentar montar
-echo "📀 Montando sistema F2FS..."
-if mount -t f2fs -o loop "$TEST_IMG" "$MOUNT_POINT" 2>/dev/null; then
-    echo "  ✅ Montagem: SUCESSO"
+'====================================================================
+' CONFIGURAÇÃO DE INTERFACE OTIMIZADA
+'====================================================================
+Private Sub ConfigurarInterface()
+    ' Configurar formulário
+    With Me
+        .caption = "Madeireira Maria Luiza - Sistema de Produtos"
+        .BackColor = RGB(248, 249, 250)
+    End With
     
-    # Testar operações básicas
-    echo "📝 Testando operações de arquivo..."
+    ' Configurar listas com melhor performance
+    Call ConfigurarListas
     
-    # Criar arquivo
-    TEST_FILE="$MOUNT_POINT/teste-$(date +%s).txt"
-    echo "Teste do sistema de arquivos F2FS no Docker" > "$TEST_FILE"
+    ' Criar controles dinâmicos
+    Call CriarControlesQuantidade
     
-    if [ -f "$TEST_FILE" ]; then
-        echo "  ✅ Criação de arquivo: SUCESSO"
-        echo "  📄 Conteúdo: $(cat "$TEST_FILE")"
-    else
-        echo "  ❌ Criação de arquivo: FALHOU"
-    fi
+    ' Configurar placeholder
+    Call ConfigurarPlaceholder
+End Sub
+
+Private Sub ConfigurarListas()
+    If Not ControleExiste("lstProdutos") Then Exit Sub
     
-    # Criar diretório
-    TEST_DIR="$MOUNT_POINT/test-dir"
-    mkdir -p "$TEST_DIR"
-    echo "test" > "$TEST_DIR/subfile.txt"
+    With Me.lstProdutos
+        .BackColor = RGB(255, 255, 255)
+        .Font.Name = "Segoe UI"
+        .Font.Size = 9
+        .ColumnCount = 5
+        .ColumnWidths = "80;200;120;100;80"
+    End With
     
-    if [ -d "$TEST_DIR" ] && [ -f "$TEST_DIR/subfile.txt" ]; then
-        echo "  ✅ Criação de diretório: SUCESSO"
-    else
-        echo "  ❌ Criação de diretório: FALHOU"
-    fi
+    If ControleExiste("lstSelecionados") Then
+        With Me.lstSelecionados
+            .BackColor = RGB(255, 255, 255)
+            .Font.Name = "Segoe UI"
+            .Font.Size = 9
+            .ColumnCount = 7
+            .ColumnWidths = "60;180;80;80;60;100;80"
+        End With
+    End If
+End Sub
+
+'====================================================================
+' SISTEMA DE SETINHAS OTIMIZADO
+'====================================================================
+Private Sub CriarControlesQuantidade()
+    On Error Resume Next
     
-    # Mostrar informações do sistema de arquivos
-    echo "📊 Informações do sistema de arquivos:"
-    df -h "$MOUNT_POINT" | tail -n1 | while read filesystem size used avail use mounted; do
-        echo "  💾 Tamanho: $size"
-        echo "  📈 Usado: $used"
-        echo "  💿 Disponível: $avail"
-        echo "  📍 Uso: $use"
-    done
+    Dim txtQuant As Control
+    Set txtQuant = Me.Controls("txtQuantidade")
+    If txtQuant Is Nothing Then Exit Sub
     
-    # Desmontar
-    umount "$MOUNT_POINT" 2>/dev/null
-    echo "  ✅ Desmontagem: SUCESSO"
+    ' Configurar campo quantidade
+    With txtQuant
+        .Font.Name = "Segoe UI"
+        .Font.Size = 10
+        .TextAlign = 2  ' Centro
+        .Value = QuantidadeAtual
+    End With
     
-else
-    echo "  ❌ Montagem: FALHOU"
-    echo "  ℹ️  Isso pode ser normal no Docker devido a limitações do kernel"
-fi
-
-# Verificar integridade
-echo "🔍 Verificando integridade do sistema F2FS..."
-if fsck.f2fs "$TEST_IMG" >/dev/null 2>&1; then
-    echo "  ✅ Verificação de integridade: SUCESSO"
-else
-    echo "  ⚠️  Verificação de integridade: Avisos encontrados (normal)"
-fi
-
-# Extrair informações
-echo "📋 Extraindo informações do sistema F2FS..."
-dump.f2fs -d 1 "$TEST_IMG" 2>/dev/null | head -20 || echo "  ⚠️  Dump parcial disponível"
-
-# Limpar
-rm -rf "$TEST_IMG" "$MOUNT_POINT" 2>/dev/null
-
-echo ""
-echo "🎉 Teste do F2FS concluído com sucesso!"
-echo "✅ O sistema está pronto para usar F2FS"
-SCRIPT_EOF
-
-# Script de informações do sistema
-RUN cat > /usr/local/bin/f2fs-info << 'INFO_EOF' && chmod +x /usr/local/bin/f2fs-info
-#!/bin/bash
-
-echo "🖥️  Sistema Ubuntu com Suporte ao F2FS"
-echo "====================================="
-echo "🐧 OS: $(lsb_release -ds 2>/dev/null || echo 'Ubuntu Linux')"
-echo "⚙️  Kernel: $(uname -r)"
-echo "🏗️  Arquitetura: $(uname -m)"
-echo "📅 Data: $(date)"
-echo ""
-
-echo "🔧 Ferramentas F2FS:"
-echo "==================="
-for tool in mkfs.f2fs fsck.f2fs dump.f2fs; do
-    if command -v $tool >/dev/null 2>&1; then
-        version_info=$(timeout 5s $tool 2>&1 | head -n3 | grep -i version || echo "Disponível")
-        echo "✅ $tool: $version_info"
-    else
-        echo "❌ $tool: Não encontrado"
-    fi
-done
-echo ""
-
-echo "📦 Módulos do Kernel:"
-echo "===================="
-echo "Módulos F2FS carregados:"
-lsmod 2>/dev/null | grep f2fs || echo "  ⚠️  Módulo F2FS não carregado (será carregado quando necessário)"
-echo ""
-
-echo "💾 Sistemas de Arquivos Suportados:"
-echo "==================================="
-if [ -f /proc/filesystems ]; then
-    echo "Sistemas suportados pelo kernel:"
-    cat /proc/filesystems | grep -E "(f2fs|ext[234]|xfs|btrfs)" | sed 's/^/  /' || echo "  Informações limitadas no container"
-else
-    echo "  ⚠️  /proc/filesystems não disponível"
-fi
-echo ""
-
-echo "🚀 Comandos Úteis:"
-echo "================="
-echo "  test-f2fs           # Executar teste completo do F2FS"
-echo "  mkfs.f2fs arquivo   # Formatar arquivo como F2FS"
-echo "  fsck.f2fs arquivo   # Verificar integridade F2FS"
-echo "  dump.f2fs arquivo   # Extrair informações F2FS"
-echo ""
-
-echo "📁 Diretórios Importantes:"
-echo "========================="
-echo "  /workspace          # Diretório de trabalho (mapeado do host)"
-echo "  /mnt/f2fs           # Ponto de montagem padrão"
-echo "  /tmp/f2fs-images    # Diretório para imagens F2FS"
-INFO_EOF
-
-# Script para criar volume F2FS
-RUN cat > /usr/local/bin/create-f2fs << 'CREATE_EOF' && chmod +x /usr/local/bin/create-f2fs
-#!/bin/bash
-
-usage() {
-    echo "Uso: create-f2fs <nome_arquivo> <tamanho_mb> [ponto_montagem]"
-    echo "Exemplo: create-f2fs meu-volume 100 /mnt/meu-f2fs"
-    exit 1
-}
-
-if [ $# -lt 2 ]; then
-    usage
-fi
-
-FILENAME="$1"
-SIZE_MB="$2"
-MOUNT_POINT="${3:-/mnt/f2fs}"
-
-echo "🔨 Criando volume F2FS: $FILENAME (${SIZE_MB}MB)"
-
-# Criar arquivo
-dd if=/dev/zero of="$FILENAME" bs=1M count="$SIZE_MB" 2>/dev/null
-echo "✅ Arquivo criado: $FILENAME"
-
-# Formatar
-mkfs.f2fs -f "$FILENAME" >/dev/null 2>&1
-echo "✅ Formatado como F2FS"
-
-# Criar ponto de montagem se não existir
-mkdir -p "$MOUNT_POINT"
-
-# Tentar montar
-if mount -t f2fs -o loop "$FILENAME" "$MOUNT_POINT" 2>/dev/null; then
-    echo "✅ Montado em: $MOUNT_POINT"
-    echo "📊 $(df -h "$MOUNT_POINT" | tail -n1)"
-    echo ""
-    echo "Para desmontar: umount $MOUNT_POINT"
-else
-    echo "⚠️  Formatação concluída, mas montagem falhou"
-    echo "   Isso é normal no Docker devido a limitações do kernel"
-    echo "   O arquivo F2FS está pronto para uso: $FILENAME"
-fi
-CREATE_EOF
-
-# Configurar entrada padrão
-WORKDIR /workspace
-CMD ["/bin/bash"]
-EOF
-
-    log "Dockerfile criado ✅"
-}
-
-# Construir imagem customizada
-build_image() {
-    log "Construindo imagem Ubuntu com F2FS..."
+    ' Remover controles antigos
+    Call RemoverControlesAntigos
     
-    docker build -t "${IMAGE_NAME}" . --quiet || error "Falha na construção da imagem"
+    ' Criar setas otimizadas
+    Const LARGURA_SETA As Single = 18
+    Const ALTURA_SETA As Single = 11
     
-    log "Imagem construída com sucesso ✅"
-}
+    ' Seta MAIS (+)
+    Set imgMais = Me.Controls.Add("Forms.Image.1", "imgMais")
+    With imgMais
+        .Left = txtQuant.Left + txtQuant.Width + 2
+        .Top = txtQuant.Top
+        .Width = LARGURA_SETA
+        .height = ALTURA_SETA
+        .BackColor = RGB(40, 167, 69)
+        .BorderStyle = 1
+        .Visible = True
+    End With
+    
+    ' Seta MENOS (-)
+    Set imgMenos = Me.Controls.Add("Forms.Image.1", "imgMenos")
+    With imgMenos
+        .Left = txtQuant.Left + txtQuant.Width + 2
+        .Top = txtQuant.Top + ALTURA_SETA + 1
+        .Width = LARGURA_SETA
+        .height = ALTURA_SETA
+        .BackColor = RGB(220, 53, 69)
+        .BorderStyle = 1
+        .Visible = True
+    End With
+    
+    ' Adicionar labels dos símbolos
+    Call AdicionarSimbolosSetas(LARGURA_SETA, ALTURA_SETA)
+    
+    On Error GoTo 0
+End Sub
 
-# Criar e iniciar container
-create_container() {
-    log "Criando container funcional..."
+Private Sub AdicionarSimbolosSetas(largura As Single, altura As Single)
+    On Error Resume Next
     
-    # Usar configurações que realmente funcionam no macOS
-    docker run -d \
-        --name "${CONTAINER_NAME}" \
-        --privileged \
-        --security-opt seccomp=unconfined \
-        --cap-add=ALL \
-        -v "$(pwd)":/workspace \
-        -v /tmp:/tmp \
-        --tmpfs /run:noexec,nosuid,size=100m \
-        --tmpfs /tmp/f2fs-test:noexec,nosuid,size=200m \
-        "${IMAGE_NAME}" \
-        sleep infinity
+    ' Label MAIS
+    Dim lblMais As MSForms.Label
+    Set lblMais = Me.Controls.Add("Forms.Label.1", "lblMais")
+    With lblMais
+        .Left = imgMais.Left + 1
+        .Top = imgMais.Top
+        .Width = largura - 2
+        .height = altura
+        .caption = "+"
+        .Font.Bold = True
+        .Forecolor = RGB(255, 255, 255)
+        .BackStyle = 0
+        .TextAlign = 2
+        .Visible = True
+    End With
     
-    log "Container criado e iniciado ✅"
-}
+    ' Label MENOS
+    Dim lblMenos As MSForms.Label
+    Set lblMenos = Me.Controls.Add("Forms.Label.1", "lblMenos")
+    With lblMenos
+        .Left = imgMenos.Left + 1
+        .Top = imgMenos.Top
+        .Width = largura - 2
+        .height = altura
+        .caption = "-"
+        .Font.Bold = True
+        .Forecolor = RGB(255, 255, 255)
+        .BackStyle = 0
+        .TextAlign = 2
+        .Visible = True
+    End With
+    
+    On Error GoTo 0
+End Sub
 
-# Testar funcionalidade
-test_functionality() {
-    log "Testando funcionalidade do F2FS..."
-    
-    # Aguardar container estar pronto
-    sleep 2
-    
-    # Executar teste
-    log "Executando teste automático..."
-    if docker exec "${CONTAINER_NAME}" test-f2fs; then
-        log "Teste do F2FS executado com sucesso ✅"
-    else
-        warn "Teste apresentou avisos (isso pode ser normal no Docker)"
-    fi
-}
+Private Sub RemoverControlesAntigos()
+    On Error Resume Next
+    Dim ctrl As Control
+    For Each ctrl In Me.Controls
+        If InStr(ctrl.Name, "imgMais") > 0 Or InStr(ctrl.Name, "imgMenos") > 0 Or _
+           InStr(ctrl.Name, "lblMais") > 0 Or InStr(ctrl.Name, "lblMenos") > 0 Then
+            Me.Controls.Remove ctrl.Name
+        End If
+    Next ctrl
+    On Error GoTo 0
+End Sub
 
-# Mostrar informações de uso
-show_usage() {
-    echo ""
-    echo -e "${BLUE}🎉 Container Ubuntu com F2FS criado com SUCESSO!${NC}"
-    echo -e "${BLUE}================================================${NC}"
-    echo ""
-    echo "📋 Comandos para usar:"
-    echo "  docker exec -it ${CONTAINER_NAME} bash              # Acessar container"
-    echo "  docker exec ${CONTAINER_NAME} test-f2fs             # Testar F2FS"
-    echo "  docker exec ${CONTAINER_NAME} f2fs-info             # Info do sistema"
-    echo "  docker exec ${CONTAINER_NAME} create-f2fs vol.img 100  # Criar volume 100MB"
-    echo ""
-    echo "🔧 Ferramentas F2FS disponíveis:"
-    echo "  mkfs.f2fs    # Formatar sistema F2FS"
-    echo "  fsck.f2fs    # Verificar integridade"  
-    echo "  dump.f2fs    # Extrair informações"
-    echo ""
-    echo "📁 Diretórios importantes:"
-    echo "  /workspace            # Seu diretório atual (mapeado)"
-    echo "  /mnt/f2fs            # Ponto de montagem padrão"
-    echo "  /tmp/f2fs-images     # Para armazenar imagens F2FS"
-    echo ""
-    echo "🚀 Exemplo de uso completo:"
-    echo "  docker exec -it ${CONTAINER_NAME} bash"
-    echo "  # Dentro do container:"
-    echo "  create-f2fs meu-disco.img 200"
-    echo "  echo 'Olá F2FS!' > /mnt/f2fs/teste.txt"
-    echo ""
-    echo "🛑 Para parar e limpar:"
-    echo "  docker stop ${CONTAINER_NAME} && docker rm ${CONTAINER_NAME}"
-    echo "  docker rmi ${IMAGE_NAME}  # Remover imagem customizada"
-}
+'====================================================================
+' EVENTOS DAS SETINHAS
+'====================================================================
+Private Sub imgMais_Click()
+    Call AlterarQuantidade(1)
+End Sub
 
-# Função principal
-main() {
-    echo -e "${BLUE}"
-    echo "🚀 CRIADOR DE MÁQUINA VIRTUAL UBUNTU + F2FS"
-    echo "============================================"
-    echo -e "${NC}"
-    
-    check_docker
-    cleanup
-    create_dockerfile
-    build_image
-    create_container
-    test_functionality
-    show_usage
-    
-    # Limpar Dockerfile temporário
-    rm -f Dockerfile
-    
-    echo ""
-    log "✅ PROCESSO CONCLUÍDO COM SUCESSO!"
-    echo ""
-    echo -e "${GREEN}💡 Dica: Execute 'docker exec -it ${CONTAINER_NAME} bash' para começar!${NC}"
-}
+Private Sub imgMenos_Click()
+    Call AlterarQuantidade(-1)
+End Sub
 
-# Executar apenas se chamado diretamente
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    main "$@"
-fi
+Private Sub AlterarQuantidade(incremento As Integer)
+    Dim novaQuantidade As Double
+    novaQuantidade = QuantidadeAtual + incremento
+    
+    ' Validar limites
+    If novaQuantidade < QUANTIDADE_MIN Then
+        novaQuantidade = QUANTIDADE_MIN
+    ElseIf novaQuantidade > QUANTIDADE_MAX Then
+        novaQuantidade = QUANTIDADE_MAX
+    End If
+    
+    ' Atualizar se mudou
+    If novaQuantidade <> QuantidadeAtual Then
+        QuantidadeAtual = novaQuantidade
+        Call AtualizarCampoQuantidade
+    End If
+End Sub
+
+Private Sub AtualizarCampoQuantidade()
+    If Not ControleExiste("txtQuantidade") Then Exit Sub
+    
+    atualizandoInterface = True
+    Me.txtQuantidade.Value = FormatarQuantidade(QuantidadeAtual)
+    atualizandoInterface = False
+End Sub
+
+'====================================================================
+' CARREGAMENTO OTIMIZADO DE PRODUTOS
+'====================================================================
+Private Sub CarregarProdutosComCache()
+    On Error GoTo ErroCarregamento
+    
+    Dim ws As Worksheet
+    Dim ultimaLinha As Long, i As Long
+    Dim produto As Variant
+    
+    ' Verificar se planilha existe
+    Set ws = Nothing
+    Set ws = Worksheets("Produtos")
+    If ws Is Nothing Then
+        MsgBox "ERRO: Planilha 'Produtos' não encontrada!", vbCritical
+        Exit Sub
+    End If
+    
+    ' Limpar cache anterior
+    dictProdutos.RemoveAll
+    
+    ' Obter range de dados
+    ultimaLinha = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
+    If ultimaLinha < 2 Then
+        MsgBox "Nenhum produto encontrado na planilha.", vbInformation
+        Exit Sub
+    End If
+    
+    ' Carregar produtos no cache
+    For i = 2 To ultimaLinha
+        If Trim(ws.Cells(i, 1).Value) <> "" Then
+            ' Preencher estrutura
+            produto.codigo = Trim(ws.Cells(i, 1).Value)
+            produto.nome = Trim(ws.Cells(i, 2).Value)
+            produto.Material = Trim(ws.Cells(i, 3).Value)
+            produto.Dimensoes = Trim(ws.Cells(i, 4).Value)
+            produto.Preco = Val(ws.Cells(i, 6).Value)
+            produto.Disponivel = True
+            
+            ' Adicionar ao cache (chave = código)
+            If Not dictProdutos.Exists(produto.codigo) Then
+                dictProdutos.Add produto.codigo, produto
+            End If
+        End If
+    Next i
+    
+    ' Carregar lista inicial
+    Call ExibirTodosProdutos
+    
+    Exit Sub
+    
+ErroCarregamento:
+    MsgBox "Erro ao carregar produtos: " & Err.Description, vbCritical
+End Sub
+
+Private Sub ExibirTodosProdutos()
+    If Not ControleExiste("lstProdutos") Then Exit Sub
+    
+    Me.lstProdutos.Clear
+    
+    Dim chave As Variant
+    Dim produto As TipoProduto
+    
+    For Each chave In dictProdutos.Keys
+        produto = dictProdutos(chave)
+        With Me.lstProdutos
+            .AddItem
+            .List(.ListCount - 1, 0) = produto.codigo
+            .List(.ListCount - 1, 1) = produto.nome
+            .List(.ListCount - 1, 2) = produto.Material
+            .List(.ListCount - 1, 3) = produto.Dimensoes
+            .List(.ListCount - 1, 4) = FormatarMoeda(produto.Preco)
+        End With
+    Next chave
+End Sub
+
+'====================================================================
+' SISTEMA DE PESQUISA OTIMIZADO
+'====================================================================
+Private Sub txtPesquisa_Change()
+    If atualizandoInterface Then Exit Sub
+    If placeholderAtivo Then Exit Sub
+    
+    Dim termo As String
+    termo = Trim(Me.txtPesquisa.Value)
+    
+    ' Evitar pesquisas desnecessárias
+    If termo = ultimoTermoPesquisa Then Exit Sub
+    ultimoTermoPesquisa = termo
+    
+    If Len(termo) >= 2 Then
+        Call PesquisarProdutosOtimizada(termo)
+    ElseIf Len(termo) = 0 Then
+        Call ExibirTodosProdutos
+    End If
+End Sub
+
+Private Sub PesquisarProdutosOtimizada(termo As String)
+    If Not ControleExiste("lstProdutos") Then Exit Sub
+    
+    Me.lstProdutos.Clear
+    
+    Dim chave As Variant
+    Dim produto As Variant
+    Dim termoUpper As String
+    
+    termoUpper = UCase(termo)
+    
+    ' Busca otimizada no cache
+    For Each chave In dictProdutos.Keys
+        produto = dictProdutos(chave)
+        
+        If InStr(1, UCase(produto.codigo), termoUpper) > 0 Or _
+           InStr(1, UCase(produto.nome), termoUpper) > 0 Or _
+           InStr(1, UCase(produto.Material), termoUpper) > 0 Then
+            
+            With Me.lstProdutos
+                .AddItem
+                .List(.ListCount - 1, 0) = produto.codigo
+                .List(.ListCount - 1, 1) = produto.nome
+                .List(.ListCount - 1, 2) = produto.Material
+                .List(.ListCount - 1, 3) = produto.Dimensoes
+                .List(.ListCount - 1, 4) = FormatarMoeda(produto.Preco)
+            End With
+        End If
+    Next chave
+End Sub
+
+'====================================================================
+' ADIÇÃO DE PRODUTOS COM VALIDAÇÃO
+'====================================================================
+Private Sub btnAdicionar_Click()
+    On Error GoTo ErroAdicionar
+    
+    ' Validações
+    If Me.lstProdutos.ListIndex = -1 Then
+        MsgBox "Selecione um produto da lista.", vbExclamation
+        Exit Sub
+    End If
+    
+    If QuantidadeAtual < QUANTIDADE_MIN Then
+        MsgBox "Quantidade deve ser pelo menos " & QUANTIDADE_MIN, vbExclamation
+        Exit Sub
+    End If
+    
+    ' Obter dados do produto selecionado
+    Dim codigoProduto As String
+    Dim nomeProduto As String
+    Dim precoProduto As Double
+    
+    codigoProduto = Me.lstProdutos.List(Me.lstProdutos.ListIndex, 0)
+    nomeProduto = Me.lstProdutos.List(Me.lstProdutos.ListIndex, 1)
+    precoProduto = ExtrairValorMoeda(Me.lstProdutos.List(Me.lstProdutos.ListIndex, 4))
+    
+    ' Verificar duplicata
+    If dictSelecionados.Exists(codigoProduto) Then
+        MsgBox "Produto já foi adicionado. Use Editar para alterar quantidade.", vbInformation
+        Exit Sub
+    End If
+    
+    ' Adicionar à lista de selecionados
+    If ControleExiste("lstSelecionados") Then
+        With Me.lstSelecionados
+            .AddItem
+            .List(.ListCount - 1, 0) = codigoProduto
+            .List(.ListCount - 1, 1) = nomeProduto
+            .List(.ListCount - 1, 2) = Me.lstProdutos.List(Me.lstProdutos.ListIndex, 2) ' Material
+            .List(.ListCount - 1, 3) = FormatarMoeda(precoProduto)
+            .List(.ListCount - 1, 4) = FormatarQuantidade(QuantidadeAtual)
+            .List(.ListCount - 1, 5) = IIf(ControleExiste("txtDescricao"), Me.txtDescricao.Value, "")
+            .List(.ListCount - 1, 6) = FormatarMoeda(precoProduto * QuantidadeAtual)
+        End With
+    End If
+    
+    ' Registrar no dicionário
+    dictSelecionados.Add codigoProduto, QuantidadeAtual
+    
+    ' Reset
+    QuantidadeAtual = QUANTIDADE_MIN
+    Call AtualizarCampoQuantidade
+    
+    If ControleExiste("txtDescricao") Then Me.txtDescricao.Value = ""
+    
+    ' Atualizar totais
+    Call AtualizarTotais
+    
+    Exit Sub
+    
+ErroAdicionar:
+    MsgBox "Erro ao adicionar produto: " & Err.Description, vbCritical
+End Sub
+
+'====================================================================
+' CONTROLES DE LISTA
+'====================================================================
+Private Sub btnRemover_Click()
+    If Not ControleExiste("lstSelecionados") Then Exit Sub
+    If Me.lstSelecionados.ListIndex = -1 Then
+        MsgBox "Selecione um produto para remover.", vbExclamation
+        Exit Sub
+    End If
+    
+    Dim codigo As String
+    codigo = Me.lstSelecionados.List(Me.lstSelecionados.ListIndex, 0)
+    
+    ' Remover do dicionário
+    If dictSelecionados.Exists(codigo) Then
+        dictSelecionados.Remove codigo
+    End If
+    
+    ' Remover da lista visual
+    Me.lstSelecionados.RemoveItem Me.lstSelecionados.ListIndex
+    
+    Call AtualizarTotais
+End Sub
+
+Private Sub btnLimparTudo_Click()
+    If MsgBox("Limpar todos os produtos selecionados?", vbYesNo + vbQuestion) = vbYes Then
+        If ControleExiste("lstSelecionados") Then Me.lstSelecionados.Clear
+        dictSelecionados.RemoveAll
+        Call AtualizarTotais
+    End If
+End Sub
+
+'====================================================================
+' SISTEMA DE PLACEHOLDER
+'====================================================================
+Private Sub ConfigurarPlaceholder()
+    If Not ControleExiste("txtPesquisa") Then Exit Sub
+    
+    With Me.txtPesquisa
+        .Font.Name = "Segoe UI"
+        .Font.Size = 10
+        .Value = "Digite para pesquisar produtos..."
+        .Forecolor = RGB(128, 128, 128)
+        .Font.Italic = True
+    End With
+    placeholderAtivo = True
+End Sub
+
+Private Sub txtPesquisa_Enter()
+    If placeholderAtivo Then
+        atualizandoInterface = True
+        Me.txtPesquisa.Value = ""
+        Me.txtPesquisa.Forecolor = RGB(0, 0, 0)
+        Me.txtPesquisa.Font.Italic = False
+        placeholderAtivo = False
+        atualizandoInterface = False
+    End If
+End Sub
+
+Private Sub txtPesquisa_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    If Trim(Me.txtPesquisa.Value) = "" Then
+        Call ConfigurarPlaceholder
+    End If
+End Sub
+
+'====================================================================
+' EVENTOS DE NAVEGAÇÃO
+'====================================================================
+Private Sub txtPesquisa_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Select Case KeyCode
+        Case 40 ' Seta baixo
+            If Me.lstProdutos.ListCount > 0 Then
+                Me.lstProdutos.SetFocus
+                Me.lstProdutos.ListIndex = 0
+            End If
+        Case 13 ' Enter
+            If Me.lstProdutos.ListCount > 0 Then
+                Me.lstProdutos.SetFocus
+                If Me.lstProdutos.ListIndex = -1 Then Me.lstProdutos.ListIndex = 0
+            End If
+        Case 27 ' ESC
+            Me.txtPesquisa.Value = ""
+            Call ConfigurarPlaceholder
+            Call ExibirTodosProdutos
+    End Select
+End Sub
+
+Private Sub lstProdutos_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    If Me.lstProdutos.ListIndex >= 0 Then
+        Call btnAdicionar_Click
+    End If
+End Sub
+
+Private Sub txtQuantidade_Change()
+    If atualizandoInterface Then Exit Sub
+    
+    Dim novaQtd As Double
+    novaQtd = InterpretarQuantidade(Me.txtQuantidade.Value)
+    
+    If novaQtd <> QuantidadeAtual Then
+        QuantidadeAtual = novaQtd
+    End If
+End Sub
+
+Private Sub txtQuantidade_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Select Case KeyCode
+        Case 13: Call btnAdicionar_Click
+        Case 38: Call AlterarQuantidade(1)
+        Case 40: Call AlterarQuantidade(-1)
+    End Select
+End Sub
+
+'====================================================================
+' FUNÇÕES UTILITÁRIAS
+'====================================================================
+Private Sub AtualizarTotais()
+    Dim totalItens As Long
+    Dim valorTotal As Double
+    Dim i As Long
+    
+    If ControleExiste("lstSelecionados") Then
+        For i = 0 To Me.lstSelecionados.ListCount - 1
+            totalItens = totalItens + InterpretarQuantidade(Me.lstSelecionados.List(i, 4))
+            valorTotal = valorTotal + ExtrairValorMoeda(Me.lstSelecionados.List(i, 6))
+        Next i
+    End If
+    
+    If ControleExiste("lblTotalItens") Then
+        Me.lblTotalItens.caption = "Total: " & totalItens & " itens"
+    End If
+    
+    If ControleExiste("lblValorTotal") Then
+        Me.lblValorTotal.caption = "Valor: " & FormatarMoeda(valorTotal)
+    End If
+End Sub
+
+Private Function InterpretarQuantidade(texto As String) As Double
+    Dim valor As Double
+    On Error Resume Next
+    
+    texto = Trim(Replace(Replace(texto, ",", "."), " ", ""))
+    valor = CDbl(texto)
+    
+    If Err.Number <> 0 Or valor < QUANTIDADE_MIN Then
+        valor = QUANTIDADE_MIN
+    ElseIf valor > QUANTIDADE_MAX Then
+        valor = QUANTIDADE_MAX
+    End If
+    
+    InterpretarQuantidade = valor
+    On Error GoTo 0
+End Function
+
+Private Function FormatarQuantidade(valor As Double) As String
+    If valor = Int(valor) Then
+        FormatarQuantidade = Format(valor, "0")
+    Else
+        FormatarQuantidade = Format(valor, "0.000")
+    End If
+End Function
+
+Private Function FormatarMoeda(valor As Double) As String
+    FormatarMoeda = Format(valor, "R$ #,##0.00")
+End Function
+
+Private Function ExtrairValorMoeda(texto As String) As Double
+    On Error Resume Next
+    Dim limpo As String
+    limpo = Replace(Replace(Replace(texto, "R$", ""), ".", ""), ",", ".")
+    limpo = Trim(Replace(limpo, " ", ""))
+    ExtrairValorMoeda = CDbl(limpo)
+    If Err.Number <> 0 Then ExtrairValorMoeda = 0
+    On Error GoTo 0
+End Function
+
+Private Function ControleExiste(nome As String) As Boolean
+    On Error Resume Next
+    Dim ctrl As Control
+    Set ctrl = Me.Controls(nome)
+    ControleExiste = Not (ctrl Is Nothing)
+    On Error GoTo 0
+End Function
+
+Private Sub DefinirEstadoInicial()
+    If ControleExiste("txtPesquisa") Then Me.txtPesquisa.SetFocus
+    Call AtualizarTotais
+End Sub
+
+'====================================================================
+' FINALIZAÇÃO
+'====================================================================
+Private Sub btnFechar_Click()
+    Unload Me
+End Sub
+
+Private Sub UserForm_QueryClose(Cancel As Integer, CloseMode As Integer)
+    ' Limpar objetos da memória
+    Set dictProdutos = Nothing
+    Set dictSelecionados = Nothing
+End Sub
+
