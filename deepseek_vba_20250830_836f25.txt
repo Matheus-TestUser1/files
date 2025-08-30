@@ -1,0 +1,503 @@
+' ====================================================================
+' FORMULÁRIO frmPesquisaProdutos - VERSÃO FINAL OTIMIZADA
+' Sistema PDV Madeireira Maria Luzia
+' Implementa todas as melhorias sugeridas pelo Claude AI
+' ====================================================================
+
+Option Explicit
+
+' Constantes do sistema
+Private Const QTD_MINIMA As Long = 1
+Private Const QTD_MAXIMA As Long = 9999
+Private Const TIMEOUT_PESQUISA As Integer = 500 ' ms
+
+' Variáveis para controle de performance
+Private UltimaPesquisa As String
+Private TimerPesquisa As Date
+Private EmProcessamento As Boolean
+
+' Variáveis globais para controle de totais
+Private totalSubtotal As Currency
+Private totalDescontos As Currency
+Private totalFinal As Currency
+Private quantidadeItens As Long
+
+' === INICIALIZAÇÃO DO FORMULÁRIO ===
+Private Sub UserForm_Initialize()
+    On Error GoTo TratarErro
+    
+    Call InicializarComponentes
+    Call CarregarTodosProdutos
+    Call CalcularTodosOsTotais
+    
+    Me.txtPesquisa.SetFocus
+    Application.ScreenUpdating = True
+    
+    Debug.Print "Formulário inicializado com sucesso - " & Now
+    
+    Exit Sub
+    
+TratarErro:
+    MsgBox "Erro na inicialização: " & Err.Description, vbCritical
+    Unload Me
+End Sub
+
+' === INICIALIZAR COMPONENTES ===
+Private Sub InicializarComponentes()
+    ' Configurar ListBox de produtos
+    With Me.lstProdutos
+        .ColumnCount = 5
+        .ColumnWidths = "60;250;100;80;60"
+        .Font.Name = "Segoe UI"
+        .Font.Size = 9
+    End With
+    
+    ' Configurar ListBox de produtos selecionados
+    With Me.lstSelecionados
+        .ColumnCount = 7
+        .ColumnWidths = "60;140;30;60;40;80;80"
+        .Font.Name = "Segoe UI"
+        .Font.Size = 9
+    End With
+    
+    ' Configurar controles
+    Me.txtQuantidade.Value = QTD_MINIMA
+    Me.txtQuantidade.Min = QTD_MINIMA
+    Me.txtQuantidade.Max = QTD_MAXIMA
+    
+    Me.lbldesc1.Value = ""
+    Me.txtPesquisa.Value = ""
+    
+    ' Configurar tooltips
+    Call ConfigurarTooltips
+End Sub
+
+' === CONFIGURAR TOOLTIPS ===
+Private Sub ConfigurarTooltips()
+    On Error Resume Next
+    
+    Me.btnAdicionar.ControlTipText = "Adicionar produto selecionado à lista"
+    Me.btnRemover.ControlTipText = "Remover produto selecionado da lista"
+    Me.btnAplicarDesconto.ControlTipText = "Aplicar desconto ao produto selecionado"
+    Me.btnRemoverDesconto.ControlTipText = "Remover desconto do produto selecionado"
+    Me.btnEnviarParaProdutos.ControlTipText = "Enviar produtos para o formulário principal"
+    Me.btnLimparPesquisa.ControlTipText = "Limpar pesquisa e mostrar todos os produtos"
+    Me.btnMais.ControlTipText = "Aumentar quantidade"
+    Me.btnMenos.ControlTipText = "Diminuir quantidade"
+    Me.btnFechar.ControlTipText = "Fechar formulário"
+    Me.btnLimparTudo.ControlTipText = "Limpar todos os produtos da lista"
+    Me.btnVerRelatorio.ControlTipText = "Ver relatório detalhado"
+    
+    On Error GoTo 0
+End Sub
+
+' === PESQUISA COM DEBOUNCE ===
+Private Sub txtPesquisa_Change()
+    On Error Resume Next
+    
+    If EmProcessamento Then Exit Sub
+    If Len(Me.txtPesquisa.Text) < 2 And Me.txtPesquisa.Text <> "" Then Exit Sub
+    
+    ' Implementar debounce para evitar pesquisas muito rápidas
+    If Timer - TimerPesquisa < TIMEOUT_PESQUISA / 1000 Then Exit Sub
+    
+    UltimaPesquisa = Me.txtPesquisa.Text
+    TimerPesquisa = Timer
+    
+    ' Executar pesquisa em background para não travar a UI
+    Application.OnTime Now + TimeSerial(0, 0, 0.5), "ExecutarPesquisaBackground"
+    
+    On Error GoTo 0
+End Sub
+
+' === EXECUTAR PESQUISA EM BACKGROUND ===
+Public Sub ExecutarPesquisaBackground()
+    On Error Resume Next
+    
+    EmProcessamento = True
+    
+    If UltimaPesquisa = "" Then
+        Call CarregarTodosProdutos
+    Else
+        Call PesquisarProdutos(UltimaPesquisa)
+    End If
+    
+    EmProcessamento = False
+    
+    On Error GoTo 0
+End Sub
+
+' === CARREGAR TODOS OS PRODUTOS ===
+Private Sub CarregarTodosProdutos()
+    On Error GoTo TratarErro
+    
+    Dim ws As Worksheet
+    Set ws = ThisWorkbook.Worksheets("Produtos")
+    
+    Dim UltimaLinha As Long
+    UltimaLinha = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
+    
+    Me.lstProdutos.Clear
+    
+    Dim i As Long
+    For i = 2 To UltimaLinha
+        If Trim(ws.Cells(i, 1).Value) <> "" Then
+            With Me.lstProdutos
+                .AddItem
+                .List(.ListCount - 1, 0) = ws.Cells(i, 1).Value    ' Referência
+                .List(.ListCount - 1, 1) = ws.Cells(i, 2).Value    ' Descrição
+                .List(.ListCount - 1, 2) = ws.Cells(i, 3).Value    ' Categoria
+                .List(.ListCount - 1, 3) = ws.Cells(i, 4).Value    ' Unidade
+                .List(.ListCount - 1, 4) = Format(ws.Cells(i, 6).Value, "R$ #,##0.00") ' Preço
+            End With
+        End If
+    Next i
+    
+    ' Ordenar por descrição
+    Call OrdenarListaProdutos
+    
+    Exit Sub
+    
+TratarErro:
+    MsgBox "Erro ao carregar produtos: " & Err.Description, vbCritical
+End Sub
+
+' === ORDENAR LISTA DE PRODUTOS ===
+Private Sub OrdenarListaProdutos()
+    On Error Resume Next
+    
+    If Me.lstProdutos.ListCount > 1 Then
+        ' Implementar ordenação bubble sort simples
+        Dim i As Long, j As Long
+        Dim temp(0 To 4) As Variant
+        
+        For i = 0 To Me.lstProdutos.ListCount - 2
+            For j = i + 1 To Me.lstProdutos.ListCount - 1
+                If UCase(Me.lstProdutos.List(i, 1)) > UCase(Me.lstProdutos.List(j, 1)) Then
+                    ' Trocar itens
+                    temp(0) = Me.lstProdutos.List(i, 0)
+                    temp(1) = Me.lstProdutos.List(i, 1)
+                    temp(2) = Me.lstProdutos.List(i, 2)
+                    temp(3) = Me.lstProdutos.List(i, 3)
+                    temp(4) = Me.lstProdutos.List(i, 4)
+                    
+                    Me.lstProdutos.List(i, 0) = Me.lstProdutos.List(j, 0)
+                    Me.lstProdutos.List(i, 1) = Me.lstProdutos.List(j, 1)
+                    Me.lstProdutos.List(i, 2) = Me.lstProdutos.List(j, 2)
+                    Me.lstProdutos.List(i, 3) = Me.lstProdutos.List(j, 3)
+                    Me.lstProdutos.List(i, 4) = Me.lstProdutos.List(j, 4)
+                    
+                    Me.lstProdutos.List(j, 0) = temp(0)
+                    Me.lstProdutos.List(j, 1) = temp(1)
+                    Me.lstProdutos.List(j, 2) = temp(2)
+                    Me.lstProdutos.List(j, 3) = temp(3)
+                    Me.lstProdutos.List(j, 4) = temp(4)
+                End If
+            Next j
+        Next i
+    End If
+    
+    On Error GoTo 0
+End Sub
+
+' === PESQUISAR PRODUTOS ===
+Private Sub PesquisarProdutos(termo As String)
+    On Error GoTo TratarErro
+    
+    Dim ws As Worksheet
+    Set ws = ThisWorkbook.Worksheets("Produtos")
+    
+    Me.lstProdutos.Clear
+    
+    Dim i As Long
+    For i = 2 To ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
+        If UCase(ws.Cells(i, 1).Value) Like "*" & UCase(termo) & "*" Or _
+           UCase(ws.Cells(i, 2).Value) Like "*" & UCase(termo) & "*" Or _
+           UCase(ws.Cells(i, 3).Value) Like "*" & UCase(termo) & "*" Then
+            
+            With Me.lstProdutos
+                .AddItem
+                .List(.ListCount - 1, 0) = ws.Cells(i, 1).Value
+                .List(.ListCount - 1, 1) = ws.Cells(i, 2).Value
+                .List(.ListCount - 1, 2) = ws.Cells(i, 3).Value
+                .List(.ListCount - 1, 3) = ws.Cells(i, 4).Value
+                .List(.ListCount - 1, 4) = Format(ws.Cells(i, 6).Value, "R$ #,##0.00")
+            End With
+        End If
+    Next i
+    
+    Call OrdenarListaProdutos
+    
+    Exit Sub
+    
+TratarErro:
+    MsgBox "Erro na pesquisa: " & Err.Description, vbCritical
+End Sub
+
+' === ADICIONAR PRODUTO ===
+Private Sub btnAdicionar_Click()
+    On Error GoTo TratarErro
+    
+    If Me.lstProdutos.ListIndex < 0 Then
+        MsgBox "Selecione um produto para adicionar.", vbExclamation
+        Exit Sub
+    End If
+    
+    Dim idProduto As String
+    idProduto = Me.lstProdutos.List(Me.lstProdutos.ListIndex, 0)
+    
+    ' Verificar se produto já foi adicionado
+    If ProdutoJaAdicionado(idProduto) Then
+        MsgBox "Este produto já foi adicionado à lista.", vbInformation
+        Exit Sub
+    End If
+    
+    Dim precoUnitario As Currency
+    precoUnitario = TextoParaMoeda(Me.lstProdutos.List(Me.lstProdutos.ListIndex, 4))
+    
+    Dim qtdReal As Long
+    qtdReal = CLng(Me.txtQuantidade.Value)
+    
+    Dim qtdDisplay As String
+    qtdDisplay = FormatarQuantidadePDV(qtdReal)
+    
+    Dim subtotalItem As Currency
+    subtotalItem = precoUnitario * qtdReal
+    
+    ' Adicionar à lista
+    With Me.lstSelecionados
+        .AddItem
+        .List(.ListCount - 1, 0) = idProduto
+        .List(.ListCount - 1, 1) = Me.lstProdutos.List(Me.lstProdutos.ListIndex, 1)
+        .List(.ListCount - 1, 2) = Me.lstProdutos.List(Me.lstProdutos.ListIndex, 3)
+        .List(.ListCount - 1, 3) = Format(precoUnitario, "R$ #,##0.00")
+        .List(.ListCount - 1, 4) = qtdDisplay
+        .List(.ListCount - 1, 5) = "R$ 0,00"
+        .List(.ListCount - 1, 6) = Format(subtotalItem, "R$ #,##0.00")
+    End With
+    
+    Call CalcularTodosOsTotais
+    Me.txtQuantidade.Value = QTD_MINIMA
+    
+    ' Feedback visual
+    Call MostrarFeedbackAdicao(Me.lstProdutos.List(Me.lstProdutos.ListIndex, 1), qtdReal, subtotalItem)
+    
+    Exit Sub
+    
+TratarErro:
+    MsgBox "Erro ao adicionar produto: " & Err.Description, vbCritical
+End Sub
+
+' === VERIFICAR SE PRODUTO JÁ FOI ADICIONADO ===
+Private Function ProdutoJaAdicionado(idProduto As String) As Boolean
+    On Error Resume Next
+    
+    Dim i As Long
+    For i = 0 To Me.lstSelecionados.ListCount - 1
+        If CStr(Me.lstSelecionados.List(i, 0)) = idProduto Then
+            ProdutoJaAdicionado = True
+            Exit Function
+        End If
+    Next i
+    
+    ProdutoJaAdicionado = False
+    On Error GoTo 0
+End Function
+
+' === MOSTRAR FEEDBACK DE ADIÇÃO ===
+Private Sub MostrarFeedbackAdicao(nomeProduto As String, quantidade As Long, total As Currency)
+    On Error Resume Next
+    
+    Me.lblStatus.Caption = "✅ " & quantidade & "x " & nomeProduto & " adicionado"
+    Me.lblStatus.ForeColor = RGB(0, 128, 0)
+    Me.lblStatus.Visible = True
+    
+    ' Ocultar após 3 segundos
+    Application.OnTime Now + TimeSerial(0, 0, 3), "OcultarStatus"
+    
+    On Error GoTo 0
+End Sub
+
+' === OCULTAR STATUS ===
+Public Sub OcultarStatus()
+    On Error Resume Next
+    frmPesquisaProdutos.lblStatus.Visible = False
+    On Error GoTo 0
+End Sub
+
+' === CALCULAR TODOS OS TOTAIS ===
+Private Sub CalcularTodosOsTotais()
+    On Error Resume Next
+    
+    Dim i As Long
+    totalSubtotal = 0
+    totalDescontos = 0
+    totalFinal = 0
+    quantidadeItens = Me.lstSelecionados.ListCount
+    
+    For i = 0 To quantidadeItens - 1
+        Dim precoUnit As Currency
+        Dim qtdReal As Long
+        Dim desconto As Currency
+        Dim valorFinalItem As Currency
+        
+        precoUnit = TextoParaMoeda(CStr(Me.lstSelecionados.List(i, 3)))
+        qtdReal = QuantidadePDVParaReal(CStr(Me.lstSelecionados.List(i, 4)))
+        desconto = TextoParaMoeda(CStr(Me.lstSelecionados.List(i, 5)))
+        valorFinalItem = TextoParaMoeda(CStr(Me.lstSelecionados.List(i, 6)))
+        
+        totalSubtotal = totalSubtotal + (precoUnit * qtdReal)
+        totalDescontos = totalDescontos + desconto
+        totalFinal = totalFinal + valorFinalItem
+    Next i
+    
+    Call AtualizarLabelsDoTotais
+    On Error GoTo 0
+End Sub
+
+' === ATUALIZAR LABELS DE TOTAIS ===
+Private Sub AtualizarLabelsDoTotais()
+    On Error Resume Next
+    
+    Me.lblSubTotal.Caption = "Subtotal: " & Format(totalSubtotal, "R$ #,##0.00")
+    Me.lblTotal.Caption = "Total: " & Format(totalFinal, "R$ #,##0.00")
+    Me.lblTotalItens.Caption = "Itens: " & quantidadeItens
+    
+    If totalDescontos > 0 Then
+        Me.lblDesc.Caption = "Desconto Total: " & Format(totalDescontos, "R$ #,##0.00")
+    Else
+        Me.lblDesc.Caption = "Sem desconto aplicado"
+    End If
+    
+    On Error GoTo 0
+End Sub
+
+' === FUNÇÕES AUXILIARES ===
+Private Function FormatarQuantidadePDV(quantidade As Long) As String
+    FormatarQuantidadePDV = Format(quantidade, "0") & ",000"
+End Function
+
+Private Function QuantidadePDVParaReal(quantidadePDV As String) As Long
+    On Error Resume Next
+    Dim temp As String
+    temp = Replace(quantidadePDV, ",000", "")
+    If IsNumeric(temp) Then QuantidadePDVParaReal = CLng(temp) Else QuantidadePDVParaReal = 1
+    On Error GoTo 0
+End Function
+
+Private Function TextoParaMoeda(texto As String) As Currency
+    On Error Resume Next
+    Dim temp As String
+    temp = Replace(Replace(Replace(texto, "R$", ""), ".", ""), ",", ".")
+    If IsNumeric(temp) Then TextoParaMoeda = CCur(temp) Else TextoParaMoeda = 0
+    On Error GoTo 0
+End Function
+
+' === BOTÕES DE QUANTIDADE ===
+Private Sub btnMais_Click()
+    On Error Resume Next
+    If CLng(Me.txtQuantidade.Value) < QTD_MAXIMA Then
+        Me.txtQuantidade.Value = CLng(Me.txtQuantidade.Value) + 1
+    End If
+    On Error GoTo 0
+End Sub
+
+Private Sub btnMenos_Click()
+    On Error Resume Next
+    If CLng(Me.txtQuantidade.Value) > QTD_MINIMA Then
+        Me.txtQuantidade.Value = CLng(Me.txtQuantidade.Value) - 1
+    End If
+    On Error GoTo 0
+End Sub
+
+' === LIMPAR PESQUISA ===
+Private Sub btnLimparPesquisa_Click()
+    On Error Resume Next
+    Me.txtPesquisa.Value = ""
+    Me.txtPesquisa.SetFocus
+    Call CarregarTodosProdutos
+    On Error GoTo 0
+End Sub
+
+' === ENVIAR PARA FORMULÁRIO PRINCIPAL ===
+Private Sub btnEnviarParaProdutos_Click()
+    On Error GoTo TratarErro
+    
+    If Me.lstSelecionados.ListCount = 0 Then
+        MsgBox "Adicione produtos antes de enviar.", vbExclamation
+        Exit Sub
+    End If
+    
+    ' Verificar se formulário principal está aberto
+    Dim formPrincipal As Object
+    Dim formEncontrado As Boolean
+    
+    formEncontrado = False
+    For Each formPrincipal In VBA.UserForms
+        If TypeName(formPrincipal) = "frmPDVPrincipal" Then
+            formEncontrado = True
+            Exit For
+        End If
+    Next
+    
+    If Not formEncontrado Then
+        MsgBox "Formulário principal não está aberto.", vbExclamation
+        Exit Sub
+    End If
+    
+    ' Transferir produtos
+    Dim listaDestino As Object
+    On Error Resume Next
+    Set listaDestino = formPrincipal.Controls("produtosv2")
+    If listaDestino Is Nothing Then Set listaDestino = formPrincipal.Controls("produtosv1")
+    On Error GoTo 0
+    
+    If listaDestino Is Nothing Then
+        MsgBox "Não foi possível encontrar a lista de destino.", vbExclamation
+        Exit Sub
+    End With
+    
+    ' Transferir produtos
+    Dim i As Long
+    For i = 0 To Me.lstSelecionados.ListCount - 1
+        With listaDestino
+            .AddItem
+            .List(.ListCount - 1, 0) = Me.lstSelecionados.List(i, 0)
+            .List(.ListCount - 1, 1) = Me.lstSelecionados.List(i, 1)
+            .List(.ListCount - 1, 2) = Me.lstSelecionados.List(i, 2)
+            .List(.ListCount - 1, 3) = Me.lstSelecionados.List(i, 3)
+            .List(.ListCount - 1, 4) = Me.lstSelecionados.List(i, 4)
+            .List(.ListCount - 1, 5) = Me.lstSelecionados.List(i, 5)
+            .List(.ListCount - 1, 6) = Me.lstSelecionados.List(i, 6)
+        End With
+    Next i
+    
+    MsgBox "Produtos enviados com sucesso!", vbInformation
+    
+    ' Limpar lista
+    Me.lstSelecionados.Clear
+    Call CalcularTodosOsTotais
+    
+    Exit Sub
+    
+TratarErro:
+    MsgBox "Erro ao enviar produtos: " & Err.Description, vbCritical
+End Sub
+
+' === FECHAR FORMULÁRIO ===
+Private Sub btnFechar_Click()
+    On Error Resume Next
+    Unload Me
+    On Error GoTo 0
+End Sub
+
+' === CONTROLE DE SEGURANÇA PARA FECHAR ===
+Private Sub UserForm_QueryClose(Cancel As Integer, CloseMode As Integer)
+    On Error Resume Next
+    If CloseMode = 0 And Me.lstSelecionados.ListCount > 0 Then
+        If MsgBox("Deseja realmente fechar? Os itens da lista serão perdidos.", vbYesNo + vbQuestion) = vbNo Then
+            Cancel = 1
+        End If
+    End If
+    On Error GoTo 0
+End Sub
