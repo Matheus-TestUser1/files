@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Scanner - Análise de Vulnerabilidades Web</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #151922;
+            --bg-tertiary: #1f2430;
+            --accent-primary: #00ff88;
+            --accent-danger: #ff3366;
+            --accent-warning: #ffaa00;
+            --accent-info: #00aaff;
+            --text-primary: #e6e6e6;
+            --text-secondary: #a0a0a0;
+            --border-color: #2a3040;
+            --shadow-glow: rgba(0, 255, 136, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0, 170, 255, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .scanner-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--border-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-info));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            box-shadow: 0 0 30px var(--shadow-glow);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        h1 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-info));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: -2px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 2px;
+        }
+
+        .scan-panel {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 18px 24px;
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 4px rgba(0, 255, 136, 0.1);
+        }
+
+        .btn {
+            padding: 18px 40px;
+            background: linear-gradient(135deg, var(--accent-primary), #00cc70);
+            border: none;
+            border-radius: 12px;
+            color: var(--bg-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.5);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-wrapper:hover {
+            border-color: var(--accent-primary);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--accent-primary);
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .progress-section {
+            display: none;
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .progress-section.active {
+            display: block;
+        }
+
+        .progress-bar-container {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            height: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-info));
+            border-radius: 12px;
+            width: 0%;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 20px var(--shadow-glow);
+        }
+
+        .status-text {
+            text-align: center;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .results-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.5s ease-out both;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 10px;
+        }
+
+        .stat-card.critical .stat-number { color: var(--accent-danger); }
+        .stat-card.high .stat-number { color: var(--accent-warning); }
+        .stat-card.medium .stat-number { color: var(--accent-info); }
+        .stat-card.low .stat-number { color: var(--accent-primary); }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .vulnerability-list {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            animation: fadeInUp 0.5s ease-out 0.5s both;
+        }
+
+        .vulnerability-item {
+            background: var(--bg-tertiary);
+            border-left: 4px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.5s ease-out both;
+        }
+
+        .vulnerability-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .vulnerability-item.critical { border-left-color: var(--accent-danger); }
+        .vulnerability-item.high { border-left-color: var(--accent-warning); }
+        .vulnerability-item.medium { border-left-color: var(--accent-info); }
+        .vulnerability-item.low { border-left-color: var(--accent-primary); }
+
+        .vulnerability-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .vulnerability-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .severity-badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .severity-badge.critical {
+            background: rgba(255, 51, 102, 0.2);
+            color: var(--accent-danger);
+            border: 1px solid var(--accent-danger);
+        }
+
+        .severity-badge.high {
+            background: rgba(255, 170, 0, 0.2);
+            color: var(--accent-warning);
+            border: 1px solid var(--accent-warning);
+        }
+
+        .severity-badge.medium {
+            background: rgba(0, 170, 255, 0.2);
+            color: var(--accent-info);
+            border: 1px solid var(--accent-info);
+        }
+
+        .severity-badge.low {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--accent-primary);
+            border: 1px solid var(--accent-primary);
+        }
+
+        .vulnerability-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .vulnerability-details {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--accent-primary);
+            background: rgba(0, 255, 136, 0.05);
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .loading-dots {
+            display: inline-flex;
+            gap: 5px;
+        }
+
+        .loading-dots span {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            animation: bounce 1.4s ease-in-out infinite;
+        }
+
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 30px var(--shadow-glow); }
+            50% { box-shadow: 0 0 50px var(--shadow-glow); }
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 32px; }
+            .input-group { flex-direction: column; }
+            .scan-panel { padding: 25px; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="scanner-grid"></div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">S</div>
+            </div>
+            <h1>SECURITY SCANNER</h1>
+            <p class="subtitle">ANÁLISE DE VULNERABILIDADES EM TEMPO REAL</p>
+        </header>
+
+        <div class="scan-panel">
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <input type="text" id="urlInput" placeholder="https://exemplo.com.br" value="">
+                </div>
+                <button class="btn" id="scanBtn" onclick="startScan()">Iniciar Scan</button>
+            </div>
+
+            <div class="options">
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" id="checkHeaders" checked>
+                    <span class="checkbox-label">Headers de Segurança</span>
+                </label>
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" id="checkSSL" checked>
+                    <span class="checkbox-label">Certificado SSL/TLS</span>
+                </label>
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" id="checkXSS" checked>
+                    <span class="checkbox-label">Injeção XSS</span>
+                </label>
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" id="checkCSRF" checked>
+                    <span class="checkbox-label">Proteção CSRF</span>
+                </label>
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" id="checkCORS" checked>
+                    <span class="checkbox-label">Configuração CORS</span>
+                </label>
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" id="checkMixedContent" checked>
+                    <span class="checkbox-label">Conteúdo Misto</span>
+                </label>
+            </div>
+
+            <div class="progress-section" id="progressSection">
+                <div class="status-text" id="statusText">Preparando análise<span class="loading-dots"><span></span><span></span><span></span></span></div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <div class="stats-grid">
+                <div class="stat-card critical">
+                    <div class="stat-number" id="criticalCount">0</div>
+                    <div class="stat-label">Críticas</div>
+                </div>
+                <div class="stat-card high">
+                    <div class="stat-number" id="highCount">0</div>
+                    <div class="stat-label">Altas</div>
+                </div>
+                <div class="stat-card medium">
+                    <div class="stat-number" id="mediumCount">0</div>
+                    <div class="stat-label">Médias</div>
+                </div>
+                <div class="stat-card low">
+                    <div class="stat-number" id="lowCount">0</div>
+                    <div class="stat-label">Baixas</div>
+                </div>
+            </div>
+
+            <div class="vulnerability-list" id="vulnerabilityList">
+                <h2 style="margin-bottom: 20px; font-family: 'JetBrains Mono', monospace;">Vulnerabilidades Encontradas</h2>
+                <div id="vulnerabilitiesContainer"></div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Security Scanner v1.0 | Análise realizada no navegador | Nenhum dado é enviado para servidores externos</p>
+        </footer>
+    </div>
+
+    <script>
+        let scanning = false;
+        const vulnerabilities = [];
+
+        async function startScan() {
+            const url = document.getElementById('urlInput').value.trim();
+            
+            if (!url) {
+                alert('Por favor, insira uma URL válida');
+                return;
+            }
+
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                alert('A URL deve começar com http:// ou https://');
+                return;
+            }
+
+            if (scanning) return;
+            
+            scanning = true;
+            vulnerabilities.length = 0;
+            
+            const scanBtn = document.getElementById('scanBtn');
+            const progressSection = document.getElementById('progressSection');
+            const resultsSection = document.getElementById('resultsSection');
+            const progressBar = document.getElementById('progressBar');
+            const statusText = document.getElementById('statusText');
+            
+            scanBtn.disabled = true;
+            progressSection.classList.add('active');
+            resultsSection.classList.remove('active');
+            progressBar.style.width = '0%';
+
+            const checks = [
+                { id: 'checkHeaders', name: 'Headers de Segurança', func: checkSecurityHeaders },
+                { id: 'checkSSL', name: 'Certificado SSL/TLS', func: checkSSL },
+                { id: 'checkXSS', name: 'Proteção XSS', func: checkXSS },
+                { id: 'checkCSRF', name: 'Proteção CSRF', func: checkCSRF },
+                { id: 'checkCORS', name: 'Configuração CORS', func: checkCORS },
+                { id: 'checkMixedContent', name: 'Conteúdo Misto', func: checkMixedContent }
+            ];
+
+            const enabledChecks = checks.filter(check => 
+                document.getElementById(check.id).checked
+            );
+
+            const totalChecks = enabledChecks.length;
+            let completedChecks = 0;
+
+            for (const check of enabledChecks) {
+                statusText.innerHTML = `Analisando: ${check.name}<span class="loading-dots"><span></span><span></span><span></span></span>`;
+                
+                try {
+                    await check.func(url);
+                } catch (error) {
+                    console.error(`Erro ao verificar ${check.name}:`, error);
+                }
+                
+                completedChecks++;
+                const progress = (completedChecks / totalChecks) * 100;
+                progressBar.style.width = progress + '%';
+                
+                await sleep(500);
+            }
+
+            statusText.textContent = 'Análise concluída!';
+            await sleep(1000);
+            
+            displayResults();
+            progressSection.classList.remove('active');
+            resultsSection.classList.add('active');
+            scanBtn.disabled = false;
+            scanning = false;
+        }
+
+        async function checkSecurityHeaders(url) {
+            try {
+                // Cria uma requisição para obter os headers
+                const response = await fetch(url, { 
+                    method: 'GET',
+                    mode: 'cors',
+                    cache: 'no-cache'
+                });
+                
+                const headers = response.headers;
+                let headersFound = [];
+                
+                // Itera por todos os headers disponíveis
+                for (let [key, value] of headers.entries()) {
+                    headersFound.push(`${key}: ${value.substring(0, 50)}${value.length > 50 ? '...' : ''}`);
+                }
+
+                console.log('Headers encontrados:', headersFound);
+
+                // Verifica X-Frame-Options
+                const xFrameOptions = headers.get('x-frame-options');
+                if (!xFrameOptions) {
+                    addVulnerability('critical', 'X-Frame-Options ausente', 
+                        'O cabeçalho X-Frame-Options não está configurado, permitindo ataques de clickjacking.',
+                        'Recomendação: X-Frame-Options: DENY ou SAMEORIGIN');
+                } else {
+                    addVulnerability('low', 'X-Frame-Options configurado',
+                        'O cabeçalho X-Frame-Options está presente, protegendo contra clickjacking.',
+                        `Valor: ${xFrameOptions}`);
+                }
+
+                // Verifica X-Content-Type-Options
+                const xContentType = headers.get('x-content-type-options');
+                if (!xContentType) {
+                    addVulnerability('medium', 'X-Content-Type-Options ausente',
+                        'O cabeçalho X-Content-Type-Options não está configurado, permitindo MIME sniffing.',
+                        'Recomendação: X-Content-Type-Options: nosniff');
+                } else {
+                    addVulnerability('low', 'X-Content-Type-Options configurado',
+                        'Proteção contra MIME sniffing está ativa.',
+                        `Valor: ${xContentType}`);
+                }
+
+                // Verifica HSTS
+                const hsts = headers.get('strict-transport-security');
+                if (!hsts) {
+                    addVulnerability('high', 'HSTS não configurado',
+                        'Strict-Transport-Security ausente. O site pode ser vulnerável a downgrade attacks.',
+                        'Recomendação: Strict-Transport-Security: max-age=31536000; includeSubDomains');
+                } else {
+                    addVulnerability('low', 'HSTS configurado',
+                        'O site força conexões HTTPS através de HSTS.',
+                        `Valor: ${hsts}`);
+                }
+
+                // Verifica Content-Security-Policy
+                const csp = headers.get('content-security-policy');
+                if (!csp) {
+                    addVulnerability('high', 'Content-Security-Policy ausente',
+                        'Política de segurança de conteúdo não configurada, aumentando risco de XSS.',
+                        'Recomendação: Implementar CSP com diretivas restritivas');
+                } else if (csp.includes('unsafe-inline') || csp.includes('unsafe-eval')) {
+                    addVulnerability('medium', 'CSP com diretivas inseguras',
+                        'A política CSP contém unsafe-inline ou unsafe-eval, reduzindo a proteção.',
+                        `CSP: ${csp.substring(0, 100)}...`);
+                } else {
+                    addVulnerability('low', 'CSP bem configurado',
+                        'Content-Security-Policy está ativo e sem diretivas inseguras.',
+                        `CSP: ${csp.substring(0, 100)}...`);
+                }
+
+                // Verifica X-XSS-Protection
+                const xssProtection = headers.get('x-xss-protection');
+                if (!xssProtection || xssProtection === '0') {
+                    addVulnerability('medium', 'X-XSS-Protection desabilitado ou ausente',
+                        'Proteção XSS do navegador não está ativa.',
+                        'Recomendação: X-XSS-Protection: 1; mode=block');
+                }
+
+                // Verifica Referrer-Policy
+                const referrerPolicy = headers.get('referrer-policy');
+                if (!referrerPolicy) {
+                    addVulnerability('low', 'Referrer-Policy ausente',
+                        'Política de referência não configurada. Informações podem vazar via header Referer.',
+                        'Recomendação: Referrer-Policy: no-referrer ou strict-origin-when-cross-origin');
+                }
+
+                // Verifica Permissions-Policy
+                const permissionsPolicy = headers.get('permissions-policy') || headers.get('feature-policy');
+                if (!permissionsPolicy) {
+                    addVulnerability('low', 'Permissions-Policy ausente',
+                        'Não há controle sobre recursos do navegador (câmera, microfone, etc).',
+                        'Recomendação: Permissions-Policy: camera=(), microphone=(), geolocation=()');
+                }
+
+            } catch (error) {
+                addVulnerability('medium', 'Erro ao verificar headers',
+                    `Não foi possível acessar os headers HTTP. Possível bloqueio CORS ou erro de rede.`,
+                    `Erro: ${error.message}`);
+                console.error('Erro ao verificar headers:', error);
+            }
+        }
+
+        async function checkSSL(url) {
+            const urlObj = new URL(url);
+            
+            if (!url.startsWith('https://')) {
+                addVulnerability('critical', 'Conexão não criptografada (HTTP)',
+                    'O site não utiliza HTTPS. Todos os dados são transmitidos sem criptografia, incluindo senhas e informações sensíveis.',
+                    'Protocolo: HTTP - RISCO ALTO');
+            } else {
+                // Tenta acessar o site via HTTPS
+                try {
+                    const response = await fetch(url, { method: 'HEAD' });
+                    
+                    addVulnerability('low', 'Conexão HTTPS ativa',
+                        'O site utiliza HTTPS para criptografar a comunicação.',
+                        `Protocolo: HTTPS - Domínio: ${urlObj.hostname}`);
+                    
+                    // Verifica se há redirecionamento HTTP -> HTTPS
+                    const httpUrl = url.replace('https://', 'http://');
+                    try {
+                        const httpResponse = await fetch(httpUrl, { 
+                            method: 'HEAD',
+                            redirect: 'manual'
+                        });
+                        
+                        if (httpResponse.type === 'opaqueredirect' || httpResponse.status === 301 || httpResponse.status === 308) {
+                            addVulnerability('low', 'Redirecionamento HTTP para HTTPS',
+                                'O site redireciona automaticamente conexões HTTP para HTTPS.',
+                                'Boa prática de segurança implementada');
+                        }
+                    } catch (e) {
+                        // Pode ser bloqueado por CORS, não é um problema
+                    }
+                    
+                } catch (error) {
+                    addVulnerability('medium', 'Erro ao verificar SSL/TLS',
+                        'Houve um problema ao validar o certificado SSL.',
+                        `Erro: ${error.message}`);
+                }
+            }
+        }
+
+        async function checkXSS(url) {
+            try {
+                const response = await fetch(url);
+                const html = await response.text();
+                const contentType = response.headers.get('content-type') || '';
+                
+                let issues = 0;
+                
+                // Verifica inputs sem validação aparente
+                const inputs = html.match(/<input[^>]*>/gi) || [];
+                const unsafeInputs = inputs.filter(input => 
+                    !input.includes('pattern=') && 
+                    !input.includes('maxlength=') &&
+                    input.includes('type="text"')
+                );
+                
+                if (unsafeInputs.length > 0) {
+                    addVulnerability('medium', 'Inputs sem validação visível',
+                        `Encontrados ${unsafeInputs.length} campos de entrada sem validação explícita no HTML.`,
+                        `Inputs sem pattern/maxlength: ${unsafeInputs.length}`);
+                    issues++;
+                }
+                
+                // Verifica scripts inline
+                const inlineScripts = html.match(/<script[^>]*>[\s\S]*?<\/script>/gi) || [];
+                const inlineEventHandlers = html.match(/on\w+\s*=\s*["'][^"']*["']/gi) || [];
+                
+                if (inlineScripts.length > 0 || inlineEventHandlers.length > 0) {
+                    addVulnerability('medium', 'Scripts inline detectados',
+                        `Encontrados ${inlineScripts.length} tags <script> inline e ${inlineEventHandlers.length} event handlers inline. Isso dificulta CSP e pode indicar vulnerabilidade XSS.`,
+                        `Scripts: ${inlineScripts.length}, Event Handlers: ${inlineEventHandlers.length}`);
+                    issues++;
+                }
+                
+                // Verifica uso de eval, innerHTML, document.write
+                const dangerousFunctions = [];
+                if (html.includes('eval(')) dangerousFunctions.push('eval()');
+                if (html.includes('innerHTML')) dangerousFunctions.push('innerHTML');
+                if (html.includes('document.write')) dangerousFunctions.push('document.write()');
+                if (html.includes('dangerouslySetInnerHTML')) dangerousFunctions.push('dangerouslySetInnerHTML');
+                
+                if (dangerousFunctions.length > 0) {
+                    addVulnerability('high', 'Funções perigosas detectadas',
+                        `Uso de funções que podem facilitar XSS: ${dangerousFunctions.join(', ')}`,
+                        `Funções encontradas: ${dangerousFunctions.join(', ')}`);
+                    issues++;
+                }
+                
+                // Verifica se há sanitização
+                const hasSanitization = html.includes('DOMPurify') || 
+                                       html.includes('sanitize') ||
+                                       html.includes('escape');
+                
+                if (!hasSanitization && issues > 0) {
+                    addVulnerability('medium', 'Sem biblioteca de sanitização aparente',
+                        'Não foi detectada nenhuma biblioteca de sanitização (DOMPurify, etc).',
+                        'Recomendação: Implementar sanitização de inputs');
+                }
+                
+                if (issues === 0) {
+                    addVulnerability('low', 'Análise básica XSS OK',
+                        'Não foram detectados padrões óbvios de vulnerabilidade XSS na análise superficial.',
+                        'Nota: Teste manual é necessário para confirmação completa');
+                }
+                
+            } catch (error) {
+                addVulnerability('low', 'Verificação XSS limitada',
+                    'Não foi possível analisar o código HTML do site. Pode estar bloqueado por CORS.',
+                    `Erro: ${error.message}`);
+            }
+        }
+
+        async function checkCSRF(url) {
+            try {
+                const response = await fetch(url);
+                const html = await response.text();
+                const setCookie = response.headers.get('set-cookie');
+                
+                // Verifica cookies
+                if (setCookie) {
+                    const cookies = setCookie.split(',');
+                    let unsafeCookies = 0;
+                    
+                    cookies.forEach(cookie => {
+                        if (!cookie.includes('SameSite')) {
+                            unsafeCookies++;
+                        }
+                    });
+                    
+                    if (unsafeCookies > 0) {
+                        addVulnerability('high', 'Cookies sem atributo SameSite',
+                            `${unsafeCookies} cookie(s) não possuem o atributo SameSite, aumentando o risco de CSRF.`,
+                            'Recomendação: SameSite=Strict ou SameSite=Lax');
+                    } else {
+                        addVulnerability('low', 'Cookies com SameSite configurado',
+                            'Os cookies possuem proteção SameSite.',
+                            'Boa prática de segurança');
+                    }
+                }
+                
+                // Verifica formulários
+                const forms = html.match(/<form[^>]*>[\s\S]*?<\/form>/gi) || [];
+                
+                if (forms.length > 0) {
+                    let formsWithoutToken = 0;
+                    
+                    forms.forEach(form => {
+                        const hasCSRFToken = form.includes('csrf') || 
+                                           form.includes('_token') ||
+                                           form.includes('authenticity_token') ||
+                                           form.includes('csrfmiddlewaretoken');
+                        
+                        if (!hasCSRFToken && form.includes('method="post"')) {
+                            formsWithoutToken++;
+                        }
+                    });
+                    
+                    if (formsWithoutToken > 0) {
+                        addVulnerability('high', 'Formulários sem token CSRF',
+                            `${formsWithoutToken} de ${forms.length} formulário(s) POST não possui token CSRF visível.`,
+                            `Formulários vulneráveis: ${formsWithoutToken}/${forms.length}`);
+                    } else {
+                        addVulnerability('low', 'Tokens CSRF detectados',
+                            'Formulários parecem ter proteção CSRF implementada.',
+                            `Total de formulários analisados: ${forms.length}`);
+                    }
+                }
+                
+            } catch (error) {
+                addVulnerability('low', 'Verificação CSRF limitada',
+                    'Não foi possível verificar completamente a proteção CSRF.',
+                    `Erro: ${error.message}`);
+            }
+        }
+
+        async function checkCORS(url) {
+            try {
+                const response = await fetch(url, { 
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                const corsOrigin = response.headers.get('access-control-allow-origin');
+                const corsMethods = response.headers.get('access-control-allow-methods');
+                const corsHeaders = response.headers.get('access-control-allow-headers');
+                const corsCredentials = response.headers.get('access-control-allow-credentials');
+                
+                if (corsOrigin === '*') {
+                    if (corsCredentials === 'true') {
+                        addVulnerability('critical', 'CORS mal configurado - Wildcard com credenciais',
+                            'Access-Control-Allow-Origin é "*" E Allow-Credentials é "true". Isso é uma configuração perigosa que pode expor dados sensíveis.',
+                            'CORS: * + Credentials: true');
+                    } else {
+                        addVulnerability('medium', 'CORS com wildcard (*)',
+                            'Access-Control-Allow-Origin está configurado como *, permitindo qualquer origem. Isso pode ser aceitável para APIs públicas.',
+                            'CORS Origin: *');
+                    }
+                } else if (corsOrigin) {
+                    addVulnerability('low', 'CORS configurado com origem específica',
+                        `CORS está configurado para permitir origem específica: ${corsOrigin}`,
+                        `Origin permitida: ${corsOrigin}`);
+                }
+                
+                if (corsMethods && corsMethods.includes('DELETE') || corsMethods.includes('PUT')) {
+                    addVulnerability('medium', 'Métodos HTTP perigosos permitidos via CORS',
+                        `CORS permite métodos que podem modificar dados: ${corsMethods}`,
+                        `Métodos permitidos: ${corsMethods}`);
+                }
+                
+                if (corsHeaders && corsHeaders === '*') {
+                    addVulnerability('medium', 'CORS permite qualquer header',
+                        'Access-Control-Allow-Headers está configurado como *, permitindo qualquer header customizado.',
+                        'Headers: *');
+                }
+                
+                if (!corsOrigin && !corsMethods && !corsHeaders) {
+                    addVulnerability('low', 'CORS não configurado',
+                        'O servidor não possui configuração CORS. Isso pode ser seguro se não for uma API.',
+                        'Nenhum header CORS encontrado');
+                }
+                
+            } catch (error) {
+                addVulnerability('low', 'Verificação CORS concluída',
+                    'A verificação CORS foi realizada. Erros CORS podem indicar boa configuração de segurança.',
+                    'Status: Verificado');
+            }
+        }
+
+        async function checkMixedContent(url) {
+            if (url.startsWith('https://')) {
+                try {
+                    const response = await fetch(url);
+                    const html = await response.text();
+                    
+                    // Procura por recursos HTTP
+                    const httpImages = html.match(/src\s*=\s*["']http:\/\/[^"']+\.(jpg|jpeg|png|gif|svg|webp)/gi) || [];
+                    const httpScripts = html.match(/src\s*=\s*["']http:\/\/[^"']+\.js/gi) || [];
+                    const httpStyles = html.match(/href\s*=\s*["']http:\/\/[^"']+\.css/gi) || [];
+                    const httpIframes = html.match(/<iframe[^>]*src\s*=\s*["']http:\/\/[^"']+/gi) || [];
+                    const httpLinks = html.match(/http:\/\/[^"'\s<>]+/gi) || [];
+                    
+                    // Filtra schemas e URLs não-problemáticas
+                    const filteredLinks = httpLinks.filter(link => 
+                        !link.includes('http://www.w3.org') && 
+                        !link.includes('http://schemas.') &&
+                        !link.includes('http://purl.org') &&
+                        !link.includes('http://xmlns.com')
+                    );
+                    
+                    const totalMixed = httpImages.length + httpScripts.length + 
+                                     httpStyles.length + httpIframes.length;
+                    
+                    if (totalMixed > 0) {
+                        const details = [];
+                        if (httpImages.length > 0) details.push(`Imagens HTTP: ${httpImages.length}`);
+                        if (httpScripts.length > 0) details.push(`Scripts HTTP: ${httpScripts.length}`);
+                        if (httpStyles.length > 0) details.push(`CSS HTTP: ${httpStyles.length}`);
+                        if (httpIframes.length > 0) details.push(`iFrames HTTP: ${httpIframes.length}`);
+                        
+                        const severity = httpScripts.length > 0 ? 'critical' : 
+                                       httpIframes.length > 0 ? 'high' : 'medium';
+                        
+                        addVulnerability(severity, 'Conteúdo misto detectado (Mixed Content)',
+                            `Foram encontrados ${totalMixed} recursos HTTP em uma página HTTPS. Navegadores modernos podem bloquear estes recursos.`,
+                            details.join(' | '));
+                    } else if (filteredLinks.length > 0) {
+                        addVulnerability('low', 'Links HTTP detectados',
+                            `Foram encontrados ${filteredLinks.length} links HTTP na página, mas não são recursos carregados.`,
+                            `Links HTTP no HTML: ${filteredLinks.length}`);
+                    } else {
+                        addVulnerability('low', 'Sem conteúdo misto detectado',
+                            'Todos os recursos parecem ser carregados via HTTPS.',
+                            'Boa prática: 100% HTTPS');
+                    }
+                    
+                    // Verifica meta tag upgrade-insecure-requests
+                    if (html.includes('upgrade-insecure-requests')) {
+                        addVulnerability('low', 'Upgrade Insecure Requests ativo',
+                            'O site usa CSP upgrade-insecure-requests para converter HTTP em HTTPS automaticamente.',
+                            'Meta CSP: upgrade-insecure-requests presente');
+                    }
+                    
+                } catch (error) {
+                    addVulnerability('low', 'Erro ao verificar conteúdo misto',
+                        'Não foi possível analisar o HTML do site para conteúdo misto.',
+                        `Erro: ${error.message}`);
+                }
+            } else {
+                addVulnerability('medium', 'Site não usa HTTPS',
+                    'Como o site usa HTTP, não há verificação de conteúdo misto (já que tudo é inseguro).',
+                    'Protocolo: HTTP');
+            }
+        }
+
+        function addVulnerability(severity, title, description, details) {
+            vulnerabilities.push({ severity, title, description, details });
+        }
+
+        function displayResults() {
+            const stats = { critical: 0, high: 0, medium: 0, low: 0 };
+            
+            vulnerabilities.forEach(vuln => {
+                stats[vuln.severity]++;
+            });
+
+            document.getElementById('criticalCount').textContent = stats.critical;
+            document.getElementById('highCount').textContent = stats.high;
+            document.getElementById('mediumCount').textContent = stats.medium;
+            document.getElementById('lowCount').textContent = stats.low;
+
+            const container = document.getElementById('vulnerabilitiesContainer');
+            container.innerHTML = '';
+
+            if (vulnerabilities.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Nenhuma vulnerabilidade detectada</p>';
+                return;
+            }
+
+            const sortedVulns = [...vulnerabilities].sort((a, b) => {
+                const order = { critical: 0, high: 1, medium: 2, low: 3 };
+                return order[a.severity] - order[b.severity];
+            });
+
+            sortedVulns.forEach((vuln, index) => {
+                const item = document.createElement('div');
+                item.className = `vulnerability-item ${vuln.severity}`;
+                item.style.animationDelay = `${index * 0.1}s`;
+                
+                item.innerHTML = `
+                    <div class="vulnerability-header">
+                        <div class="vulnerability-title">${vuln.title}</div>
+                        <div class="severity-badge ${vuln.severity}">${vuln.severity}</div>
+                    </div>
+                    <div class="vulnerability-description">${vuln.description}</div>
+                    <div class="vulnerability-details">${vuln.details}</div>
+                `;
+                
+                container.appendChild(item);
+            });
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        document.getElementById('urlInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                startScan();
+            }
+        });
+    </script>
+</body>
+</html>
